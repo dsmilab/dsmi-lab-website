@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>overview for semi-supervised learning | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="semi-supervised" />
+  
+  
+  
+  
+  <meta name="description" content="What is Semi-Supervised Learning?When you counter some real problem…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Overview for Semi-Supervised Learning">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/05/14/Overview%20for%20Semi-Supervised%20Learning/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="What is Semi-Supervised Learning?When you counter some real problem…">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/bjDH3A7.jpg">
+<meta property="og:image" content="https://i.imgur.com/f8sxz6y.png">
+<meta property="og:image" content="https://i.imgur.com/xHav1C0.jpg">
+<meta property="og:image" content="https://i.imgur.com/sy2H8G4.png">
+<meta property="og:image" content="https://i.imgur.com/kI7q5Mm.jpg">
+<meta property="og:image" content="https://i.imgur.com/vFVz33b.png">
+<meta property="og:image" content="https://i.imgur.com/ocQbC0n.jpg">
+<meta property="og:image" content="https://i.imgur.com/YB1Zwpd.jpg">
+<meta property="og:image" content="https://i.imgur.com/xAC5oF3.png">
+<meta property="og:image" content="https://i.imgur.com/NXYcQTV.jpg">
+<meta property="og:image" content="https://i.imgur.com/NhozyOJ.jpg">
+<meta property="og:image" content="https://i.imgur.com/2QX7UiR.jpg">
+<meta property="og:image" content="https://i.imgur.com/APzMIN8.png">
+<meta property="article:published_time" content="2020-05-14T15:40:00.000Z">
+<meta property="article:modified_time" content="2021-01-26T08:11:41.089Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="semi-supervised">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/bjDH3A7.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Overview for Semi-Supervised Learning" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Overview for Semi-Supervised Learning
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/05/14/Overview%20for%20Semi-Supervised%20Learning/" class="article-date">
+	  <time datetime="2020-05-14T15:40:00.000Z" itemprop="datePublished">2020-05-14</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h2 id="What-is-Semi-Supervised-Learning"><a href="#What-is-Semi-Supervised-Learning" class="headerlink" title="What is Semi-Supervised Learning?"></a>What is Semi-Supervised Learning?</h2><p>When you counter some real problem…<br><img src="https://i.imgur.com/bjDH3A7.jpg" alt=""></p>
+<a id="more"></a>
+
+<p>我們先來快速看一下supervised 和semi-supervised 的差別<br><img src="https://i.imgur.com/f8sxz6y.png" alt=""></p>
+<h2 id="self-training"><a href="#self-training" class="headerlink" title="self-training"></a>self-training</h2><p>最常用且最簡單的概念及手法，任何模型都可以很easy的套用<br><img src="https://i.imgur.com/xHav1C0.jpg" alt=""></p>
+<h3 id="Teacher-Student"><a href="#Teacher-Student" class="headerlink" title="Teacher-Student"></a>Teacher-Student</h3><p><img src="https://i.imgur.com/sy2H8G4.png" alt=""></p>
+<h2 id="co-training"><a href="#co-training" class="headerlink" title="co-training"></a>co-training</h2><p>常用的概念及手法之二，只要你有多個feature就可以使用<br><img src="https://i.imgur.com/kI7q5Mm.jpg" alt=""></p>
+<h2 id="S3VM"><a href="#S3VM" class="headerlink" title="S3VM"></a>S3VM</h2><p>前身為TSVM，是一個以SVM為基礎建構的半監督式學習手法。<br><img src="https://i.imgur.com/vFVz33b.png" alt=""></p>
+<h2 id="Generative-Models"><a href="#Generative-Models" class="headerlink" title="Generative Models"></a>Generative Models</h2><p>藉由沒有label的data調整Gussian分布<br><img src="https://i.imgur.com/ocQbC0n.jpg" alt=""></p>
+<p>深度學習中，最早由Google所提出<a href="https://papers.nips.cc/paper/5352-semi-supervised-learning-with-deep-generative-models.pdf" target="_blank" rel="noopener">Deep Generative Model</a>，但其實效果沒有到很好。而後，許多論文開始依照這樣的概念著手，<a href="http://papers.nips.cc/paper/5947-semi-supervised-learning-with-ladder-networks.pdf" target="_blank" rel="noopener">Semi-Supervised Learning with Ladder network</a>便是半監督式學習中，曾經風靡一時的論文。<br><img src="https://i.imgur.com/YB1Zwpd.jpg" alt=""></p>
+<h2 id="Clustering-Space"><a href="#Clustering-Space" class="headerlink" title="Clustering Space"></a>Clustering Space</h2><p>偷偷推廣我的論文😛<br>藉由自定義loss function已告訴模型分群空間中的分群好壞，強制network學習一個好的分群空間。<br>這裡就不贅述了，大家有興趣之後可以參加我的口試囉😎</p>
+<h2 id="Follow-up-新時代的SSL-Self-Supervised-Learning"><a href="#Follow-up-新時代的SSL-Self-Supervised-Learning" class="headerlink" title="Follow up - 新時代的SSL (Self-Supervised Learning)"></a>Follow up - 新時代的SSL (Self-Supervised Learning)</h2><p>⚠️這不是self-training⚠️<br>⚠️這不是self-training⚠️<br>⚠️這不是self-training⚠️<br>#很重要所以說三遍</p>
+<p>Then, what is self-supervised learning??????</p>
+<p>Self-Supervised Learning的前提假設是沒有任何的labeled data！！！<br><img src="https://i.imgur.com/xAC5oF3.png" alt=""><br>那麼…這要怎麼訓練模型呢…?</p>
+<p>既然沒有任何的labeled data…<br>自己的data自己標🙃🙃🙃</p>
+<h3 id="思考出發點"><a href="#思考出發點" class="headerlink" title="思考出發點"></a>思考出發點</h3><p><img src="https://i.imgur.com/NXYcQTV.jpg" alt=""><br>就像剛出生的嬰兒，沒有人教導前，僅藉由”觀察”進行學習。在這樣的學習中，或許他認得”手”也辨別得出來”手”，但他並不知道他所看到的就是”手”。而Self-Supervised Learning便是用這樣的概念所建構的方法。希望模型能從毫無label的狀況下，”觀察”並”學習”。如此一來，未來只要稍加提點，或許就能得到很好的效果。</p>
+<h3 id="經典例子"><a href="#經典例子" class="headerlink" title="經典例子"></a>經典例子</h3><ul>
+<li><p>BERT<br><img src="https://i.imgur.com/NhozyOJ.jpg" alt=""><br><img src="https://i.imgur.com/2QX7UiR.jpg" alt=""></p>
+</li>
+<li><p>CV<br><img src="https://i.imgur.com/APzMIN8.png" alt=""></p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://medium.com/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92deep-learning/semi-supervised-learning-7a3d2fd380a" target="_blank" rel="noopener">Semi-supervised Learning</a></li>
+<li><a href="https://medium.com/@kelispinor/%E7%B0%A1%E4%BB%8B-self-supervised-learning-%E7%9A%84%E8%BF%91%E6%9C%9F%E7%99%BC%E5%B1%95-2018-2020-a3872662727d" target="_blank" rel="noopener">簡介 - self-supervised learning的近期發展</a></li>
+<li><a href="https://bbs.cvmart.net/topics/1649" target="_blank" rel="noopener">100篇self-training</a></li>
+<li><a href="https://papers.nips.cc/paper/5352-semi-supervised-learning-with-deep-generative-models.pdf" target="_blank" rel="noopener">Deep Generative Model</a></li>
+<li><a href="http://papers.nips.cc/paper/5947-semi-supervised-learning-with-ladder-networks.pdf" target="_blank" rel="noopener">Semi-Supervised Learning with Ladder network</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/34516078" target="_blank" rel="noopener">三顾 Semi-supervised Learning with Ladder Network</a></li>
+<li><a href="https://mc.ai/facebook-believes-in-omni-supervised-learning/" target="_blank" rel="noopener">Facebook Believes in Omni-Supervised Learning</a></li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Jeff</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/05/14/Overview for Semi-Supervised Learning/" target="_blank" title="Overview for Semi-Supervised Learning">https://github.com/dsmilab/dsmi-lab-website/2020/05/14/Overview for Semi-Supervised Learning/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/semi-supervised/" rel="tag">semi-supervised</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/05/14/Leetcode%20-%20Dynamic%20Programming/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode - Dynamic Programming
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/05/13/BERT%20-%20Bidirectional%20Encoder%20Representations%20from%20Transformers/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">BERT - Bidirectional Encoder Representations from Transformers</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Semi-Supervised-Learning"><span class="nav-number">1.</span> <span class="nav-text">What is Semi-Supervised Learning?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#self-training"><span class="nav-number">2.</span> <span class="nav-text">self-training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Teacher-Student"><span class="nav-number">2.1.</span> <span class="nav-text">Teacher-Student</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#co-training"><span class="nav-number">3.</span> <span class="nav-text">co-training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3VM"><span class="nav-number">4.</span> <span class="nav-text">S3VM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Generative-Models"><span class="nav-number">5.</span> <span class="nav-text">Generative Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clustering-Space"><span class="nav-number">6.</span> <span class="nav-text">Clustering Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Follow-up-新時代的SSL-Self-Supervised-Learning"><span class="nav-number">7.</span> <span class="nav-text">Follow up - 新時代的SSL (Self-Supervised Learning)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思考出發點"><span class="nav-number">7.1.</span> <span class="nav-text">思考出發點</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#經典例子"><span class="nav-number">7.2.</span> <span class="nav-text">經典例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">8.</span> <span class="nav-text">Reference</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

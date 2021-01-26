@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>basic overview of natural language processing | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="Basic Overview of Natural Language Processing本篇文章粗略介紹了從古(?)至今(2020)NLP重要的發展史及技術，希望能讓大家對NLP有一些基礎的概念與了解🧐。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Basic Overview of Natural Language Processing">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/03/31/Basic%20Overview%20of%20Natural%20Language%20Processing/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Basic Overview of Natural Language Processing本篇文章粗略介紹了從古(?)至今(2020)NLP重要的發展史及技術，希望能讓大家對NLP有一些基礎的概念與了解🧐。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/YHfjTAy.png">
+<meta property="og:image" content="https://i.imgur.com/EPnqhC6.jpg">
+<meta property="og:image" content="https://i.imgur.com/yh4d4pu.jpg">
+<meta property="og:image" content="https://i.imgur.com/bc1NDTA.png">
+<meta property="og:image" content="https://i.imgur.com/XdNugD1.png">
+<meta property="og:image" content="https://i.imgur.com/EvKM0IW.png">
+<meta property="og:image" content="https://i.imgur.com/hHBaLH3.jpg">
+<meta property="og:image" content="https://i.imgur.com/5wCHX7M.png">
+<meta property="og:image" content="https://i.imgur.com/lSfPi4g.png">
+<meta property="og:image" content="https://i.imgur.com/V0R3J8C.jpg">
+<meta property="og:image" content="https://i.imgur.com/vOJzePY.jpg">
+<meta property="og:image" content="https://i.imgur.com/8xwo37q.png">
+<meta property="og:image" content="https://i.imgur.com/jYXRTAO.jpg">
+<meta property="og:image" content="https://i.imgur.com/nUNk6CO.jpg">
+<meta property="og:image" content="https://i.imgur.com/6A5so1N.jpg">
+<meta property="og:image" content="https://i.imgur.com/gup9P8K.jpg">
+<meta property="og:image" content="https://i.imgur.com/TDhzoLM.jpg">
+<meta property="og:image" content="https://i.imgur.com/m3JEoqa.jpg">
+<meta property="og:image" content="https://i.imgur.com/w5uztHQ.jpg">
+<meta property="og:image" content="https://i.imgur.com/QEbI5PW.jpg">
+<meta property="article:published_time" content="2020-03-31T14:00:00.000Z">
+<meta property="article:modified_time" content="2021-01-26T08:11:41.089Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/YHfjTAy.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Basic Overview of Natural Language Processing" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Basic Overview of Natural Language Processing
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/03/31/Basic%20Overview%20of%20Natural%20Language%20Processing/" class="article-date">
+	  <time datetime="2020-03-31T14:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Basic-Overview-of-Natural-Language-Processing"><a href="#Basic-Overview-of-Natural-Language-Processing" class="headerlink" title="Basic Overview of Natural Language Processing"></a>Basic Overview of Natural Language Processing</h1><p>本篇文章粗略介紹了從古(?)至今(2020)NLP重要的發展史及技術，希望能讓大家對NLP有一些基礎的概念與了解🧐。<br><img src="https://i.imgur.com/YHfjTAy.png" alt=""></p>
+<a id="more"></a>
+
+<hr>
+<h2 id="遠古時期-19xx"><a href="#遠古時期-19xx" class="headerlink" title="遠古時期 (?~19xx)"></a>遠古時期 (?~19xx)</h2><p>ruled based - 利用建立大量規則回答問題<br><img src="https://i.imgur.com/EPnqhC6.jpg" alt=""></p>
+<hr>
+<h2 id="傳統機器學習-19xx-2013"><a href="#傳統機器學習-19xx-2013" class="headerlink" title="傳統機器學習 (19xx~2013)"></a>傳統機器學習 (19xx~2013)</h2><h3 id="機率模型-–-標註任務"><a href="#機率模型-–-標註任務" class="headerlink" title="機率模型 – 標註任務"></a>機率模型 – 標註任務</h3><p>Given sequence Y(sentence), we want to find sequence X(tags)</p>
+<ul>
+<li>CRF (Conditional Random Field)</li>
+<li>HMM (Hidden Markov Model)</li>
+<li>MEMM (Maximum-Entropy Markov Model)<br><img src="https://i.imgur.com/yh4d4pu.jpg" alt=""></li>
+</ul>
+<p>運用情境：</p>
+<ul>
+<li>標註詞性</li>
+<li>標註主要內容</li>
+</ul>
+<h3 id="n-gram-模型-2001"><a href="#n-gram-模型-2001" class="headerlink" title="n-gram 模型 (2001)"></a>n-gram 模型 (2001)</h3><p>利用前n個字(詞)，去觀察(統計)下一個字(詞)出現的機率。</p>
+<p><img src="https://i.imgur.com/bc1NDTA.png" alt=""><br>運用情境：</p>
+<ul>
+<li>下一個字(詞)預測</li>
+<li>斷詞</li>
+</ul>
+<hr>
+<h2 id="大NN時代-2013"><a href="#大NN時代-2013" class="headerlink" title="大NN時代 (2013~)"></a>大NN時代 (2013~)</h2><p>總而言之，言而總之，我們想要把文字放進NN，要先想個辦法把文字用向量表示才行🤔。</p>
+<h3 id="one-hot-encoding"><a href="#one-hot-encoding" class="headerlink" title="one-hot encoding"></a>one-hot encoding</h3><p>最直接的方式就是一個字給他一個代碼~!<br><img src="https://i.imgur.com/XdNugD1.png" alt=""></p>
+<p>當你拿到的文本是百科全書🙃：<br><img src="https://i.imgur.com/EvKM0IW.png" alt=""></p>
+<hr>
+<h3 id="word2vec-號稱NLP界的哥爾羅傑，開啟了大NLP時代"><a href="#word2vec-號稱NLP界的哥爾羅傑，開啟了大NLP時代" class="headerlink" title="word2vec (號稱NLP界的哥爾羅傑，開啟了大NLP時代)"></a>word2vec (號稱NLP界的哥爾羅傑，開啟了大NLP時代)</h3><p>好用程度真的沒話說😏：<br><img src="https://i.imgur.com/hHBaLH3.jpg" alt=""></p>
+<p>word2vec兩種不同的訓練方式：<br><img src="https://i.imgur.com/5wCHX7M.png" alt=""></p>
+<p>重要突破點：</p>
+<ul>
+<li>能將文字轉為任何長度的向量</li>
+</ul>
+<p>運用情境：</p>
+<ul>
+<li>需要將文字轉為向量時</li>
+<li>你拿到的資料嚴重不足，導致DL訓練效果極差時</li>
+<li>你的時間不夠用，需要速成且堪用的模型時</li>
+</ul>
+<hr>
+<h3 id="RNN-LSTM"><a href="#RNN-LSTM" class="headerlink" title="RNN, LSTM"></a>RNN, LSTM</h3><p>相信大家經過交大課程的歷練，已經很熟悉了。<br>放幾張圖留個紀念🕶<br><img src="https://i.imgur.com/lSfPi4g.png" alt=""></p>
+<p><img src="https://i.imgur.com/V0R3J8C.jpg" alt=""></p>
+<p>重要突破點：</p>
+<ul>
+<li>我想大家對他們的優點在課堂上都很熟悉了</li>
+</ul>
+<p>使用情境：</p>
+<ul>
+<li>任何NLP相關的問題也許都可以try try看</li>
+</ul>
+<hr>
+<h3 id="Attention-is-all-you-need"><a href="#Attention-is-all-you-need" class="headerlink" title="Attention is all you need"></a>Attention is all you need</h3><p>在Deep Learning的世界，了解<a href="https://arxiv.org/pdf/1706.03762.pdf" target="_blank" rel="noopener">Attention is all you need</a>為Deep Learning的世界開啟了一片新大陸😎。</p>
+<p>下圖為Attention計算的核心概念：<br><img src="https://i.imgur.com/vOJzePY.jpg" alt=""></p>
+<hr>
+<h3 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h3><p>有了Attention的概念之後，實際使用時，特別設計了transformer的架構，如下圖：<br><img src="https://i.imgur.com/8xwo37q.png" alt=""></p>
+<p>重要突破點：</p>
+<ul>
+<li>提出了注意力機制，讓模型能忽略不重要的字詞</li>
+<li>不僅運用在NLP，CV也有極多運用</li>
+</ul>
+<p>重要應用：</p>
+<ul>
+<li><del>把所有DL相關的paper重新刷一遍，發paper就是如此簡單愜意！</del></li>
+</ul>
+<hr>
+<h3 id="BERT-人人都能變巨人-NLP界的巨人之力"><a href="#BERT-人人都能變巨人-NLP界的巨人之力" class="headerlink" title="BERT (人人都能變巨人 - NLP界的巨人之力)"></a>BERT (人人都能變巨人 - NLP界的巨人之力)</h3><p>萬分感謝<a href="https://github.com/huggingface/transformers">hugging face</a>所公開的模型。</p>
+<p><img src="https://i.imgur.com/jYXRTAO.jpg" alt=""></p>
+<p>學會BERT讓你一步登天😀<br><img src="https://i.imgur.com/nUNk6CO.jpg" alt=""></p>
+<p>BERT的出現，讓NLP界意識到了pre-training的重要性。<br>對於文字的任務，大多時候要能有好的模型，是需要很多先備知識的。而pre-training正是賦予模型基礎知識的技巧，讓往後的每個目標任務都無須從剛出生的嬰兒開始學起。<br><img src="https://i.imgur.com/6A5so1N.jpg" alt=""></p>
+<p>利用<a href="https://github.com/jessevig/bertviz">bertviz</a>可以視覺化模型學習到的注意力機制結果。<br><img src="https://i.imgur.com/gup9P8K.jpg" alt=""></p>
+<p>重要突破點：</p>
+<ul>
+<li>同一組參數，多種任務訓練</li>
+<li>預訓練模型的概念，並將訓練好的模型公開給大家使用</li>
+</ul>
+<p>使用情境：</p>
+<ul>
+<li>QA</li>
+<li>classifier</li>
+<li>立場分析</li>
+<li>閱讀測驗</li>
+<li><del>把所有NLP相關的paper重新刷一遍，發paper就是如此簡單愜意！</del></li>
+</ul>
+<hr>
+<h3 id="GPT-2"><a href="#GPT-2" class="headerlink" title="GPT-2"></a>GPT-2</h3><p>BERT馬上就失戀了😕<br><img src="https://i.imgur.com/TDhzoLM.jpg" alt=""></p>
+<p>當然，效果更好的代價就是…參數更多<br><img src="https://i.imgur.com/m3JEoqa.jpg" alt=""></p>
+<p>GPT-2訓練時的主要目標為預測下一個字。並且在做Attention時，只會往前看。<br><img src="https://i.imgur.com/w5uztHQ.jpg" alt=""></p>
+<p>下圖能看出BERT和GPT-2的主要差異<br><img src="https://i.imgur.com/QEbI5PW.jpg" alt=""></p>
+<p>不過GPT-2到近期才開放部分訓練好的模型供大家使用，如果你覺得空虛寂寞覺得冷，不妨也可以到<a href="https://talktotransformer.com/" target="_blank" rel="noopener">Talk to transformer</a>跟模型聊聊天。</p>
+<p>重要突破點：</p>
+<ul>
+<li>不同於BERT，採用了transformer的Decoder</li>
+<li>使用了更大的模型，更多的參數<del>，成功讓大家了解到自己的設備資源竟是如此不足</del></li>
+</ul>
+<p>使用情境：</p>
+<ul>
+<li>QA</li>
+<li>classifier</li>
+<li>立場分析</li>
+<li>閱讀測驗</li>
+<li>當你想要打敗BERT的時候(?)</li>
+<li><del>把所有NLP相關的paper重新刷一遍，發paper就是如此簡單愜意！</del></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="https://nlp.stanford.edu/~wcmac/papers/20140716-UNLU.pdf" target="_blank" rel="noopener">https://nlp.stanford.edu/~wcmac/papers/20140716-UNLU.pdf</a></li>
+<li><a href="https://leemeng.tw/gpt2-language-model-generate-chinese-jing-yong-novels.html" target="_blank" rel="noopener">https://leemeng.tw/gpt2-language-model-generate-chinese-jing-yong-novels.html</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/48508221" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/48508221</a></li>
+</ol>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Jeff</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/03/31/Basic Overview of Natural Language Processing/" target="_blank" title="Basic Overview of Natural Language Processing">https://github.com/dsmilab/dsmi-lab-website/2020/03/31/Basic Overview of Natural Language Processing/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/04/08/Efficient%20Estimation%20of%20Word%20Representations%20in%20Vector%20Space/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Efficient Estimation of Word Representations in Vector Space
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/03/30/Overview%20of%20Meta%20Learning/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Overview of Meta Learning</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-Overview-of-Natural-Language-Processing"><span class="nav-number">1.</span> <span class="nav-text">Basic Overview of Natural Language Processing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#遠古時期-19xx"><span class="nav-number">1.1.</span> <span class="nav-text">遠古時期 (?~19xx)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#傳統機器學習-19xx-2013"><span class="nav-number">1.2.</span> <span class="nav-text">傳統機器學習 (19xx~2013)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#機率模型-–-標註任務"><span class="nav-number">1.2.1.</span> <span class="nav-text">機率模型 – 標註任務</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#n-gram-模型-2001"><span class="nav-number">1.2.2.</span> <span class="nav-text">n-gram 模型 (2001)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大NN時代-2013"><span class="nav-number">1.3.</span> <span class="nav-text">大NN時代 (2013~)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#one-hot-encoding"><span class="nav-number">1.3.1.</span> <span class="nav-text">one-hot encoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec-號稱NLP界的哥爾羅傑，開啟了大NLP時代"><span class="nav-number">1.3.2.</span> <span class="nav-text">word2vec (號稱NLP界的哥爾羅傑，開啟了大NLP時代)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN-LSTM"><span class="nav-number">1.3.3.</span> <span class="nav-text">RNN, LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attention-is-all-you-need"><span class="nav-number">1.3.4.</span> <span class="nav-text">Attention is all you need</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformer"><span class="nav-number">1.3.5.</span> <span class="nav-text">Transformer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BERT-人人都能變巨人-NLP界的巨人之力"><span class="nav-number">1.3.6.</span> <span class="nav-text">BERT (人人都能變巨人 - NLP界的巨人之力)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPT-2"><span class="nav-number">1.3.7.</span> <span class="nav-text">GPT-2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.4.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

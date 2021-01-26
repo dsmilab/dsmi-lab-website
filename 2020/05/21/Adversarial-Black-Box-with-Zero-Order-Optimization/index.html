@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>adversarial - black box with zero order optimization | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="Adversarialcv" />
+  
+  
+  
+  
+  <meta name="description" content="Adversarial - Black Box with Zero Order OptimizationWhat is Adversarial attack?Original paper : EXPLAINING AND HARNESSING ADVERSARIAL EXAMPLESIan J. Goodfellow, Jonathon Shlens &amp; Christian Szegedy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Adversarial - Black Box with Zero Order Optimization">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/05/21/Adversarial-Black-Box-with-Zero-Order-Optimization/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Adversarial - Black Box with Zero Order OptimizationWhat is Adversarial attack?Original paper : EXPLAINING AND HARNESSING ADVERSARIAL EXAMPLESIan J. Goodfellow, Jonathon Shlens &amp; Christian Szegedy">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/jiuYOw1.png">
+<meta property="og:image" content="https://i.imgur.com/2MV8BRD.png">
+<meta property="og:image" content="https://i.imgur.com/rH2Cl88.png">
+<meta property="og:image" content="https://i.imgur.com/5iZ5AS7.png">
+<meta property="og:image" content="https://i.imgur.com/wbay69l.png">
+<meta property="og:image" content="https://i.imgur.com/M2UEJr1.png">
+<meta property="og:image" content="https://i.imgur.com/UE0A2zF.png">
+<meta property="og:image" content="https://i.imgur.com/fZDIWlE.png">
+<meta property="og:image" content="https://i.imgur.com/2XXelnm.png">
+<meta property="og:image" content="https://i.imgur.com/0uxTJE7.png">
+<meta property="og:image" content="https://i.imgur.com/3jfbZBe.png">
+<meta property="og:image" content="https://i.imgur.com/EN9LnWr.png">
+<meta property="og:image" content="https://i.imgur.com/V9A93Ir.png">
+<meta property="og:image" content="https://i.imgur.com/qEWrQaI.png">
+<meta property="article:published_time" content="2020-05-21T17:20:00.000Z">
+<meta property="article:modified_time" content="2021-01-26T08:11:41.089Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="Adversarial">
+<meta property="article:tag" content="cv">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/jiuYOw1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Adversarial-Black-Box-with-Zero-Order-Optimization" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Adversarial - Black Box with Zero Order Optimization
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/05/21/Adversarial-Black-Box-with-Zero-Order-Optimization/" class="article-date">
+	  <time datetime="2020-05-21T17:20:00.000Z" itemprop="datePublished">2020-05-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Adversarial-Black-Box-with-Zero-Order-Optimization"><a href="#Adversarial-Black-Box-with-Zero-Order-Optimization" class="headerlink" title="Adversarial - Black Box with Zero Order Optimization"></a>Adversarial - Black Box with Zero Order Optimization</h1><h1 id="What-is-Adversarial-attack"><a href="#What-is-Adversarial-attack" class="headerlink" title="What is Adversarial attack?"></a>What is Adversarial attack?</h1><p>Original paper : <a href="https://arxiv.org/abs/1412.6572" target="_blank" rel="noopener">EXPLAINING AND HARNESSING ADVERSARIAL EXAMPLES<br>Ian J. Goodfellow, Jonathon Shlens &amp; Christian Szegedy Google Inc., Mountain View, CA  ICLR 2015</a><br><img src="https://i.imgur.com/jiuYOw1.png" alt=""></p>
+<h2 id="Attack-settings-White-or-Black"><a href="#Attack-settings-White-or-Black" class="headerlink" title="Attack settings : White or Black"></a>Attack settings : White or Black</h2><p>White box : 你知道他的結構以及可以使用他中間的參數, 可以使用BP去計算<br>Black box : 你並不知道他是用什麼的結構去training, 只知道他最後的output的機率分佈<br>gray box  : 就是介於白盒和黑盒之間(例如：你可能知道一半的架構或是只知道一半的機率分佈等等…)<br>restricted box : 以圖片來說可能你根本什麼都無法知道（我也不知道這是什麼鬼，沒研究）<br><img src="https://i.imgur.com/2MV8BRD.png" alt=""></p>
+<h2 id="The-Introduction-White-Box-Attack-最有名的幾個例子"><a href="#The-Introduction-White-Box-Attack-最有名的幾個例子" class="headerlink" title="The Introduction White Box Attack (最有名的幾個例子)"></a>The Introduction White Box Attack (最有名的幾個例子)</h2><ol>
+<li><p><a href="https://arxiv.org/abs/1412.6572" target="_blank" rel="noopener">Fast gradient sign method (FGSM)</a>: Ian J Goodfellow, Jonathon Shlens, and Christian Szegedy.2014. Explaining and harnessing adversarial examples.<br>Use the backpropagation from the Target DNN, stepwised adding a little noise.<br><a href="https://zhuanlan.zhihu.com/p/32784766" target="_blank" rel="noopener">這裡給一個知乎的詳解，有興趣的可以點開來詳細觀看</a></p>
+</li>
+<li><p><a href="https://arxiv.org/pdf/1511.07528.pdf" target="_blank" rel="noopener">Jacobian-based Saliency Map Attack (JSMA) : Nicolas Papernot, Patrick McDaniel, Somesh Jha, Matt Fredrikson, Z Berkay Celik, and Ananthram Swami. 2016. The limitations of deep learning in adversarialsettings.</a><br>Constructing a Jacobian-based saliency map for characterizing the input-output relation of a targeted DNN.<br><a href="https://zhuanlan.zhihu.com/p/33501618" target="_blank" rel="noopener">知乎</a></p>
+</li>
+<li><p><a href="https://arxiv.org/pdf/1511.04599.pdf" target="_blank" rel="noopener">DeepFool : Seyed-Mohsen Moosavi-Dezfooli, Alhussein Fawzi, and Pascal Frossard. 2016.</a><br>Deepfool: a simple and accurate method to fool deep neural networks.<br>Callculate the Euclidean distance by the dicision boundary for update same with FGSM.</p>
+</li>
+<li><p><a href="https://arxiv.org/pdf/1608.04644v2.pdf" target="_blank" rel="noopener">Carlini &amp; Wagner (C&amp;W) Attack : Nicholas Carlini and David Wagner. 2017. Towards evaluating the robustness of neural networks. In IEEE Symposium on Security and Privacy (SP).</a><br>這個是最重要的一個 C&amp;W<br>The most strong white box attack with logit layer and L2 norm.</p>
+</li>
+</ol>
+<h1 id="有攻擊就有防守-Defend-method"><a href="#有攻擊就有防守-Defend-method" class="headerlink" title="有攻擊就有防守 Defend method"></a>有攻擊就有防守 Defend method</h1><ol>
+<li><p>Detection-based defense : shown to be effective in detecting adversarial examples by projecting an image to a confined subspace<br>(e.g., reducing color depth of a pixel) to alleviate the exploits from adversarial attacks.<br>(C&amp;W attacked)</p>
+</li>
+<li><p>Gradient and representation masking : using distillation based on the original confidence scores for classification (also known as soft labels) and introduced the concept of “temperature” in the softmax step for gradient masking.<br>And the representation masking aims to replace the internal representations in DNNs (usually the last few layers) with robust representations to alleviate adversarial attacks.<br>(C&amp;W attacked Gradent masking).</p>
+</li>
+<li><p>Adversarial training : adversarial examples are jointly used to stabilize training, known as the data augmentation method.<br>(Good at defense FGSM and C&amp;W).</p>
+</li>
+</ol>
+<p>Hint : model capacity increasing can make  the model strong.</p>
+<h1 id="The-Black-Box-attack"><a href="#The-Black-Box-attack" class="headerlink" title="The Black Box attack"></a>The Black Box attack</h1><p><a href="https://arxiv.org/pdf/1708.03999.pdf" target="_blank" rel="noopener">論文：(ZOO: Zeroth Order Optimization Based Black-box Attacks to Deep Neural Networks without Training Substitute)</a></p>
+<p>通常來說黑盒攻擊通常會比白盒攻擊來得差，但這篇提出了ZOO的演算法讓黑盒能夠做的跟白盒一樣好。<br>Main abstract:</p>
+<ul>
+<li><p>Use an effective black-box attack that is also only has access to the input images and the output with the confidence scores of the targeted DNN</p>
+</li>
+<li><p>ZOO is to directedly estimate the gradients of the targeted DNN for generating adversarial examples.</p>
+</li>
+<li><p>In the experiment results on MNIST, CIFAR-10, ImageNet show the ZOO attack is as effective as the state-of-the-art white box attack.</p>
+</li>
+</ul>
+<h2 id="C-amp-W-attack-white-box"><a href="#C-amp-W-attack-white-box" class="headerlink" title="C&amp;W attack (white box)"></a>C&amp;W attack (white box)</h2><p>最主要的部分就是他會提取倒數第二層來使用（logit層）<br><img src="https://i.imgur.com/rH2Cl88.png" alt=""></p>
+<h2 id="The-Black-box-attack"><a href="#The-Black-box-attack" class="headerlink" title="The Black box attack"></a>The Black box attack</h2><p>為了讓黑盒接近白盒，故讓其maximize的function 也一致化。<br>但我們需要做兩件事情</p>
+<ol>
+<li>更換logit層, 在黑盒攻擊的時候並不會知道logit層的長相，只會有最後的機率分佈，故我們加上一個log讓他趨近於白盒的樣子。</li>
+<li>BP solving 方法 ： 由於我們不知道其網路架構內到底有什麼，所以我們需要使用另外一個演算法去推估該隊哪些點去做gradient.(ZOO algorithm)</li>
+</ol>
+<p><img src="https://i.imgur.com/5iZ5AS7.png" alt=""></p>
+<h2 id="Zero-Order-Optimization"><a href="#Zero-Order-Optimization" class="headerlink" title="Zero Order Optimization"></a>Zero Order Optimization</h2><p>The Black Box’s Optimization</p>
+<p><img src="https://i.imgur.com/wbay69l.png" alt=""><br>啊！ 每個點都要微分一次 那麼假設圖片是$64⋅64⋅3$<br>那麼我每一個epoch的微小變動就要跑 $2⋅64⋅64⋅3$ = 24596次/epoch<br>這樣實在是太昂貴了，所以我們需要使用 Stochastic coordinate descent<br>每次的 iteration, 都變成是隨機取點去minimize the objective function.（本篇文章是使用 batch_size = 128 去優化）</p>
+<p><img src="https://i.imgur.com/M2UEJr1.png" alt=""></p>
+<p>當然這裡的optimization 也可以使用ADAM去做優化。<br>由於是一般的gradient你也可以選擇使用最簡單的Newton’s去做迭代。<br>這裡附上兩個演算法，<del>應該不會有人沒看過ADAM吧</del><br><del>ADAM快過Newton就跟Classification不再用SVM一樣</del><br><img src="https://i.imgur.com/UE0A2zF.png" alt=""></p>
+<h3 id="本篇會使用到的技術"><a href="#本篇會使用到的技術" class="headerlink" title="本篇會使用到的技術"></a>本篇會使用到的技術</h3><ol>
+<li>Dimension reduction :<br>Q:圖片太大導致運算太慢怎麼辦？</li>
+</ol>
+<ul>
+<li>前面有講到圖片的大小，若圖片太大也不好處理，而且會導致迭代速度慢，那我們就希望將輸入圖片維度降維<br>Let $△x=x−x_0∈ℝ^𝑝，𝐷(𝑦)∈ ℝ^𝑚，𝑚&lt;𝑝$<br>Replace the $𝐷(𝑦)$ into $△x$<br><img src="https://i.imgur.com/fZDIWlE.png" alt=""></li>
+</ul>
+<ol start="2">
+<li>Hierarchical Attack(分層攻擊)：<br>Q: 該在哪個維度下使用？</li>
+</ol>
+<ul>
+<li>在高維度的情況下，你可能需要很長的時間才能找到Adversarial Example. </li>
+<li>在低維度的情況下，你可能會根本找不到在這個有限的空間內。</li>
+<li>應用降維技術可以將$229⋅229⋅3$的圖片變成$32⋅32⋅3$，但會導致訊息可能不夠，故應用分層攻擊，漸漸地增加你的維度，在你的loss的下降已經很不明顯的時候，可以看到下圖維度增加的時候變化也幾乎都在貝果的周圍附近。<br><img src="https://i.imgur.com/2XXelnm.png" alt=""><br><img src="https://i.imgur.com/0uxTJE7.png" alt=""></li>
+</ul>
+<ol start="3">
+<li>Important Sampling:<br>Q : 是否在迭代時做了很多多餘的迭代？<br>由於迭代每個點是很貴的，那為什麼我們不去迭代那些重要的點就好？<br>例如：貝果來說，我們想要改變的應該是貝果本身或附近的點，對於角落的背景應該是沒有任何影響的，但若我們隨機迭代，很有可能會選到很差的點。</li>
+</ol>
+<ul>
+<li>將圖片分割成$8*8$的區塊，然後去計算他的重要性質，若比較重要的點，他的改變率就會較高，若不重要那他的改變率就會比較低。</li>
+<li>我們對每個區域中的絕對像素值變化進行max pooling，向上採樣至所需尺寸，然後對所有值進行normalized，機率總和為1。</li>
+<li>每進行幾次迭代，我們就會根據最近的變化來更新這些採樣概率 。<br><img src="https://i.imgur.com/3jfbZBe.png" alt=""></li>
+</ul>
+<ol start="4">
+<li><p>The reset ADAM states : ADAM states only when $c⋅f (x,t)$ reaches 0 for the first time.</p>
+<h2 id="你真的好棒棒時間"><a href="#你真的好棒棒時間" class="headerlink" title="你真的好棒棒時間"></a>你真的好棒棒時間</h2></li>
+<li><p>Attack on MNIST and CIFAR-10<br>Result : Success Rate and the $𝐿_2−𝑑𝑖𝑠𝑡𝑜𝑟𝑡𝑖𝑜𝑛$ is close to the C&amp;W and have a reasonable avg time.<br>FGSM ($L_∞−𝑑𝑖𝑠𝑡𝑜𝑟𝑡𝑖𝑜𝑛$) use with substitute model.<br><img src="https://i.imgur.com/EN9LnWr.png" alt=""></p>
+</li>
+<li><p>ImageNet<br>Running 1500 iteration, attack base on $32⋅32⋅3$(original image $229⋅229⋅3$), and don’t use the Hierarchical Attack. The average $𝐿_2−𝑑𝑖𝑠𝑡𝑜𝑟𝑡𝑖𝑜𝑛$ is 3 times than white box, but adversarial images are still visually indistinguishable.<br><img src="https://i.imgur.com/V9A93Ir.png" alt=""></p>
+</li>
+</ol>
+<p>3.The importance of the Technique<br><img src="https://i.imgur.com/qEWrQaI.png" alt=""></p>
+<ul>
+<li>黑色曲線的下降非常緩慢，這表明分級攻擊對於加速攻擊非常重要(左圖)</li>
+<li>重要性採樣也有所不同，尤其是在10,000次迭代之後(右圖)</li>
+<li>上上圖清楚顯示了重置ADAM狀態的好處，如果不重置狀態，最終失真和損耗會明顯增加。</li>
+</ul>
+<ol start="4">
+<li>result:</li>
+</ol>
+<ul>
+<li>ZOO攻擊成功地將原始類別的概率降低了160倍以上（從97％降低到約0.6％），同時將目標類別的概率提高了1000倍以上（從0.0006％提高到超過0.6％)</li>
+</ul>
+<h2 id="The-Future-work"><a href="#The-Future-work" class="headerlink" title="The Future work"></a>The Future work</h2><ul>
+<li>持續減少計算時間。</li>
+<li>用黑盒製造對抗性資料拿去當training有助於robustness。</li>
+<li>生成對抗性資料不一定只能在CNN上，RNN或是其他的應用都可以使用到。</li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Yi-Wei</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/05/21/Adversarial-Black-Box-with-Zero-Order-Optimization/" target="_blank" title="Adversarial - Black Box with Zero Order Optimization">https://github.com/dsmilab/dsmi-lab-website/2020/05/21/Adversarial-Black-Box-with-Zero-Order-Optimization/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/Adversarial/" rel="tag">Adversarial</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/cv/" rel="tag">cv</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/05/27/Neobility%20at%20SemEval-2017%20Task%201_%20An%20Attention-based%20Sentence%20Similarity%20Model/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Neobility at SemEval-2017 Task 1 An Attention-based Sentence Similarity Model
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/05/20/ERNIE-2.0_-A-Continual-Pre-Training-Framework-for-Language-Understanding/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ERNIE 2.0 A Continual PreTraining Framework for Language Understanding</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Adversarial-Black-Box-with-Zero-Order-Optimization"><span class="nav-number">1.</span> <span class="nav-text">Adversarial - Black Box with Zero Order Optimization</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#What-is-Adversarial-attack"><span class="nav-number">2.</span> <span class="nav-text">What is Adversarial attack?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Attack-settings-White-or-Black"><span class="nav-number">2.1.</span> <span class="nav-text">Attack settings : White or Black</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Introduction-White-Box-Attack-最有名的幾個例子"><span class="nav-number">2.2.</span> <span class="nav-text">The Introduction White Box Attack (最有名的幾個例子)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有攻擊就有防守-Defend-method"><span class="nav-number">3.</span> <span class="nav-text">有攻擊就有防守 Defend method</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Black-Box-attack"><span class="nav-number">4.</span> <span class="nav-text">The Black Box attack</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-amp-W-attack-white-box"><span class="nav-number">4.1.</span> <span class="nav-text">C&amp;W attack (white box)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Black-box-attack"><span class="nav-number">4.2.</span> <span class="nav-text">The Black box attack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zero-Order-Optimization"><span class="nav-number">4.3.</span> <span class="nav-text">Zero Order Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本篇會使用到的技術"><span class="nav-number">4.3.1.</span> <span class="nav-text">本篇會使用到的技術</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#你真的好棒棒時間"><span class="nav-number">4.4.</span> <span class="nav-text">你真的好棒棒時間</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Future-work"><span class="nav-number">4.5.</span> <span class="nav-text">The Future work</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
