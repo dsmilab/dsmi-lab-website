@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>data noising as smoothing in neural network language models | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="ICLR 2017 Smoothing對NLP來說，很容易發生test dataset的字並沒有出現在training dataset，所計算 $c(word)$ 會等於零。這不代表那些字就不重要，所以要用Smoothing的方法調整機率。  If data sparsity isn’t a problem for you, your model is too simple!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data Noising as Smoothing in Neural Network Language Models">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2021/05/07/Data%20Noising%20as%20Smoothing%20in%20Neural%20Network%20Language%20Models/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="ICLR 2017 Smoothing對NLP來說，很容易發生test dataset的字並沒有出現在training dataset，所計算 $c(word)$ 會等於零。這不代表那些字就不重要，所以要用Smoothing的方法調整機率。  If data sparsity isn’t a problem for you, your model is too simple!">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/iRJvpZ8.png">
+<meta property="og:image" content="https://i.imgur.com/6wdsyY5.png">
+<meta property="og:image" content="https://i.imgur.com/pilURRQ.png">
+<meta property="og:image" content="https://i.imgur.com/K8FNJ9Y.png">
+<meta property="og:image" content="https://i.imgur.com/LaTPLs2.png">
+<meta property="og:image" content="https://i.imgur.com/7vHnSGq.png">
+<meta property="og:image" content="https://i.imgur.com/XnhylZA.png">
+<meta property="og:image" content="https://i.imgur.com/Ml2n8dg.png">
+<meta property="og:image" content="https://i.imgur.com/LrVHKSO.png">
+<meta property="og:image" content="https://i.imgur.com/8zG1jDv.png">
+<meta property="og:image" content="https://i.imgur.com/ihmuCwC.png">
+<meta property="og:image" content="https://i.imgur.com/YX2zct5.png">
+<meta property="og:image" content="https://i.imgur.com/J63hKtt.png">
+<meta property="og:image" content="https://i.imgur.com/UKZveRW.png">
+<meta property="og:image" content="https://i.imgur.com/RSxh0SI.png">
+<meta property="article:published_time" content="2021-05-07T14:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/iRJvpZ8.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Data Noising as Smoothing in Neural Network Language Models" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Data Noising as Smoothing in Neural Network Language Models
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2021/05/07/Data%20Noising%20as%20Smoothing%20in%20Neural%20Network%20Language%20Models/" class="article-date">
+	  <time datetime="2021-05-07T14:30:00.000Z" itemprop="datePublished">2021-05-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <p>ICLR 2017</p>
+<h2 id="Smoothing"><a href="#Smoothing" class="headerlink" title="Smoothing"></a>Smoothing</h2><p>對NLP來說，很容易發生test dataset的字並沒有出現在training dataset，所計算 $c(word)$ 會等於零。<br>這不代表那些字就不重要，所以要用Smoothing的方法調整機率。</p>
+<blockquote>
+<p>If data sparsity isn’t a problem for you, your model is too simple!</p>
+</blockquote>
+<a id="more"></a>
+<p><img src="https://i.imgur.com/iRJvpZ8.png" alt=""><br><img src="https://i.imgur.com/6wdsyY5.png" alt=""><br><img src="https://i.imgur.com/pilURRQ.png" alt=""></p>
+<h3 id="Add-one-smoothing"><a href="#Add-one-smoothing" class="headerlink" title="Add-one smoothing"></a>Add-one smoothing</h3><p>應該是最早的方式<br><img src="https://i.imgur.com/K8FNJ9Y.png" alt=""><br> $V= {w:c(w)&gt;0 } \cup {unknown }$</p>
+<p>可是這個方法效果並不好，如下圖<br><img src="https://i.imgur.com/LaTPLs2.png" alt=""></p>
+<h3 id="Additive-smoothing"><a href="#Additive-smoothing" class="headerlink" title="Additive smoothing"></a>Additive smoothing</h3><p><img src="https://i.imgur.com/7vHnSGq.png" alt=""><br>前一個方法，把1替換成了 $\delta$</p>
+<h3 id="Good-Turing-estimation"><a href="#Good-Turing-estimation" class="headerlink" title="Good-Turing estimation"></a>Good-Turing estimation</h3><p>$r^{<em>}=\left ( r+1 \right )\frac{ n_{r+1} }{ n_{r} }$<br>$n_{r}$是在n-grams出現r次的個數<br>所以經過調整之後，機率會變成 $p_{GT}\left ( x:c\left ( x \right )=r \right )=\frac{ r^{</em>} }{N}$<br>使得$c(w)=0$的時候機率不會為零，並且總和不變<br>$N=\sum_{r=0}^{\infty }r^{*}n_{r}=\sum_{r=1}^{\infty }rn_{r}$</p>
+<h4 id="問題-如果-n-r-1-0"><a href="#問題-如果-n-r-1-0" class="headerlink" title="問題:如果$n_{r+1}=0$?"></a>問題:如果$n_{r+1}=0$?</h4><p>調整: $r^{*}=\left ( r+1 \right )\frac{E\left [ n_{r+1} \right ]}{E\left [ n_{r} \right ]}$<br>改用期望值代替</p>
+<h3 id="Interpolation"><a href="#Interpolation" class="headerlink" title="Interpolation"></a>Interpolation</h3><p>就是插值法!!<br>比起前面的方式更進一步考慮實際情況，例如說，同樣是烤肉跟燉肉都沒有出現在training dataset當中，但是明顯烤會比燉常見，所以烤肉的機率應該比燉高。<br>$p_{interp}(w_{i}|w_{i−1}) = \lambda p_{ML}\left(w_{i}|w_{i−1}\right) + (1 − \lambda)p_{ML}(w_{i})$</p>
+<h3 id="Absolute-discounting"><a href="#Absolute-discounting" class="headerlink" title="Absolute discounting"></a>Absolute discounting</h3><p>$p_{abs}(w_{i}|w_{i-1}) = \frac{c(w_{i-1},w_{i})-d}{c(w_{i-1})}+\lambda (w_{i-1})p(w_{i})$</p>
+<h3 id="Kneser-Ney"><a href="#Kneser-Ney" class="headerlink" title="Kneser-Ney"></a>Kneser-Ney</h3><p>舉例:”San Francisco” and “Francisco”，如果依照前一個的方法，任何字接Francisco機率都會變大，但是就比較常跟San一起出現。<br>因此他轉換計算unigram的方式<br><img src="https://i.imgur.com/XnhylZA.png" alt=""><br>$p_{count}=\frac{N(\bullet  w_{i})}{\sum <em>{ {w}’ }N(\bullet  {w}’)}$<br>$p</em>{KN}(w_{i}|w_{i-1}) = \frac{c(w_{i-1},w_{i})-d}{c(w_{i-1})}+\beta  (w_{i-1})p_{count}(w_{i})$<br><img src="https://i.imgur.com/Ml2n8dg.png" alt=""></p>
+<h2 id="Apply-on-RNN-model"><a href="#Apply-on-RNN-model" class="headerlink" title="Apply on RNN model"></a>Apply on RNN model</h2><p>可是，RNN模型沒辦法計算count，所以他想到兩個方法可以有smoothing的效果</p>
+<ol>
+<li>unigram noising<br>隨機$\gamma$的機率取代字，取代的字會從unigram frequency distribution抽樣</li>
+<li>blank noising<br>隨機$\gamma$的機率取代字，用底線做取代”_”</li>
+</ol>
+<h3 id="unigram-noising-as-interpolation"><a href="#unigram-noising-as-interpolation" class="headerlink" title="unigram noising as interpolation"></a>unigram noising as interpolation</h3><p>插值法公式<br><img src="https://i.imgur.com/LrVHKSO.png" alt=""><br>noised<br><img src="https://i.imgur.com/8zG1jDv.png" alt=""></p>
+<h3 id="blank-noising-as-interpolation"><a href="#blank-noising-as-interpolation" class="headerlink" title="blank noising as interpolation"></a>blank noising as interpolation</h3><p>noised<br><img src="https://i.imgur.com/ihmuCwC.png" alt=""><br><img src="https://i.imgur.com/YX2zct5.png" alt=""></p>
+<h3 id="其他改進"><a href="#其他改進" class="headerlink" title="其他改進"></a>其他改進</h3><ol>
+<li>彈性的$\gamma$<br>考慮兩種bigrams，”and the”和”Humpty Dumpty”<br>第一種就是很常見的詞組，不希望他被noising影響而降低了機率，第二種就是A出現B通常也會一起出現的類型，考慮bigram的訊息量比unigram豐富，因此不希望被back off。<br>$\gamma_{AD}(x_{1})=\gamma_{0}\frac{N_{1+}(x_{1},\bullet )}{\sum <em>{ x</em>{2} } c(x_{1},x_{2})}$</li>
+<li>改用其他的機率分布<br>$q(x)\propto N_{1+}(\bullet ,x)$</li>
+</ol>
+<p><img src="https://i.imgur.com/J63hKtt.png" alt=""><br><img src="https://i.imgur.com/UKZveRW.png" alt=""><br><img src="https://i.imgur.com/RSxh0SI.png" alt=""></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Corrine</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2021/05/07/Data Noising as Smoothing in Neural Network Language Models/" target="_blank" title="Data Noising as Smoothing in Neural Network Language Models">https://github.com/dsmilab/dsmi-lab-website/2021/05/07/Data Noising as Smoothing in Neural Network Language Models/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2021/12/17/Long%20Range%20Arena_%20A%20Benchmark%20For%20Efficient%20Transformers/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Long Range Arena - A Benchmark For Efficient Transformers
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2021/01/25/Attention%20Is%20All%20You%20Need/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Attention Is All You Need?</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Smoothing"><span class="nav-number">1.</span> <span class="nav-text">Smoothing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-one-smoothing"><span class="nav-number">1.1.</span> <span class="nav-text">Add-one smoothing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Additive-smoothing"><span class="nav-number">1.2.</span> <span class="nav-text">Additive smoothing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Good-Turing-estimation"><span class="nav-number">1.3.</span> <span class="nav-text">Good-Turing estimation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#問題-如果-n-r-1-0"><span class="nav-number">1.3.1.</span> <span class="nav-text">問題:如果$n_{r+1}&#x3D;0$?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interpolation"><span class="nav-number">1.4.</span> <span class="nav-text">Interpolation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Absolute-discounting"><span class="nav-number">1.5.</span> <span class="nav-text">Absolute discounting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kneser-Ney"><span class="nav-number">1.6.</span> <span class="nav-text">Kneser-Ney</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apply-on-RNN-model"><span class="nav-number">2.</span> <span class="nav-text">Apply on RNN model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#unigram-noising-as-interpolation"><span class="nav-number">2.1.</span> <span class="nav-text">unigram noising as interpolation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#blank-noising-as-interpolation"><span class="nav-number">2.2.</span> <span class="nav-text">blank noising as interpolation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他改進"><span class="nav-number">2.3.</span> <span class="nav-text">其他改進</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

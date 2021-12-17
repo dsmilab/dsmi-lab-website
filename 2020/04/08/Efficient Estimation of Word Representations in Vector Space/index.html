@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>efficient estimation of word representations in vector space | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLPpapers" />
+  
+  
+  
+  
+  <meta name="description" content="論文網址: Efficient Estimation of Word Representations in Vector Space 4 model architectures:NNLM; RNNLM; CBOW; Skip-Gram為了比較模型好壞，先定義接下來訓練深度模型的複雜度皆為:$$O &#x3D; E\times T\times Q$$  E: 迭代次數 T: 訓練集的詞個數 Q: 模型參數">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Efficient Estimation of Word Representations in Vector Space">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/04/08/Efficient%20Estimation%20of%20Word%20Representations%20in%20Vector%20Space/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="論文網址: Efficient Estimation of Word Representations in Vector Space 4 model architectures:NNLM; RNNLM; CBOW; Skip-Gram為了比較模型好壞，先定義接下來訓練深度模型的複雜度皆為:$$O &#x3D; E\times T\times Q$$  E: 迭代次數 T: 訓練集的詞個數 Q: 模型參數">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/ClFEz8v.jpg">
+<meta property="og:image" content="https://i.imgur.com/4UffwyZ.png">
+<meta property="og:image" content="https://i.imgur.com/PoSJ6H9.png">
+<meta property="og:image" content="https://i.imgur.com/MB1ozkn.png">
+<meta property="og:image" content="https://i.imgur.com/Lin7Yzl.png">
+<meta property="og:image" content="https://i.imgur.com/cqmZDJq.png">
+<meta property="og:image" content="https://i.imgur.com/LsEniq5.png">
+<meta property="og:image" content="https://i.imgur.com/r6KstYB.png">
+<meta property="og:image" content="https://i.imgur.com/dapir64.png">
+<meta property="og:image" content="https://i.imgur.com/SRnLGbM.png">
+<meta property="og:image" content="https://i.imgur.com/81hapmf.png">
+<meta property="og:image" content="https://i.imgur.com/oCWmUjs.png">
+<meta property="og:image" content="https://i.imgur.com/ickJ8gw.png">
+<meta property="og:image" content="https://i.imgur.com/qa3Kv31.png">
+<meta property="og:image" content="https://i.imgur.com/sL8onBZ.png">
+<meta property="og:image" content="https://i.imgur.com/kMMNIts.png">
+<meta property="og:image" content="https://i.imgur.com/iqhdXXg.png">
+<meta property="og:image" content="https://i.imgur.com/n1fnT77.png">
+<meta property="og:image" content="https://i.imgur.com/Yhp9sax.png">
+<meta property="og:image" content="https://i.imgur.com/6m9UYxV.png">
+<meta property="article:published_time" content="2020-04-08T03:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="papers">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/ClFEz8v.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Efficient Estimation of Word Representations in Vector Space" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Efficient Estimation of Word Representations in Vector Space
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/04/08/Efficient%20Estimation%20of%20Word%20Representations%20in%20Vector%20Space/" class="article-date">
+	  <time datetime="2020-04-08T03:00:00.000Z" itemprop="datePublished">2020-04-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <p>論文網址: <a href="https://arxiv.org/pdf/1301.3781.pdf" target="_blank" rel="noopener">Efficient Estimation of Word Representations in Vector Space</a></p>
+<h1 id="4-model-architectures"><a href="#4-model-architectures" class="headerlink" title="4 model architectures:"></a>4 model architectures:</h1><h4 id="NNLM-RNNLM-CBOW-Skip-Gram"><a href="#NNLM-RNNLM-CBOW-Skip-Gram" class="headerlink" title="NNLM; RNNLM; CBOW; Skip-Gram"></a><code>NNLM; RNNLM; CBOW; Skip-Gram</code></h4><p>為了比較模型好壞，先定義接下來訓練深度模型的複雜度皆為:$$O = E\times T\times Q$$</p>
+<ul>
+<li>E: 迭代次數</li>
+<li>T: 訓練集的詞個數</li>
+<li>Q: 模型參數</li>
+</ul>
+<h2 id="old-NNLM-RNNLM"><a href="#old-NNLM-RNNLM" class="headerlink" title="old: NNLM, RNNLM"></a>old: NNLM, RNNLM</h2><ol>
+<li><h3 id="What’s-NNLM-Feedforward-Neural-Net-Model"><a href="#What’s-NNLM-Feedforward-Neural-Net-Model" class="headerlink" title="What’s NNLM (Feedforward Neural Net Model)?"></a>What’s NNLM (Feedforward Neural Net Model)?</h3><img src="https://i.imgur.com/ClFEz8v.jpg" alt=""><br>(上圖是原始paper(A Neural Probabilistic Language Model)的圖，annotation可能會跟下面word2vec的對不起來，下面使用原本word2vec的annotation)</li>
+</ol>
+<p>有4層: input, projection, hidden, output</p>
+<a id="more"></a>
+<ul>
+<li>input layer: <strong>前</strong>N words使用one-hot encoding成V維的向量，V是(vocab size)<ul>
+<li>注意這裡是用前N words，而不是用所有words來訓練，這是和word2vec中CBOW投影層的差異!!</li>
+</ul>
+</li>
+<li>projection layer: input(NxV)會使用同一個projection matrix(VxD)投影到projection layer P(NxD)<ul>
+<li>D是投影後的維度</li>
+<li>共用一個projection matrix，所以這裡的cost還算低</li>
+</ul>
+</li>
+<li>hidden layer: 隱藏層來計算整個word的機率，有H個neuron</li>
+<li>output layer有V個neuron</li>
+</ul>
+<p>所以整體的模型參數量是$$Q=N×D+N×D×H+H×V$$</p>
+<ul>
+<li>其中output layer的HxV最重要<ul>
+<li>有一些優化的方法，例如hierarchical softmax，使用binary tree representations of the vocabulary(Huffman tree)，可以降到$\log_2(V)$</li>
+</ul>
+</li>
+<li>所以其實主要的計算量在hidden layer</li>
+</ul>
+<ol start="2">
+<li><h3 id="What’s-RNNLM-Recurrent-Neural-Net-Language-Model"><a href="#What’s-RNNLM-Recurrent-Neural-Net-Language-Model" class="headerlink" title="What’s RNNLM (Recurrent Neural Net Language Model)?"></a>What’s <a href="https://www.aclweb.org/anthology/N13-1090.pdf" target="_blank" rel="noopener">RNNLM</a> (Recurrent Neural Net Language Model)?</h3><img src="https://i.imgur.com/4UffwyZ.png" alt=""></li>
+</ol>
+<p>Remark:</p>
+<ul>
+<li>$y(t)$ produces a probability distribution over words<br><img src="https://i.imgur.com/PoSJ6H9.png" alt=""></li>
+</ul>
+<p>只有input, hidden, output層，訓練複雜度是$$Q=D×H+H×V$$</p>
+<ul>
+<li>D和隱藏層H有相同的維度<ul>
+<li>使用hierarchical softmax + huffman tree，H×V可以降低為H×$\log_2V$，所以大部分的複雜度來自D×H</li>
+</ul>
+</li>
+</ul>
+<h2 id="new-CBOW-Continuous-Bag-of-Words-Model-Skip-Gram-Continuous-Skip-Gram-model"><a href="#new-CBOW-Continuous-Bag-of-Words-Model-Skip-Gram-Continuous-Skip-Gram-model" class="headerlink" title="new: CBOW (Continuous Bag-of-Words Model), Skip-Gram (Continuous Skip-Gram model)"></a>new: <strong>CBOW</strong> (Continuous Bag-of-Words Model), <strong>Skip-Gram</strong> (Continuous Skip-Gram model)</h2><ul>
+<li><h3 id="overview-from-cs224n"><a href="#overview-from-cs224n" class="headerlink" title="overview (from cs224n)"></a><a href="https://myndbook.com/view/4900" target="_blank" rel="noopener">overview (from cs224n)</a></h3><img src="https://i.imgur.com/MB1ozkn.png" alt=""> (圖片來自<a href="https://medium.com/daai/%E5%BC%95%E8%B5%B7%E4%BD%A0%E5%B0%8D-word2vec-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-524c8b758f99" target="_blank" rel="noopener">[7]</a>）<br><img src="https://i.imgur.com/Lin7Yzl.png" alt=""></li>
+</ul>
+<ol start="3">
+<li><h3 id="What’s-CBOW"><a href="#What’s-CBOW" class="headerlink" title="What’s CBOW?"></a>What’s CBOW?</h3></li>
+</ol>
+<p><strong>cs224n note:</strong><br><a href="http://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes01-wordvecs1.pdf" target="_blank" rel="noopener">http://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes01-wordvecs1.pdf</a><br><img src="https://i.imgur.com/cqmZDJq.png" alt=""><br><img src="https://i.imgur.com/LsEniq5.png" alt=""><br>loss function:<br><img src="https://i.imgur.com/r6KstYB.png" alt=""></p>
+<p>和NNLM相似，但刪除了hidden層，並且投影層是所有的words共用(NNLM是前N words共用)</p>
+<ul>
+<li>所有的单词都投影到同一个位置（所有向量取平均值）<ul>
+<li>这样不考虑单词的位置顺序信息，叫做词袋模型</li>
+<li>詞的順序對於不影響投影</li>
+</ul>
+</li>
+<li>会用到将来的词，例如如果窗口 windows 为 2，这样训练中心词的词向量时，会选取中心词附近的 4 个上下文词（前面 2 个后面 2 个）</li>
+</ul>
+<p>整體的模型參數量為:$$Q=N×D+D×log(V)$$</p>
+<ul>
+<li>log(V)是用到了hierarchical softmax + huffman tree</li>
+</ul>
+<ol start="4">
+<li><h3 id="What’s-Skip-Gram"><a href="#What’s-Skip-Gram" class="headerlink" title="What’s Skip-Gram?"></a>What’s Skip-Gram?</h3></li>
+</ol>
+<p><strong>cs224n note:</strong><a href="http://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes01-wordvecs1.pdf" target="_blank" rel="noopener">http://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes01-wordvecs1.pdf</a></p>
+<blockquote>
+<p><img src="https://i.imgur.com/dapir64.png" alt=""><br>loss function:<br><img src="https://i.imgur.com/SRnLGbM.png" alt=""><br><img src="https://i.imgur.com/81hapmf.png" alt=""></p>
+</blockquote>
+<p>跟CBOW相似，不過是根據中心的詞去預測上下文</p>
+<ul>
+<li>通過實驗發現，windows越大效果越好(但cost也越大)</li>
+<li>距離較遠的word通常關聯性較小，所以透過抽取較少的樣本(降低機率)來降低對距離較遠word的權重</li>
+</ul>
+<p>整體複雜度:$$Q=C×(D+D×log(V))$$</p>
+<ul>
+<li>C是window size的2倍，也就是要預測的word個數<ul>
+<li>也就是說預測每個word所需的參數量是D+D×log(V)</li>
+<li>看到logV就知道用到了hierarchical softmax</li>
+</ul>
+</li>
+</ul>
+<h1 id="Experiment-Result"><a href="#Experiment-Result" class="headerlink" title="Experiment Result"></a>Experiment Result</h1><h3 id="1-Experiment-task-1"><a href="#1-Experiment-task-1" class="headerlink" title="1. Experiment task 1:"></a>1. Experiment task 1:</h3><p>–主要： There are totally 8869 semantic questions and 10675 syntatic questions.<br>(They create the correct word pairs manually, and then randomly connecting two words to form the word pair question.)</p>
+<p>–在table 3中多了一個MSR task: <a href="https://sites.google.com/site/semeval2012task2/home" target="_blank" rel="noopener">SemEval-2012: Semantic Evaluation Exercises</a><br>e.g. Singular/Plural: year:years law:?<a href="https://www.aclweb.org/anthology/N13-1090.pdf" target="_blank" rel="noopener">[4]</a></p>
+<ul>
+<li><strong>Evaluation</strong>: Accuracy (預測的字，必須剛好是正確的word pair，才算對！預測的僅是相似字也不算對) </li>
+<li><strong>Training data</strong>: 不同實驗用不同training data,主要為Google News corpus  (6B tokens)。 </li>
+</ul>
+<ul>
+<li><strong>Testing data</strong>:<br>5 types of semantic questions &amp; 9 types of syntatic questions<blockquote>
+<p><img src="https://i.imgur.com/oCWmUjs.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><strong>Experiment result &amp; conclusion</strong>: 雖然paper跑的實驗很多，但主要結論是CBOW＆skip-gram準確率高且花的時間短（需要運算量較低）。另外，增加training data也須增加維度</li>
+</ul>
+<blockquote>
+<p><strong>We have to increase both vector dimensionality and the amount of the training data together.</strong><br><img src="https://i.imgur.com/ickJ8gw.png" alt=""></p>
+</blockquote>
+<ol start="2">
+<li><img src="https://i.imgur.com/qa3Kv31.png" alt=""><br>(使用1 CPU去train,CBOW花一天;skip gram花約三天)</li>
+</ol>
+<ol start="3">
+<li><p><img src="https://i.imgur.com/sL8onBZ.png" alt=""></p>
+</li>
+<li><p>從表格可看出NNLM花的時間明顯多於其他兩個模型。（使用mini-batch asynchronous grandient decent and Adagrad (a adaptive learning rate procedure) ）<br><img src="https://i.imgur.com/kMMNIts.png" alt=""></p>
+</li>
+<li><p><img src="https://i.imgur.com/iqhdXXg.png" alt=""></p>
+</li>
+</ol>
+<p><em>MSR: <a href="https://sites.google.com/site/semeval2012task2/home" target="_blank" rel="noopener">SemEval-2012: Semantic Evaluation Exercises</a><br>e.g. Singular/Plural: year:years law:?<a href="https://www.aclweb.org/anthology/N13-1090.pdf" target="_blank" rel="noopener">[4]</a></em><br>MSR的training set: <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2011/12/ASRU-2011.pdf" target="_blank" rel="noopener">LDC corpora</a>（320M words, 82K vocabulary).</p>
+<h3 id="2-Experiment-task-2-Microsoft-Sentence-Completion-Challenge"><a href="#2-Experiment-task-2-Microsoft-Sentence-Completion-Challenge" class="headerlink" title="2. Experiment task 2: Microsoft Sentence Completion Challenge"></a>2. Experiment task 2: Microsoft Sentence Completion Challenge</h3><p><a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR_SCCD.pdf" target="_blank" rel="noopener">The Microsoft Research Sentence Completion Challenge</a></p>
+<ul>
+<li><strong>Training data</strong>: many novels<br><a href="https://www.kaggle.com/c/mlsd-hw3/data" target="_blank" rel="noopener">https://www.kaggle.com/c/mlsd-hw3/data</a></li>
+<li><strong>Testing data</strong>: <a href="https://www.kaggle.com/c/mlsd-hw3/data" target="_blank" rel="noopener">https://www.kaggle.com/c/mlsd-hw3/data</a><br><img src="https://i.imgur.com/n1fnT77.png" alt=""></li>
+</ul>
+<p>– Skip-gram model作法：</p>
+<p>– Skip-gram + RNNLMs: weighted combination </p>
+<ul>
+<li><strong>Result</strong><br><img src="https://i.imgur.com/Yhp9sax.png" alt=""></li>
+</ul>
+<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><ul>
+<li>DistBelief<br><a href="https://www.iotone.com/term/distbelief/t187" target="_blank" rel="noopener">https://www.iotone.com/term/distbelief/t187</a></li>
+<li>dataset</li>
+</ul>
+<p>–LDC corpora<br>–<a href="https://sites.google.com/site/semeval2012task2/home" target="_blank" rel="noopener">SemEval-2012: Semantic Evaluation Exercises</a><br>–<a href="https://www.kaggle.com/c/mlsd-hw3/data" target="_blank" rel="noopener">Microsoft Sentence Completion Challenge</a></p>
+<h3 id="延伸討論-Word2vec-implement-detail"><a href="#延伸討論-Word2vec-implement-detail" class="headerlink" title="(延伸討論)Word2vec implement detail"></a>(延伸討論)Word2vec implement detail</h3><h4 id="Word2vec-hidden-layer沒有activation-function"><a href="#Word2vec-hidden-layer沒有activation-function" class="headerlink" title="Word2vec hidden layer沒有activation function"></a>Word2vec hidden layer沒有activation function</h4><p>在input-hidden層，沒有非線性變換，而是簡單地把所有vector加總並取平均，以減少計算複雜度</p>
+<h4 id="Hierarchical-Softmax-v-s-Negative-sampling"><a href="#Hierarchical-Softmax-v-s-Negative-sampling" class="headerlink" title="Hierarchical Softmax v.s. Negative sampling"></a>Hierarchical Softmax v.s. Negative sampling</h4><p>論文：<a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="noopener">Distributed Representations of Words and Phrases<br>and their Compositionality</a><br>實際上，input layer有CBOW和Skip-gram兩種版本，output也有Hierarchical Softmax和Negative sampling兩種版本</p>
+<h5 id="Hierarchical-Softmax"><a href="#Hierarchical-Softmax" class="headerlink" title="Hierarchical Softmax"></a>Hierarchical Softmax</h5><p>以下引用<a href="https://www.cnblogs.com/pinard/p/7243513.html" target="_blank" rel="noopener">[6]</a></p>
+<blockquote>
+<p>一般正常input-hidden-output的model如果套用在embedding training，因為output層的softmax計算量很大(要去算所有詞的softmax機率，再去找機率最大值)<br><img src="https://i.imgur.com/6m9UYxV.png" alt=""></p>
+<ul>
+<li>透過huffman tree + Hierarchical Softmax，tree的根節點是每一個word，透過一步步走到leaf來求得softmax的值<ul>
+<li>從root到leaf只需要log(V)步</li>
+</ul>
+</li>
+<li>如此可以大幅的加快求得softmax的速度</li>
+<li>缺點: 但是如果我们的训练样本里的中心词w是一个很生僻的词，那么就得在霍夫曼树中辛苦的向下走很久了<ul>
+<li>於是有了Negative Sampling </li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h5 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h5><p>定義window內的為正樣本，window外的為負樣本，如此就可以不用把全部的word拿進來一起train</p>
+<ul>
+<li>只需要window內的所有正樣本 + sampling一定數量的負樣本就足夠訓練模型</li>
+</ul>
+<p>透過Unigram distribution來模擬負樣本(不在window內的word)被選中的機率</p>
+<ul>
+<li>設計這個分佈時希望詞被抽到的機率要跟這個詞出現的頻率有關，出現在文本中的頻率越高越高越有可能被抽到</li>
+</ul>
+<p>公式為:$$P(w_i) = \frac{ {f(w_i)}^{3/4}  }{\sum_{j=0}^{n}\left( {f(w_j)}^{3/4} \right ) }$$<br>$f(w_i)$代表$w_i$出現次數(頻率)，3/4是實驗try出來的數據</p>
+<ul>
+<li>例如：有一個詞編號是 100，它出現在整個文本中 1000 次，所以 100 在 unigram table 就會出現 1000 ^ 0.75 = 177 次</li>
+</ul>
+<p>至於要選幾個詞當 negative sample，paper 中建議如下</p>
+<blockquote>
+<p>Our experiments indicate that values of k in the range 5–20 are useful for small training datasets, while for large datasets the k can be as small as 2–5.</p>
+</blockquote>
+<h4 id="Subsampling-of-frequent-words"><a href="#Subsampling-of-frequent-words" class="headerlink" title="Subsampling of frequent words"></a>Subsampling of frequent words</h4><p>英文中 “the”, “a”, “in”，中文中的「的」、「是」等等這種詞，其實在句子中並沒有辦法提供太多資訊但又常常出現，對訓練沒有太大幫助，所以就用一個機率來決定這個詞是否要被丟掉，公式如下$$P(f_i) = (\sqrt{\frac{f(w_i)}{0.001}} + 1) \cdot \frac{0.001}{f(w_i)}$$</p>
+<h2 id="idea"><a href="#idea" class="headerlink" title="idea"></a>idea</h2><ul>
+<li>table 2<br>(3 training epochs; stochastic gradient decent and backpropogation; learning rate=0.025 and decreased it linearly)<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2></li>
+</ul>
+<ol>
+<li><a href="https://myndbook.com/view/4900" target="_blank" rel="noopener">https://myndbook.com/view/4900</a></li>
+<li><a href="https://arxiv.org/pdf/1411.2738.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1411.2738.pdf</a></li>
+<li><a href="http://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes01-wordvecs1.pdf" target="_blank" rel="noopener">http://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes01-wordvecs1.pdf</a></li>
+<li><a href="https://www.aclweb.org/anthology/N13-1090.pdf" target="_blank" rel="noopener">https://www.aclweb.org/anthology/N13-1090.pdf</a></li>
+<li><a href="https://ctjoy.github.io/jekyll/update/2017/10/23/word2vec-tutorial.html" target="_blank" rel="noopener">Word2vec Tutorial</a></li>
+<li><a href="https://www.cnblogs.com/pinard/p/7243513.html" target="_blank" rel="noopener">word2vec原理(二) 基于Hierarchical Softmax的模型</a></li>
+<li><a href="https://medium.com/daai/%E5%BC%95%E8%B5%B7%E4%BD%A0%E5%B0%8D-word2vec-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-524c8b758f99" target="_blank" rel="noopener">引起你對 Word2Vec 基本概念</a></li>
+</ol>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>John, Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/04/08/Efficient Estimation of Word Representations in Vector Space/" target="_blank" title="Efficient Estimation of Word Representations in Vector Space">https://github.com/dsmilab/dsmi-lab-website/2020/04/08/Efficient Estimation of Word Representations in Vector Space/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/papers/" rel="tag">papers</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/04/08/GloVe%20Global%20Vectors%20for%20Word%20Representation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          GloVe -- Global Vectors for Word Representation
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/03/31/Basic%20Overview%20of%20Natural%20Language%20Processing/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Basic Overview of Natural Language Processing</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-model-architectures"><span class="nav-number">1.</span> <span class="nav-text">4 model architectures:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NNLM-RNNLM-CBOW-Skip-Gram"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">NNLM; RNNLM; CBOW; Skip-Gram</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#old-NNLM-RNNLM"><span class="nav-number">1.1.</span> <span class="nav-text">old: NNLM, RNNLM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What’s-NNLM-Feedforward-Neural-Net-Model"><span class="nav-number">1.1.1.</span> <span class="nav-text">What’s NNLM (Feedforward Neural Net Model)?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What’s-RNNLM-Recurrent-Neural-Net-Language-Model"><span class="nav-number">1.1.2.</span> <span class="nav-text">What’s RNNLM (Recurrent Neural Net Language Model)?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-CBOW-Continuous-Bag-of-Words-Model-Skip-Gram-Continuous-Skip-Gram-model"><span class="nav-number">1.2.</span> <span class="nav-text">new: CBOW (Continuous Bag-of-Words Model), Skip-Gram (Continuous Skip-Gram model)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#overview-from-cs224n"><span class="nav-number">1.2.1.</span> <span class="nav-text">overview (from cs224n)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What’s-CBOW"><span class="nav-number">1.2.2.</span> <span class="nav-text">What’s CBOW?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What’s-Skip-Gram"><span class="nav-number">1.2.3.</span> <span class="nav-text">What’s Skip-Gram?</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experiment-Result"><span class="nav-number">2.</span> <span class="nav-text">Experiment Result</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Experiment-task-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">1. Experiment task 1:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Experiment-task-2-Microsoft-Sentence-Completion-Challenge"><span class="nav-number">2.0.2.</span> <span class="nav-text">2. Experiment task 2: Microsoft Sentence Completion Challenge</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#補充"><span class="nav-number">2.1.</span> <span class="nav-text">補充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#延伸討論-Word2vec-implement-detail"><span class="nav-number">2.1.1.</span> <span class="nav-text">(延伸討論)Word2vec implement detail</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Word2vec-hidden-layer沒有activation-function"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">Word2vec hidden layer沒有activation function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hierarchical-Softmax-v-s-Negative-sampling"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">Hierarchical Softmax v.s. Negative sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Hierarchical-Softmax"><span class="nav-number">2.1.1.2.1.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Negative-sampling"><span class="nav-number">2.1.1.2.2.</span> <span class="nav-text">Negative sampling</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Subsampling-of-frequent-words"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">Subsampling of frequent words</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#idea"><span class="nav-number">2.2.</span> <span class="nav-text">idea</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">2.3.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

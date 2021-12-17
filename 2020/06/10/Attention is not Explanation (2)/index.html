@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>attention is not explanation | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLPattention" />
+  
+  
+  
+  
+  <meta name="description" content="Attention is not Explanation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Attention is not Explanation">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/06/10/Attention%20is%20not%20Explanation%20(2)/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Attention is not Explanation">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/MZq6NWv.png">
+<meta property="og:image" content="https://i.imgur.com/AJ8Q8FI.png">
+<meta property="og:image" content="https://i.imgur.com/mIzJeGs.png">
+<meta property="og:image" content="https://i.imgur.com/pT5JKZs.png">
+<meta property="og:image" content="https://i.imgur.com/pGrdI35.png">
+<meta property="og:image" content="https://i.imgur.com/cDJ1CeS.png">
+<meta property="og:image" content="https://i.imgur.com/eufAVLT.png">
+<meta property="og:image" content="https://i.imgur.com/iZmYZgH.png">
+<meta property="og:image" content="https://i.imgur.com/D5rwzRH.png">
+<meta property="og:image" content="https://i.imgur.com/dirzBMi.png">
+<meta property="og:image" content="https://i.imgur.com/sj5lfhJ.png">
+<meta property="og:image" content="https://i.imgur.com/G6xInGI.png">
+<meta property="og:image" content="https://i.imgur.com/sV5H0VR.png">
+<meta property="og:image" content="https://i.imgur.com/iV5WxvG.png">
+<meta property="og:image" content="https://i.imgur.com/T2TAMcr.png">
+<meta property="article:published_time" content="2020-06-10T09:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.896Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="attention">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/MZq6NWv.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Attention is not Explanation (2)" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Attention is not Explanation
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/06/10/Attention%20is%20not%20Explanation%20(2)/" class="article-date">
+	  <time datetime="2020-06-10T09:30:00.000Z" itemprop="datePublished">2020-06-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Attention-is-not-Explanation"><a href="#Attention-is-not-Explanation" class="headerlink" title="Attention is not Explanation"></a>Attention is not Explanation</h1><a id="more"></a>
+<p>原始論文<a href="https://arxiv.org/pdf/1902.10186.pdf" target="_blank" rel="noopener">在此</a></p>
+<h6 id="tags-‘NLP’-‘paper’"><a href="#tags-‘NLP’-‘paper’" class="headerlink" title="tags: ‘NLP’, ‘paper’"></a>tags: ‘NLP’, ‘paper’</h6><h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>Li et al. (2016)曾提到：attention對neural models提供了一個重要的解釋依據。也曾有多篇論文對此提出了佐證。</p>
+<blockquote>
+<p>Li et al. (2016) summarized this commonly held view in NLP: “Attention provides an important way to explain the workings of neural models”.</p>
+</blockquote>
+<p>而本篇論文，目標是希望評估attention weights是否真的這麼有解釋性。</p>
+<blockquote>
+<p>In this work we perform extensive experiments across a variety of NLP tasks that aim to assess the degree to which attention weights provide meaningful “explanations” for predictions. </p>
+</blockquote>
+<h2 id="Introduction-and-motivation"><a href="#Introduction-and-motivation" class="headerlink" title="Introduction and motivation"></a>Introduction and motivation</h2><p>本篇作者認為，若attention真的這麼有解釋性，那麼應該可以看到以下兩個性質：</p>
+<ol>
+<li>attention weights應該要和其他feature importance measures（如:gradient-based measures, leave one out feature importance）的結果有高度相關。</li>
+<li>打亂attention結構（如：把attention weight和其他人配對），應該要對模型在預測上造成相對應的影響。</li>
+</ol>
+<p>因此本篇主要針對上述兩點提出一些相對應的驗證實驗，主要為以下兩方法：<br>（後面會再詳細提）</p>
+<ol>
+<li>correlation between attention and feature importance measures（以下簡稱correlation）</li>
+<li>conterfactural attention wetghts （以下簡稱conterfactural）<blockquote>
+<p>Assuming attention provides a faithful explanation for model predictions, we might expect the following properties to hold.<br>(i) Attention weights should correlate with feature importance measures (e.g., gradient-based measures);<br>(ii) Alternative (or counterfactual) attention weight configurations ought to yield corresponding changes in prediction (and if they do not then are equally plausible as explanations).</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>We investigate whether this holds across tasks by exploring the following empirical questions.</p>
+<ol>
+<li>To what extent do induced attention weights correlate with measures of feature importance – specifically, those resulting from gradients and leave-one-out (LOO) methods?</li>
+<li>Would alternative attention weights (and hence distinct heatmaps/“explanations”) necessarily yield different predictions?</li>
+</ol>
+</blockquote>
+<h2 id="Dataset-amp-Tasks"><a href="#Dataset-amp-Tasks" class="headerlink" title="Dataset &amp; Tasks"></a>Dataset &amp; Tasks</h2><p>此篇論文透過以下三個tasks（各task都有許多不同的datasets）來看在introduction中提到的兩件事（correlation及conterfactural）。</p>
+<ol>
+<li>binary text classification</li>
+<li>natural language inference</li>
+<li>question answering</li>
+</ol>
+<p>註：用attention較常見的task是seq2seq的翻譯，但在此篇沒有探討這件事（他們當作future work)</p>
+<h3 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset:"></a>Dataset:</h3><p>針對上述提到的三個tasks，此篇論文分別使用了以下dataset。<br><strong>1. binary text classification:</strong><br>Stanford Sentiment Treebank (SST), IMDB Large Movie Reviews Corpus, Twitter Adverse Drug Reaction dataset, 20 Newsgroups, AG News Corpus (Business vs World), MIMIC ICD9 (Diabetes), MIMIC ICD9 </p>
+<p><strong>2. natural language inference:</strong><br>SNLI dataset</p>
+<p><strong>3. question answering:</strong><br>CNN News Articles, bAbI</p>
+<blockquote>
+<p><img src="https://i.imgur.com/MZq6NWv.png" alt=""></p>
+</blockquote>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="使用的模型架構："><a href="#使用的模型架構：" class="headerlink" title="使用的模型架構："></a>使用的模型架構：</h3><p>model architecture:<br>T: sentence size<br>|V|:dataset text size</p>
+<ul>
+<li><strong>$x \in R^{T \times|V| }$</strong>: one hot encoded word at each position</li>
+<li>$x_e \in R^{T \times d }$: dense (d dimensional) token representations (word embedding)</li>
+<li><strong>encoder(h=Enc($x_e$))$\in R^{T\times m}$</strong>: m-dimensional hidden states produced by consumeing the embedded tokens in order</li>
+<li><strong>attention weight</strong> $$\hat{\alpha}=softmax(\phi(h,Q)),$$</li>
+<li>$\phi(h,Q)={\bf v^T}tanh({\bf W_1 h+W_2Q}),$<br>$\phi(h,Q)=\dfrac{hQ}{\sqrt{m}}$ </li>
+<li>$Q\in R^m$ is a query to sclar scores. <blockquote>
+<p>A similarity function $\phi$ maps h and a query $Q\in R^m$ (e.g., hidden representation of a question in QA, or the hypothesis in NLI) to scalar scores, …</p>
+</blockquote>
+</li>
+<li>$\hat{y}=\sigma(\theta\cdot h_\alpha)\in R^{|y|},$ where |y| denotes the label set size.</li>
+<li>$\hat{h_\alpha}=\sum_{t=1}^T\hat\cdot h_t$</li>
+</ul>
+<h3 id="1-correlation-between-attention-and-feature-importance-measures"><a href="#1-correlation-between-attention-and-feature-importance-measures" class="headerlink" title="1. correlation between attention and feature importance measures"></a>1. correlation between attention and feature importance measures</h3><p>在此，作者分別計算attention與下列兩方法的correlation(先分別以leave one out、gradient based的方式算出一個代表feature importance的值，再計算Kendall τ)</p>
+<blockquote>
+<p>(1) gradient based measures of feature importance ($τ<em>g$)<br>(2) differences in model output induced by leaving features out ($τ</em>{loo}$).</p>
+</blockquote>
+<p>整個計算流程如下：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/AJ8Q8FI.png" alt=""></p>
+</blockquote>
+<p>註: 計算流程中, 會先將disconnect attention的計算圖, 也就是, 這邊並不考慮attention這部分的計算</p>
+<ul>
+<li><strong>Total Variation Distance (TVD):</strong><br><img src="https://i.imgur.com/mIzJeGs.png" alt=""></li>
+<li><a href="https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient" target="_blank" rel="noopener"> kendall τ</a><br><img src="https://i.imgur.com/pT5JKZs.png" alt=""></li>
+</ul>
+<h4 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h4><ul>
+<li>從下圖可看到，使用較簡單的feed-forward projection，意即比較簡單的encoder（Average），結果比BiLSTM相對好一點。（越靠近1表示相關度越高）<blockquote>
+<p><img src="https://i.imgur.com/pGrdI35.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<ul>
+<li>從下圖可以看出，Average(feed-forward projection,就是比較簡單的encoder)應比BiLSTM好。（越靠近1表示相關度越高）<blockquote>
+<p><img src="https://i.imgur.com/cDJ1CeS.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>gradient和LOO（leave one out）的correlation比LOO與attention的correlation高（平均來看）</th>
+<th>gradient和LOO（leave one out）的correlation比gradient與attention的correlation高（平均來看)</th>
+<th>Average(feed-forward projection)的attention與LOO的correlation比BiLSTM的attention的correlation高（平均來看）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://i.imgur.com/eufAVLT.png" alt=""></td>
+<td><img src="https://i.imgur.com/iZmYZgH.png" alt=""></td>
+<td><img src="https://i.imgur.com/D5rwzRH.png" alt=""></td>
+</tr>
+</tbody></table>
+<h3 id="2-Conterfactural-attention-wetghts"><a href="#2-Conterfactural-attention-wetghts" class="headerlink" title="2. Conterfactural attention wetghts"></a>2. Conterfactural attention wetghts</h3><p>透過更換attention weight的方式，去看看對整個結果的影響。若更換attention weight並沒有對結果帶來太大影響，表示原始attention weight的大小並無法表示該位置的重要性。</p>
+<blockquote>
+<p>Under the assumption that attention weights are explanatory, such counterfactual distributions may be viewed as alternative potential explanations; if these do not correspondingly change model output, then it<br>is hard to argue that the original attention weights provide meaningful explanation in the first place.</p>
+</blockquote>
+<p>此部分使用兩種方法去看：</p>
+<ol>
+<li>random permute attention weights</li>
+<li>使用設計後的最佳化來計算出一組新的attention weights<h4 id="2-1-Attention-permutation"><a href="#2-1-Attention-permutation" class="headerlink" title="2.1 Attention permutation"></a>2.1 Attention permutation</h4>將attention weight隨機置換後，去看看最後output的差別。（將attention weight random permute 100次後，去計算和原始的output $\hat{y}$的TVD。並取Median做為代表。<blockquote>
+<p><img src="https://i.imgur.com/dirzBMi.png" alt=""></p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<ul>
+<li>從下圖可看到，有許多case，當attention weight很大時，Median($\triangle \hat{y^p}$)仍然很小。但像diabetetes dataset，只有potitive的有影響。<blockquote>
+<p><img src="https://i.imgur.com/sj5lfhJ.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<h4 id="2-2-Adversarial-attention"><a href="#2-2-Adversarial-attention" class="headerlink" title="2.2 Adversarial attention"></a>2.2 Adversarial attention</h4><p>期望找出一組新的attention weight，使得</p>
+<ol>
+<li>結果的差異小於某個「自行定義的很小的值 $\epsilon$」</li>
+<li>使得Jenseb-Shannon Divergence越大越好。(希望兩分不差越多越好)<br>註：針對$\epsilon$，在此篇論文中，text classification的task,作者設定$\epsilon=0.01$;對QA dataset則設為0.05</li>
+</ol>
+<p>也就是計算以下最佳化：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/G6xInGI.png" alt=""></p>
+</blockquote>
+<p>演算法如下：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/sV5H0VR.png" alt=""></p>
+</blockquote>
+<p>從下圖結果可以看出，JSD其實都滿高的。值得一提的是，Diabetes datasets在positive的結果JSD比較低，這和figure4, figure6的結果一致。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/iV5WxvG.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/T2TAMcr.png" alt=""></p>
+</blockquote>
+<h2 id="conclusion"><a href="#conclusion" class="headerlink" title="conclusion"></a>conclusion</h2><ul>
+<li>此篇論文主要針對attention有沒有解釋性提出兩個判斷依據：<ol>
+<li>去看attention weight和其他feature importance measures的correlation。（如果有解釋性的話，應該要有高的correlation）</li>
+<li>去看counterfactual attention distribution對模型在預測上造成的影響。（若attention weight對原始位置有解釋性的話，應該要對結果有高的影響）</li>
+</ol>
+</li>
+<li>從這篇論文的實驗數據來看，correlation並沒有太高</li>
+<li>counterfactual attention distribution對模型預測的差異並不大。</li>
+<li>當使用較複雜的encoder時，attention weight的解釋力有更低的現象（依此論文的論點來看）。</li>
+<li>這篇論文並沒有討論attention最常見的seq2seq task</li>
+<li>這篇論文仍有許多限制:<ul>
+<li>correlation的值要多好才能算好？</li>
+<li>論文中使用的其他feature importance measures的方法並不能表示絕對是最理想的方法</li>
+<li>irrelevant features可能會對Kendall τ 造成干擾（但在figure 5中可看到，「BiLSTM和Average的attention」是呈較高相關的，且「gradient和LOO」的結果也成較高相關，因此干擾應不會造成太多影響）</li>
+</ul>
+</li>
+<li>從countergactual attention experiments可看到很重要的一點：我們不應該模型的特定input與特定的prediction有關。</li>
+<li>以下為擷取幾段覺得滿重要的段落：<blockquote>
+<p>We have reported the (generally weak) correlation between learned attention weights and various alternative measures of feature importance, e.g., gradients. We do not intend to imply that such alternative measures are necessarily ideal or that they should be considered ‘ground truth’. While such measures do enjoy a clear intrinsic (to the model) semantics, their interpretation in the context of nonlinear neural networks can nonetheless be difficult for humans (Feng et al., 2018).</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>An additional limitation is that we have only considered a handful of attention variants, selected to reflect common module architectures for the respective tasks included in our analysis. We have been particularly focused on RNNs (here, BiLSTMs) and attention, which is very commonly used. </p>
+</blockquote>
+<blockquote>
+<p>It is also important to note that the counterfactual attention experiments demonstrate the existence of alternative heatmaps that yield equivalent predictions; thus one cannot conclude that the model made a particular prediction because it attended over inputs in a specific way. However, the adversarial weights themselves may be scored as unlikely under the attention module parameters. Furthermore, it may be that multiple plausible explanations for a particular disposition exist, and this may complicate interpretation: We would maintain that in such cases the model should highlight all plausible explanations, but one may instead view a model that provides ‘sufficient’ explanation as reasonable.</p>
+</blockquote>
+<h2 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h2><p><a href="https://arxiv.org/pdf/1908.04626.pdf" target="_blank" rel="noopener">Attention is not not Explanation</a></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/06/10/Attention is not Explanation (2)/" target="_blank" title="Attention is not Explanation">https://github.com/dsmilab/dsmi-lab-website/2020/06/10/Attention is not Explanation (2)/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/attention/" rel="tag">attention</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/06/10/ALBERT_%20A%20LITE%20BERT%20FOR%20SELF-SUPERVISED%20LEARNING%20OF%20LANGUAGE%20REPRESENTATIONS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ALBERT_ A LITE BERT FOR SELF-SUPERVISED LEARNING OF LANGUAGE REPRESENTATIONS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/06/09/Leetcode%20-%20Jump%20Game/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode - Jump Game</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Attention-is-not-Explanation"><span class="nav-number">1.</span> <span class="nav-text">Attention is not Explanation</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-‘NLP’-‘paper’"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: ‘NLP’, ‘paper’</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goal"><span class="nav-number">1.1.</span> <span class="nav-text">Goal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-and-motivation"><span class="nav-number">1.2.</span> <span class="nav-text">Introduction and motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset-amp-Tasks"><span class="nav-number">1.3.</span> <span class="nav-text">Dataset &amp; Tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dataset"><span class="nav-number">1.3.1.</span> <span class="nav-text">Dataset:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">1.4.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用的模型架構："><span class="nav-number">1.4.1.</span> <span class="nav-text">使用的模型架構：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-correlation-between-attention-and-feature-importance-measures"><span class="nav-number">1.4.2.</span> <span class="nav-text">1. correlation between attention and feature importance measures</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Result"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">Result</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Conterfactural-attention-wetghts"><span class="nav-number">1.4.3.</span> <span class="nav-text">2. Conterfactural attention wetghts</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Attention-permutation"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">2.1 Attention permutation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Adversarial-attention"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">2.2 Adversarial attention</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conclusion"><span class="nav-number">1.5.</span> <span class="nav-text">conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延伸閱讀"><span class="nav-number">1.6.</span> <span class="nav-text">延伸閱讀</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

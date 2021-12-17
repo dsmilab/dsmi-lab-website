@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>neural machine translation by jointly learning to align and translate | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLPpaperslanguage model" />
+  
+  
+  
+  
+  <meta name="description" content="NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/05/06/NEURAL%20MACHINE%20TRANSLATION%20BY%20JOINTLY%20LEARNING%20TO%20ALIGN%20AND%20TRANSLATE/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/2gnsToM.png">
+<meta property="og:image" content="https://i.imgur.com/m6jmWzo.png">
+<meta property="og:image" content="https://i.imgur.com/jbbLTBj.png">
+<meta property="og:image" content="https://i.imgur.com/v44LGYK.png">
+<meta property="og:image" content="https://i.imgur.com/keuMiJr.png">
+<meta property="og:image" content="https://i.imgur.com/Qmw9Xy9.png">
+<meta property="og:image" content="https://i.imgur.com/PfvqcVG.png">
+<meta property="og:image" content="https://i.imgur.com/u6XevWI.png">
+<meta property="og:image" content="https://i.imgur.com/hwEgww2.png">
+<meta property="og:image" content="https://i.imgur.com/771bVTT.png">
+<meta property="og:image" content="https://i.imgur.com/03NztZY.png">
+<meta property="og:image" content="https://i.imgur.com/hHkSiIg.png">
+<meta property="og:image" content="https://i.imgur.com/19oWzb9.png">
+<meta property="og:image" content="https://i.imgur.com/27EsgaQ.png">
+<meta property="og:image" content="https://i.imgur.com/vDC8Tyz.png">
+<meta property="og:image" content="https://i.imgur.com/xUft6sj.png">
+<meta property="article:published_time" content="2020-05-06T09:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="papers">
+<meta property="article:tag" content="language model">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/2gnsToM.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/05/06/NEURAL%20MACHINE%20TRANSLATION%20BY%20JOINTLY%20LEARNING%20TO%20ALIGN%20AND%20TRANSLATE/" class="article-date">
+	  <time datetime="2020-05-06T09:30:00.000Z" itemprop="datePublished">2020-05-06</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="NEURAL-MACHINE-TRANSLATION-BY-JOINTLY-LEARNING-TO-ALIGN-AND-TRANSLATE"><a href="#NEURAL-MACHINE-TRANSLATION-BY-JOINTLY-LEARNING-TO-ALIGN-AND-TRANSLATE" class="headerlink" title="NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE"></a>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</h1><a id="more"></a>
+
+<ul>
+<li><p>論文<a href="https://arxiv.org/pdf/1409.0473.pdf?fbclid=IwAR0d3Fe7egKP0zz8wAe2A-UX-ZIeUzj7MlfFmk_WwkfBeCWx-mkynfFNFls" target="_blank" rel="noopener">原文在此</a>。</p>
+</li>
+<li><p>Remark:<br>“LEARNING TO ALIGN AND TRANSLATE” means “attention”.</p>
+</li>
+</ul>
+<h2 id="target-task-in-this-paper"><a href="#target-task-in-this-paper" class="headerlink" title="target task in this paper"></a>target task in this paper</h2><p>Machine translation system (English-to-French translation)</p>
+<p>Let $x= [ x_1, x_2, …, x_{T_x} ]$ and $y= [ y_1, y_2, …, y_{T_y} ],$ where $T_x$ and $T_y$ denote the length of source sentence and target translation sentence, respectively.</p>
+<p>Goal: $arg \max_y p(y|x)$</p>
+<h2 id="contribution"><a href="#contribution" class="headerlink" title="contribution"></a>contribution</h2><p>“Attention!”</p>
+<ul>
+<li>They proposed a novel architecture for Neural Machine Translation (NMT) model called RNNsearch. </li>
+<li>此篇論文有提到“soft alignment”，以前的模型通常會需要相對應的位置，但此模型可以放寬一點</li>
+</ul>
+<h2 id="What’s-the-main-issue-in-this-paper"><a href="#What’s-the-main-issue-in-this-paper" class="headerlink" title="What’s the main issue in this paper?"></a>What’s the main issue in this paper?</h2><p>在過去的機器翻譯領域，encoder-decoder模型是普遍的模型架構。而過去的架構，都是將原input句全部的資訊放進encoder，生成一個fixed-length vector，並使用同一個fixed-length vector，傳往decoder。這類模型，在碰到長句的input時，模型output出的結果通常不太好。</p>
+<p>在此篇論文中，作者認為只使用固定的vector作為decoder的輸入，是造成模型成效不彰的關鍵。</p>
+<ul>
+<li>當input sequence過長的時候，無法確保context vector的dimension夠大使得有足夠的能力記住所有information</li>
+</ul>
+<p>以往的模型長相（以下圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">原作者的演講投影片</a>）：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/2gnsToM.png" alt=""></p>
+</blockquote>
+<p><strong>encoder:</strong></p>
+<blockquote>
+<p><img src="https://i.imgur.com/m6jmWzo.png" alt=""></p>
+</blockquote>
+<p><strong>decoder:</strong></p>
+<blockquote>
+<p><img src="https://i.imgur.com/jbbLTBj.png" alt=""><br>（圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">此投影片</a>）</p>
+</blockquote>
+<h2 id="How-do-the-authors-solve-this-issue-in-this-paper"><a href="#How-do-the-authors-solve-this-issue-in-this-paper" class="headerlink" title="How do the authors solve this issue in this paper?"></a>How do the authors solve this issue in this paper?</h2><p>引入attention的概念。<br>They extract the most relevant information from the original input sentence rather than the whole sentence.</p>
+<h2 id="Model-architecture-in-this-article"><a href="#Model-architecture-in-this-article" class="headerlink" title="Model architecture in this article"></a>Model architecture in this article</h2><p>They use a Bidirectional RNN as their encoder and extend attenction mechanism to the decoder.</p>
+<h3 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder:"></a>Encoder:</h3><p>使用Bidirectional RNN，並將兩個方向得到的 hidden states:  $\overrightarrow{h_i}$, $\overleftarrow{h_i}$ 直接 concatenate起來。(i.e. $h_i= [ \overrightarrow{h_i} ; \overleftarrow{h_i} ]$)</p>
+<blockquote>
+<p><img src="https://i.imgur.com/v44LGYK.png" alt=""><br>(圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">原作者的演講投影片</a>）</p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/keuMiJr.png" alt=""></p>
+</blockquote>
+<h3 id="Alignment-model"><a href="#Alignment-model" class="headerlink" title="Alignment model"></a>Alignment model</h3><blockquote>
+<p><img src="https://i.imgur.com/Qmw9Xy9.png" alt=""><br>(圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">原作者的演講投影片</a>）</p>
+</blockquote>
+<p>這裡的$v$, $W$, $V$是weight matrix（要train的參數）。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/PfvqcVG.png" alt=""><br>(圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">原作者的演講投影片</a>）</p>
+</blockquote>
+<h3 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder:"></a>Decoder:</h3><blockquote>
+<p><img src="https://i.imgur.com/u6XevWI.png" alt=""><br>(圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">原作者的演講投影片</a>）</p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/hwEgww2.png" alt=""><br>(圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">原作者的演講投影片</a>）</p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/771bVTT.png" alt=""><br> This can be understood as having a deep output (Pascanu et al., 2014) with a single maxout hidden layer (<a href="https://arxiv.org/pdf/1302.4389.pdf" target="_blank" rel="noopener">Goodfellow et al., 2013</a>).</p>
+</blockquote>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><blockquote>
+<p>We use a minibatch stochastic gradient descent (SGD) algorithm together with Adadelta (Zeiler, 2012) to train each model.</p>
+</blockquote>
+<p>使用minibatch stochastic gradient descent、Adadelta。<br>並使用Beam search去得出最佳的翻譯。</p>
+<h4 id="dataset-WMT’14"><a href="#dataset-WMT’14" class="headerlink" title="dataset: WMT’14"></a>dataset: WMT’14</h4><h4 id="實驗內容："><a href="#實驗內容：" class="headerlink" title="實驗內容："></a>實驗內容：</h4><p>與RNN Encoder-Decoder (RNNencdec)比較。<br>兩個模型（RNNencdec、RNNsearch）皆分別使用「句子長度少於30字的資料」、「句子長度少於50字的資料」的去train模型。</p>
+<ul>
+<li>從下圖可知，此論文提出的模型-RNNsearch，結果不論是以30字訓練的模型（RNNsearch-30）或50字訓練的模型（RNNsearch-50）都比RNNencdec來得好。且RNNsearch-50幾乎不受input句子長度影響結果。<blockquote>
+<p><img src="https://i.imgur.com/03NztZY.png" alt="">)<br>(圖片引自<a href="https://arxiv.org/pdf/1409.0473.pdf?fbclid=IwAR0d3Fe7egKP0zz8wAe2A-UX-ZIeUzj7MlfFmk_WwkfBeCWx-mkynfFNFls" target="_blank" rel="noopener">原論文</a>)</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>此論文提出的模型，下面的圖可以看到相較於hard-alignment，soft-alignment的優點–可抓出不同語言中句構的特性（如：英文與法文的名詞、形容詞排序相反）</p>
+<blockquote>
+<p><img src="https://i.imgur.com/hHkSiIg.png" alt=""><br>(圖片來自<a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">原作者的演講投影片</a>）</p>
+</blockquote>
+</li>
+<li><p>作者列出幾個實際英翻法的翻譯例子，指出RNNencdec在長句翻譯容易在後面失焦，而本篇提出的RNNsearch則否。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/19oWzb9.png" alt=""><br><img src="https://i.imgur.com/27EsgaQ.png" alt="">)<br>(圖片引自<a href="https://arxiv.org/pdf/1409.0473.pdf?fbclid=IwAR0d3Fe7egKP0zz8wAe2A-UX-ZIeUzj7MlfFmk_WwkfBeCWx-mkynfFNFls" target="_blank" rel="noopener">原論文</a>)</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>補充：此方法的限制</strong><br>若換個task，input太長，此方法會造成計算量太大。</p>
+<blockquote>
+<p>Our approach, on the other hand, requires computing the annotation weight of every word in the source sentence for each word in the translation. This drawback is not severe with the task of translation in which most of input and output sentences are only 15–40 words. However, this may limit the applicability of the proposed scheme to other tasks.</p>
+</blockquote>
+<h2 id="Attention時序表"><a href="#Attention時序表" class="headerlink" title="Attention時序表"></a>Attention時序表</h2><ul>
+<li><strong>ICLR 2015</strong>  <a href="https://arxiv.org/pdf/1409.0473.pdf?fbclid=IwAR0d3Fe7egKP0zz8wAe2A-UX-ZIeUzj7MlfFmk_WwkfBeCWx-mkynfFNFls" target="_blank" rel="noopener">NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</a> </li>
+<li><strong>ACL 2015</strong> <a href="https://www.aclweb.org/anthology/D15-1166.pdf" target="_blank" rel="noopener">Effective Approaches to Attention-based Neural Machine Translation</a></li>
+<li><strong>NIPS 2017</strong> <a href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf" target="_blank" rel="noopener">Attention Is All You Need</a></li>
+</ul>
+<p>補充：其實這篇論文和acl的這篇，方法非常相近，且發表時間也很近。但acl這篇比較慢一點。<br>在acl這篇，作者也有特別提到他們的方法和iclr這篇的差異主要有三點<br><a href="https://www.aclweb.org/anthology/D15-1166.pdf" target="_blank" rel="noopener">Effective Approaches to Attention-based Neural Machine Translation</a></p>
+<blockquote>
+<p><img src="https://i.imgur.com/vDC8Tyz.png" alt=""><br><img src="https://i.imgur.com/xUft6sj.png" alt=""></p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://www.youtube.com/watch?v=wyQBfi6uOHk" target="_blank" rel="noopener">https://www.youtube.com/watch?v=wyQBfi6uOHk</a></li>
+<li><a href="https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf" target="_blank" rel="noopener">https://aisc.ai.science/static/slides/20181018_XiyangChen.pdf</a></li>
+<li><a href="https://arxiv.org/pdf/1212.5701.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1212.5701.pdf</a></li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/05/06/NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE/" target="_blank" title="NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE">https://github.com/dsmilab/dsmi-lab-website/2020/05/06/NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/language-model/" rel="tag">language model</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/papers/" rel="tag">papers</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/05/12/Data%20argumentation%20method%20-%20Attentive%20Cutmix%20&%20Cutmix/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Data argumentation method - Attentive Cutmix &amp; Cutmix
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/05/06/Enriching%20Word%20Vectors%20with%20Subword%20Information/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Enriching Word Vectors with Subword Information</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NEURAL-MACHINE-TRANSLATION-BY-JOINTLY-LEARNING-TO-ALIGN-AND-TRANSLATE"><span class="nav-number">1.</span> <span class="nav-text">NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#target-task-in-this-paper"><span class="nav-number">1.1.</span> <span class="nav-text">target task in this paper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contribution"><span class="nav-number">1.2.</span> <span class="nav-text">contribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What’s-the-main-issue-in-this-paper"><span class="nav-number">1.3.</span> <span class="nav-text">What’s the main issue in this paper?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-do-the-authors-solve-this-issue-in-this-paper"><span class="nav-number">1.4.</span> <span class="nav-text">How do the authors solve this issue in this paper?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-architecture-in-this-article"><span class="nav-number">1.5.</span> <span class="nav-text">Model architecture in this article</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Encoder"><span class="nav-number">1.5.1.</span> <span class="nav-text">Encoder:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alignment-model"><span class="nav-number">1.5.2.</span> <span class="nav-text">Alignment model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decoder"><span class="nav-number">1.5.3.</span> <span class="nav-text">Decoder:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.6.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dataset-WMT’14"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">dataset: WMT’14</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#實驗內容："><span class="nav-number">1.6.0.2.</span> <span class="nav-text">實驗內容：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attention時序表"><span class="nav-number">1.7.</span> <span class="nav-text">Attention時序表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.8.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>neobility at semeval-2017 task 1 an attention-based sentence similarity model | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="請輸入密碼查詢加密文章">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Neobility at SemEval-2017 Task 1 An Attention-based Sentence Similarity Model">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/05/27/Neobility%20at%20SemEval-2017%20Task%201_%20An%20Attention-based%20Sentence%20Similarity%20Model/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="請輸入密碼查詢加密文章">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-27T13:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Neobility at SemEval-2017 Task 1_ An Attention-based Sentence Similarity Model" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Neobility at SemEval-2017 Task 1 An Attention-based Sentence Similarity Model
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/05/27/Neobility%20at%20SemEval-2017%20Task%201_%20An%20Attention-based%20Sentence%20Similarity%20Model/" class="article-date">
+	  <time datetime="2020-05-27T13:30:00.000Z" itemprop="datePublished">2020-05-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <div id="hexo-blog-encrypt" data-wpm="密碼不對,Never SVM No Life" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">請輸入密碼：Never svm</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="7dc39128d4dd2bea6d7d3505c37b6381004cf92dae0ecfc2123e260441b50da3">88579ad35ffb4b5871d9138b54341906ea3d9a7dd2fee5c431e47866d0924fb9b6632b16b40581b26fc1413c99db832abe078ed099e921da537cc5e012595b5f0f81c1d307b47fe86bee0a0acf104e0ab48cd3dfeab1b0917be95acedba3d2323898e47d0fc26016dbeb8caf7609f829dead805fb2fc1bbc1c049e1e0c1efb6c3816e864672f36e6dc306ba0f76469e1d6f22ef3f3ad8d281415cb7e81ca2b721e5ff1359fcba5d73210bd5deee31aac870421182be7d195a80831f14db398dcacc28212e21e872fd07bb57a9607968fa637c21ec9ccc8f17e0e3ba9167dc900e2f3aaa5511d36a9a77c4dd7dd167c43a4fa0270ac902245ad771c93c7aac5501c2296f876269d3154dd50d25995dae6ece7bebd85fb88fdd59ddb3dc724f639a8c26f210c7484ff442ee9c0b47e00ce5c2a81686d2c27347f619db4cdfc4ad6d64b0f0c603cf5a0ab87e2b93c75939c8a2dbadec68b6a1ff9460d10953da22f634341b2bc0d2bdbb156199dbc0368906007de1863e1d03b50bb943c6faec13e1ab04189875c47272eebea33dce6509f541971d168be38a1898cb518ff0784e72cd775849dd65b6bd505efb76247c34b71f276887417b3c6db66e7a4b35c067576b9a4ebef935344cf784668000c089c58e811aa27b7033595aa855212464d334f98ca38b8742045210a916419550947a73e1a47e39d15f9b1c1d1844a30969939960307f2f5902123450b63e4c0cea8bc0a8fbafa0262427317217c29471b52025e40045e1a03224ef5400db5f8534f44a8c049e8970f266c394a1babc566b397f95ac18994f7333c8b8fe03e4d1a508fd41f63b5499960f27e839e9cc736bfa805e8a01e6dc83d436f4e3881e9e7e768e7e9e437aa63d8f7f36c837abca4b5cafaf1aa474a1df71553af1021ef524941decdb14d8d0c2c40b9334e6c3d2f407d995a840344b550d3c4bff3f0966192920d8d3649b0e7d387174ad630612fed5fe6b7b16bf1c97740d3a496c1e43a2265f229fd21a589f2dafe5bb8b06a8e55d51230de990e7d9798b6c22f8d2dd83fc316ed641aca8096ea3ee1963718e3ab1578f58bfcb17e4fa858c0152fd4c2367310a8898ea85a77e3f3a00572d6806c8789210ae4ff230cb7b89dc5394e95db6b684c69955060fcf382e40fc0963bb2e2f98a2633bb1fbaae15e08fc3f133ce0cb85518ded1f090eefba9b18c455a2045216ed2d68371882781a1786ea5d8d3cce6bb128cdc9167de641e925fa7424ec5c425ecae781fca4f0c6344e4bd908a837aa178620a4273599872ab83f4162370ea6a878af3db936815af3bc38d8337cdb7781551572ac17fdc819415c2cc7612ea9fe25d145a467ef0b54848127de278e0924098d9cd06a85db36b88830d70d4eb8b83c4c2530a063781bd3cee1762b79935e9fb09abc1773ac7739785a7f7456fbed783011f5305f8f70775cfdc2c541149384bedaf89244b4bc491408e57636fc15d133d12841d49cc4a8c6c9ea72812eae524868d3e893cf56e8ff61b0de9462feee6e9c429a1abce611ff78c9063dd58f457cc0732a92a73ae5fc10e21c0a9fac0cea29fe1ee0eb740b4927d6d9c83721daaf578659a084e395a58ef12a15dd47380a16232821fe0a2b6aa92cfa332ab70717770ed1c5f277c937348b632b063a4a01b2a0f8be8f4e0ab948d0d3974155ceddfcc3af6da3557e8a72df22928f013d7529f332bf90b8a385de77489a52370ae78fec543e92157291514436d0e11d78156056efeb0fe9d59a7d373acf5a460db0c07fabc66c06bdbe595fd99d6b3f7671fce5099338fedf1d1ee29761063c1ac4433ad7e0519e90dbbd57b9825a33d1d5b971b7f44228b91bd1febf9de78586435df456ca30dbfddf551a47567de3c4e6dfa68353510c7d3a56ade8cee6294d7f471c54db14916dd9733cce83b0480f62a16d0a3c0bc28f3663f01a6437732649ea4eb9df9516e4f90f5bb7f6ca7a1fe0f24a399c051184c8ff4c98f1ef5838386bc0ea6012843220e1d8328df3fc48d1f48b1963b16a19b2b6462fd4db68a530b11cca8ae54eae37b7d646e183b1cc7b095466eb529477d48dc829810b2e6d0527acfb9750206568adeb0b3ec9e3dfcf60afb3f6ada46a2cc6ad8e8204c0e3f4030edec302f5898bc3bd29b5730db1eebb231dc9f61bb9100143616d3dd4f620d6df60d81dc3e033c1d7a111f4c07c160108302352a1c5994df150ce5af8d2449529b8d9964a4b975f6805f6d2c1a09546fb23930b7dc33d1993f8e838d1bed8f06e741e669675e1c7df1dcf7fa89a9ded60210366234cbcda64e25c4e9f03aa711a0ae406a1acddddb72c880e31f10fc85de4f8e64c45d6baab66b6aa66ecf90b2af49f30b6db5b8b7687eed50c82b270b6c94839caa14317c1a661a37cab01bfc5fb8f40922340594cbea577d361fe1aa11ca4a500545ee948334875adb47219e97edf0c83d847261d7fab8efd5e4e4d4c4d6f1b627eec69d3664d49b80502c2beff60d2f294fc6dee1064a40a77c50f2e1054825d0423d6092dd1ca36361b5bccde29d8ab7b96ace5c41aee0d92e76696f6fc679d96bad8c608463cb96df1debdc501db55cbfded5158b12cfe817d4414ad33b283fdf258f1f8c0fc13cc214a1ae6a89cfea53550d5b27a764c44abbaf2b6dfa471656bd4552088845aac92f0f89c431749266d2e50e019a716770667a7f9beaf91284c714421ebd76b4798b1caf73a0e1b87a23ef7fb20185207ef3036bd5a39dc80e67d4f6bbd9a0b0426db1ac201c6a4820311ff9a1744c2fca50c78e874a53c85a3a110a6ffc91f3629e1d457670124e5f7e784ee07f9f88ef8a3ed967a359d391a46fd97a79a4e825c7c89dd4a3e28befd39cdccfba574a3af24131a54916dd91bd5defd26fc1c12dc475fc4794b9d364a1de626ca202675c223d1b01ea194bdbddf7b9ab104d4ee8d9e355fbf52d1dc51621b3ad6ae9c73e7736be63ae22b8f8f69d2616fc35dc005c8450db56c687b6a2a4320112e3c1841283aa89e7770a825d97de6378e38cfce54cc41b39cc4cce8d28b56794ddf1ad63518c01031c776c56a35c05d5b38d529e9e1033c999b50bdeb379951d86be69da541b7a0da3b9cf13fabbf7286681b9ac8fba038c24c86298a2a2a7d8697d977b95143c614a01b5fbe3832ec245d391134aea9d3bd697bc4afe9754f09babd3a7d88984127b97eea850f75098b590abfb4973ec4efcd8038ee95187ef944ba358822821523926f4349180537651ae209f6efa65090428276764595efd00963b4dd6d97e390a3567722383fd8d1c3ad7d3b1e33707145e3d128140a50ef9b5aa107769a80882e6f7de02b4e32e4793395fff59c5154bdb37441c8d2cca9ca549513a8d828d12c2926718282c20a45d1fb65f355f7534303ebeb413159aef32e67f3ffdd22533b666ce3fd695b108c50927e567b8ed30f53de598f2c077fc938618a866ad62f5072d69700e01d57c88ed7b3bfc23916d068ae7717a260132fb8a2923e526e325f36b558e2eed990972f13575ffb64a0f102001fadab689ab7cbca5288dc80e0962917121b29c3e4e5ddd3068f56f95802a3b05ec80ed8f7aa296e675aff27e43abe161913887afe4c8665812f29da97e469678a9569c75023b776b7cd288ad16ebbd200b33cd778f8a8f127176cecb2a403c28fd69f9d2752cec970ee2e456fbbada81db215923d4a94d40a0436bd735008864f4a2b8a9ec1db5bebc321338ce744184e8473332f2f6898cc0296a5b0256704da64b19bc210cbf5fb6a58906b2f046d01d16d389674e322363990065b89973e4100f24cc1b85e54ace68dc4319a62714081c</script>
+</div>
+<script src="/dsmi-lab-website/lib/blog-encrypt.js"></script><link href="/dsmi-lab-website/css/blog-encrypt.css" rel="stylesheet" type="text/css">
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Chuck</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/05/27/Neobility at SemEval-2017 Task 1_ An Attention-based Sentence Similarity Model/" target="_blank" title="Neobility at SemEval-2017 Task 1 An Attention-based Sentence Similarity Model">https://github.com/dsmilab/dsmi-lab-website/2020/05/27/Neobility at SemEval-2017 Task 1_ An Attention-based Sentence Similarity Model/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/05/27/Adversarial%20Extra/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Adversarial Extra
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/05/21/Adversarial-Black-Box-with-Zero-Order-Optimization/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Adversarial - Black Box with Zero Order Optimization</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav">None</ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

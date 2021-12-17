@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>lstmembed- learning word and sense representations from a large semantically annotated corpus with long short-term memories | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="論文網址 問題：一字多義在傳統的word2vec並不能很好的表示利用LSTM從語意註釋的corpus中學習word representationAPI:WordNet,BabelNet,Freebase Abstract對於人來說：一字多義（模糊）不是問題，因為常常使用上下文以及語言常識來判斷意義與上下文的落差。因此這個模型想要做的是能在一定程度上處理語言模糊問題。  原本的Word2vec：在同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LSTMEmbed- Learning Word and Sense Representations from a Large Semantically Annotated Corpus with Long Short-Term Memories">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/08/28/LSTMEmbed_%20Learning%20Word%20and%20Sense%20Representations%20from%20a%20Large%20Semantically%20Annotated%20Corpus%20with%20Long%20Short-Term%20Memories/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="論文網址 問題：一字多義在傳統的word2vec並不能很好的表示利用LSTM從語意註釋的corpus中學習word representationAPI:WordNet,BabelNet,Freebase Abstract對於人來說：一字多義（模糊）不是問題，因為常常使用上下文以及語言常識來判斷意義與上下文的落差。因此這個模型想要做的是能在一定程度上處理語言模糊問題。  原本的Word2vec：在同">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/LDqWsSR.png">
+<meta property="og:image" content="https://i.imgur.com/wfZR3M6.png">
+<meta property="og:image" content="https://i.imgur.com/gXFX6wA.png">
+<meta property="og:image" content="https://i.imgur.com/Z94l54w.png">
+<meta property="og:image" content="https://i.imgur.com/bSxuly1.png">
+<meta property="og:image" content="https://i.imgur.com/NGqIdWX.png">
+<meta property="og:image" content="https://i.imgur.com/QX9rZBe.png">
+<meta property="og:image" content="https://i.imgur.com/boGrYmI.png">
+<meta property="og:image" content="https://i.imgur.com/OSSetFZ.png">
+<meta property="og:image" content="https://i.imgur.com/sKQPtYF.png">
+<meta property="og:image" content="https://i.imgur.com/WmLRYo0.png">
+<meta property="og:image" content="https://i.imgur.com/IjZwPgE.png">
+<meta property="og:image" content="https://i.imgur.com/47Curqu.png">
+<meta property="og:image" content="https://i.imgur.com/Xv2PLN0.png">
+<meta property="og:image" content="https://i.imgur.com/fCkVqe6.png">
+<meta property="og:image" content="https://i.imgur.com/B0XlWp7.png">
+<meta property="article:published_time" content="2020-08-28T14:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/LDqWsSR.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-LSTMEmbed_ Learning Word and Sense Representations from a Large Semantically Annotated Corpus with Long Short-Term Memories" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      LSTMEmbed- Learning Word and Sense Representations from a Large Semantically Annotated Corpus with Long Short-Term Memories
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/08/28/LSTMEmbed_%20Learning%20Word%20and%20Sense%20Representations%20from%20a%20Large%20Semantically%20Annotated%20Corpus%20with%20Long%20Short-Term%20Memories/" class="article-date">
+	  <time datetime="2020-08-28T14:30:00.000Z" itemprop="datePublished">2020-08-28</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <p><a href="https://www.aclweb.org/anthology/P19-1165.pdf?fbclid=IwAR0CUNJBv2bVgeLngyiY2A2AoUNG10eBXvbHBt8WKQIUEvRL_8HkLsI3ulI" target="_blank" rel="noopener">論文網址</a></p>
+<p>問題：一字多義在傳統的word2vec並不能很好的表示<br>利用LSTM從語意註釋的corpus中學習word representation<br>API:WordNet,BabelNet,Freebase<img src="https://i.imgur.com/LDqWsSR.png" alt=""><br><img src="https://i.imgur.com/wfZR3M6.png" alt=""></p>
+<h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3><p>對於人來說：一字多義（模糊）不是問題，因為常常使用上下文以及語言常識來判斷意義與上下文的落差。因此這個模型想要做的是能在一定程度上處理語言模糊問題。</p>
+<ul>
+<li><p>原本的Word2vec：在同一個空間中把所以有一字多義的意義放在同一個vector中(每一種詞的各種含義混在一起，最常出現的representation優先)。<img src="https://i.imgur.com/gXFX6wA.png" alt=""></p>
+</li>
+<li><p>context embedding(GPT2,Elmo)是根據上下文，而可能把同一個意義的字map到不同的空間。<img src="https://i.imgur.com/Z94l54w.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li>多語言詞彙語義：這一篇論文主要目的是把相同的詞義的不同詞map到相同的word2vec在同一空間中，同字不同義map到不同的vec(所以training是by word annotation) <img src="https://i.imgur.com/bSxuly1.png" alt=""></li>
+</ul>
+<p>在解決解決詞彙多義性問題的一連串工作提出了意義嵌入的創建，即將單詞中每個單詞的不同意義分開embedding。缺點之一：沒有考慮詞語順序。而在基於RNN考慮字詞結構的embedding在速度和品質方面較差。</p>
+<p><img src="https://i.imgur.com/NGqIdWX.png" alt=""></p>
+<ul>
+<li>在圖中 word vector 和sense vector是分開的<br>ex:首先，模棱兩可的單詞“ bank”位於與其同時出現的單詞附近（圖中的正方形），其次，最接近的銀行含義（點代表金融機構的含義，並與 它的地理含義）聚集在兩個分開的區域中，而與與此相關的詞（可能含糊不清）沒有明顯的關聯。 <h3 id="Main-idea"><a href="#Main-idea" class="headerlink" title="Main idea"></a>Main idea</h3>主要想法：</li>
+</ul>
+<ol>
+<li>★用biLSTM考慮到word ordering</li>
+<li>把pre-train的embedding當成training objective</li>
+<li>LSTM不只學習上下文資訊，亦可以表示各個單詞的representation 以及sense</li>
+<li>與已經存在的knowledge resource結合，可以利用先前就已經得到的semantic information</li>
+</ol>
+<h3 id="Embedding-for-words-and-senses-related-work"><a href="#Embedding-for-words-and-senses-related-work" class="headerlink" title="Embedding for words and senses(related work)"></a>Embedding for words and senses(related work)</h3><h4 id="Word-Embedding"><a href="#Word-Embedding" class="headerlink" title="Word Embedding"></a>Word Embedding</h4><ul>
+<li>Glove train on word-word co-occurences, good for single word；however fail to represent non-dominant ‘sense’ of word.(Glove只能學到很常出現的字意) </li>
+<li>另一個問題： bar和pub，bar和stick 要相同，但是pub和stick應要無關 (word sense disambiguous)</li>
+</ul>
+<p>Solve this issue</p>
+<ol>
+<li><p>To make more similar for same word type,vice versa.：Word type extract from PPDB or WordNet</p>
+</li>
+<li><p>Context2vec learning sentence and word embedding(large raw text corpora)</p>
+</li>
+<li><p>Base on word2vec ：embedding extracted from the output topmost weight matrix(使用output matrix as embedding而不是與input最接近的)</p>
+<h4 id="Sense-Embedding"><a href="#Sense-Embedding" class="headerlink" title="Sense Embedding"></a>Sense Embedding</h4><p>與上述每種方法旨在學習詞彙表述(word2vec)的方法相比，sense embedding將各個詞義表示為單獨的向量。</p>
+<h5 id="使用額外API："><a href="#使用額外API：" class="headerlink" title="使用額外API："></a>使用額外API：</h5><p>embedding的主要訓練方法是根據knowledge base，依賴預先定義好的model，i.e.:WordNet,BabelNet,Freebase.</p>
+</li>
+<li><p>SensEmbed：’SOTA of WSD and NE’： 一個用於詞義消除歧義和實體鏈接的先進工具，用於構建詞義標註的語料庫，而該語料庫又可用於使用word2vec訓練詞義的向量空間模型。’SenseEmbed using BabelNet &amp;distributional information from text corpora’。</p>
+</li>
+<li><p>Spliting the vector which came from pretrained word embedding into their respective senses</p>
+</li>
+<li><p>★AutoExtend:延伸word2vec，在學習過程加上了wordnet的資訊:(<code>words are sums of their lexemes and synsets are sums of their lexemes.</code>)(AE架構)<a href="http://yezhejack.github.io/2018/01/07/AutoExtend%20Extending%20Word%20Embeddings%20to%20Embeddings%20for%20Synsets%20and%20Lexemes/" target="_blank" rel="noopener">參考網站</a><img src="https://i.imgur.com/QX9rZBe.png" alt=""><br>作者認為單詞集合W和synset集合S之間存在這一種線性映射關係</p>
+<ul>
+<li>S =E⊗W</li>
+<li>$\hat W$=D⊗S<br>於是這個就可以很自然看成一個encode和decode的過程了，損失函數自然是讓decode後的結果和encode前的一致。<h5 id="不使用額外API："><a href="#不使用額外API：" class="headerlink" title="不使用額外API："></a>不使用額外API：</h5>Contexualize embedding(不使用額外的API)<br>在不使用額外API時，在訓練之後所表示的這些向量僅被識別為彼此不同，而沒有清楚地識別其內在含義，所以要額外的上下文資訊。</li>
+</ul>
+</li>
+<li><p>每一個單字都train多個代表的vector(by上下文representation cluster pool)</p>
+</li>
+<li><p>在訓練w2v過程，如果一個單詞所訓練出來的向量和之前的差很多，就為該單詞延伸一個新的sense vector</p>
+</li>
+<li><p>ELmo：作者表示雖然是train by bilstm，但是每個token由三個向量表示，其中兩個是上下文向量。 </p>
+</li>
+</ol>
+<p>這些模型通常由於缺乏與詞義語義資源(babelnet…)的聯繫而難以評估。</p>
+<ul>
+<li>LSTMEmbed旨在學習單詞sense representation，並與諸如BabelNet的多語言詞彙語義資源鏈接，同時處理’word ordering’並使用預訓練好的embedding作為目標 。</li>
+</ul>
+<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p>Sense tagged input $s_i$這個可能是一個單字或是word sense(from inventory ex:BabelNet)</p>
+<ul>
+<li>主要架構圖<br><img src="https://i.imgur.com/boGrYmI.png" alt=""><br>★ 在這裡的訓練過程當成是w2v的CBOW</li>
+</ul>
+<ul>
+<li>左半邊</li>
+</ul>
+<ol>
+<li>因為是雙向lstm 對特定單字$s_i$，其embedding包含了$s_{i-W},…s_{i-1}$以及$s_{i+1}…s_{i+W}$</li>
+<li>每一個$s_i$都有其對應的embedding(by lookup table) $v(s_i)\in R^n$</li>
+<li>進入LSTM後<img src="https://i.imgur.com/OSSetFZ.png" alt=""></li>
+<li>Concate 2個LSTM output丟入一層的Linear layer 得到左半邊的LSTMembed <img src="https://i.imgur.com/sKQPtYF.png" alt=""></li>
+</ol>
+<ul>
+<li>右半邊</li>
+</ul>
+<ol>
+<li>用來與左半邊得出來的$out_{LSTMEmbed}$比較，$emb(s_i)$是使用pretrain好的embedding vector</li>
+<li>根據使用的預訓練數據集和註釋，這個$s_i$可以是單字或是word sense</li>
+</ol>
+<p>而最後面的objective loss則是cosine similarity<br><img src="https://i.imgur.com/WmLRYo0.png" alt=""></p>
+<pre><code>Once the training is over, we obtain latent semantic representations of words and senses jointly in the same vector space from the look-up table,
+i.e., the embedding matrix between the input and the LSTM, with the embedding vector of an item &apos;s&apos; given by v(s)</code></pre><p>在訓練完後，使用lookup tabel的embedding，在相同的向量空間中共同獲得單詞和sense的 semantic representations。</p>
+<p>和一般bi-lstm不同處</p>
+<ol>
+<li>使用帶有註釋的語料庫（包括單詞和word sense）來train。</li>
+<li>從單個lookup table中的單詞和感官的embedding形式，在左右兩個不同方向的LSTM之間共享</li>
+<li>一種新的學習方法，它以一組預訓練的embedding為目標，這使我們能夠學習大詞彙量的embedding</li>
+</ol>
+<h3 id="Implement-detail"><a href="#Implement-detail" class="headerlink" title="Implement detail"></a>Implement detail</h3><p>sense-level tasks<br>word level tasks</p>
+<h4 id="Training-data"><a href="#Training-data" class="headerlink" title="Training data"></a>Training data</h4><ul>
+<li>Sense  inventory: BabelNet(大型多語言百科全書和semantic網絡，包括大約1600萬個通過語義關係鏈接的概念和命名實體條目)</li>
+<li>Training corpus:BabelWiki(包含英語維基百科的多語言語料庫，使用Babelfy自動標註了命名的實體和概念)</li>
+<li>30億個tokens和約300萬個unique tokens</li>
+</ul>
+<h4 id="Embedding-setting"><a href="#Embedding-setting" class="headerlink" title="Embedding setting"></a>Embedding setting</h4><ul>
+<li>look-up table : 200-dim</li>
+<li>丟棄前1000個最常出現的token</li>
+<li>batch size : 2048</li>
+<li>1 epoch</li>
+<li>Optimizer : Adam or AME(Adaptive Moment Estimation)</li>
+<li>$emb(s_i)$ : 400-dim，使用w2v的SkipGram window_size=10，negtive sampling=10，sub-sampling of frequent words set to $10^3$</li>
+</ul>
+<h3 id="Experimen"><a href="#Experimen" class="headerlink" title="Experimen"></a>Experimen</h3><h4 id="Sense-evaluation"><a href="#Sense-evaluation" class="headerlink" title="Sense evaluation"></a>Sense evaluation</h4><p>第一組實驗旨在展示模型在需要語義（而不僅僅是詞彙）相關性的任務中的影響。 我們分析了兩個任務，Cross-Level Semantic Similarity(跨級別語義相似性)和Most Frequent Sense Induction</p>
+<h5 id="Cross-Level-Semantic-Similarity-word-to-sense"><a href="#Cross-Level-Semantic-Similarity-word-to-sense" class="headerlink" title="Cross-Level Semantic Similarity(word-to-sense)"></a>Cross-Level Semantic Similarity(word-to-sense)</h5><ul>
+<li>為了最好地評估embedding以區分單詞的各種含義的能力，選擇了SemEval-2014的跨級別語義相似性任務其中包括單詞間的相似度作為其子任務之一: CLSS單詞感知相似性數據集包含500個單詞，每個單字與WordNet候選單詞的簡短列表配對，並對其進行人類評分其semantic similarity。 <ul>
+<li>為了計算單詞間的相似度，使用了lookup table的embedding space，並使用cosine similarity來計算相似度。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/IjZwPgE.png" alt=""><br>MeerkatMafia:<code>which uses Latent Semantic Analysis and WordNet glosses to get word-sense similarity measurements</code><br>SemantiKLU :<code>an approach based on a distributional semantic model trained on a large Web corpus from different sources</code><br>SimCompass : <code>which combines word2vec with information from WordNet.</code></p>
+<h5 id="Most-Frequent-Sense-Induction"><a href="#Most-Frequent-Sense-Induction" class="headerlink" title="Most Frequent Sense Induction"></a>Most Frequent Sense Induction</h5><p>WSD system comparsion:<code>counting the word sense pairs in an annotated corpus such as SemCor</code><br><img src="https://i.imgur.com/47Curqu.png" alt="">94比較爛…</p>
+<h4 id="Word-based-Evaluation"><a href="#Word-based-Evaluation" class="headerlink" title="Word-based Evaluation"></a>Word-based Evaluation</h4><p>基於單詞的評估，目的是證明模型能夠解決傳統上使用基於單詞的模型處理的任務</p>
+<h5 id="Synonym-Recognition"><a href="#Synonym-Recognition" class="headerlink" title="Synonym Recognition"></a>Synonym Recognition</h5><p>給定目標詞和一組替代詞，此任務的目的是從集合中選擇與目標詞含義最相似的成員(考試囉)</p>
+<ul>
+<li>Dataset: synonym questions of the TOEFL &amp; ESL<br><img src="https://i.imgur.com/Xv2PLN0.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/fCkVqe6.png" alt=""></p>
+<h3 id="單詞相似性任務"><a href="#單詞相似性任務" class="headerlink" title="單詞相似性任務"></a>單詞相似性任務</h3><p>WordSim353<br>根據不同預訓練embedding與LSTMEmbed的餘弦相似度之間的Spearman相關性來計算LSTMEmbed的性能。<br><img src="https://i.imgur.com/B0XlWp7.png" alt=""></p>
+<h3 id="Conclusions"><a href="#Conclusions" class="headerlink" title="Conclusions"></a>Conclusions</h3><ul>
+<li>這是一種基於雙向LSTM的新模型，用於聯合學習單詞和word sense的 embedding</li>
+<li>更好地學習semantic representation</li>
+<li>semantic representation能夠正確反映單詞和意義表示之間的相似性，在word-to-sense以及most frequent sense induction有不錯表現。</li>
+<li>還能夠在基於標准單詞的語義評估中有不錯表現</li>
+</ul>
+<hr>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>PoH_Ko</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/08/28/LSTMEmbed_ Learning Word and Sense Representations from a Large Semantically Annotated Corpus with Long Short-Term Memories/" target="_blank" title="LSTMEmbed- Learning Word and Sense Representations from a Large Semantically Annotated Corpus with Long Short-Term Memories">https://github.com/dsmilab/dsmi-lab-website/2020/08/28/LSTMEmbed_ Learning Word and Sense Representations from a Large Semantically Annotated Corpus with Long Short-Term Memories/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/10/02/Towards%20Making%20Unlabeled%20Data%20Never%20Hurt/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Towards Making Unlabeled Data Never Hurt
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/08/21/Transfer-Learning-without-Knowing-Reprogramming-Black-box-Machine-Learning-Models-with-Scarce-Data-and-Limited-Resources/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Transfer Learning without Knowing - Reprogramming Black-box Machine Learning Models with Scarce Data and Limited Resources</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Main-idea"><span class="nav-number">2.</span> <span class="nav-text">Main idea</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Embedding-for-words-and-senses-related-work"><span class="nav-number">3.</span> <span class="nav-text">Embedding for words and senses(related work)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Word-Embedding"><span class="nav-number">3.1.</span> <span class="nav-text">Word Embedding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sense-Embedding"><span class="nav-number">3.2.</span> <span class="nav-text">Sense Embedding</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用額外API："><span class="nav-number">3.2.1.</span> <span class="nav-text">使用額外API：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不使用額外API："><span class="nav-number">3.2.2.</span> <span class="nav-text">不使用額外API：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Model"><span class="nav-number">4.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Implement-detail"><span class="nav-number">5.</span> <span class="nav-text">Implement detail</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Training-data"><span class="nav-number">5.1.</span> <span class="nav-text">Training data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Embedding-setting"><span class="nav-number">5.2.</span> <span class="nav-text">Embedding setting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experimen"><span class="nav-number">6.</span> <span class="nav-text">Experimen</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Sense-evaluation"><span class="nav-number">6.1.</span> <span class="nav-text">Sense evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Cross-Level-Semantic-Similarity-word-to-sense"><span class="nav-number">6.1.1.</span> <span class="nav-text">Cross-Level Semantic Similarity(word-to-sense)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Most-Frequent-Sense-Induction"><span class="nav-number">6.1.2.</span> <span class="nav-text">Most Frequent Sense Induction</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Word-based-Evaluation"><span class="nav-number">6.2.</span> <span class="nav-text">Word-based Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Synonym-Recognition"><span class="nav-number">6.2.1.</span> <span class="nav-text">Synonym Recognition</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#單詞相似性任務"><span class="nav-number">7.</span> <span class="nav-text">單詞相似性任務</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusions"><span class="nav-number">8.</span> <span class="nav-text">Conclusions</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

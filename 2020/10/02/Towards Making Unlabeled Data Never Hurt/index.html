@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>towards making unlabeled data never hurt | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="SVMSSLSemi supervised learning" />
+  
+  
+  
+  
+  <meta name="description" content="Towards Making Unlabeled Data Never Hurttags: ‘SSL’, ‘SVM’, ‘semi-supervised learning’, ‘dual voting’原論文在此 Brief introduction What problem was studied?In this paper, the authors focused on improving t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Towards Making Unlabeled Data Never Hurt">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/10/02/Towards%20Making%20Unlabeled%20Data%20Never%20Hurt/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Towards Making Unlabeled Data Never Hurttags: ‘SSL’, ‘SVM’, ‘semi-supervised learning’, ‘dual voting’原論文在此 Brief introduction What problem was studied?In this paper, the authors focused on improving t">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/Ub0eSuk.png">
+<meta property="og:image" content="https://i.imgur.com/1YbPVWk.png">
+<meta property="og:image" content="https://i.imgur.com/x2XN63t.png">
+<meta property="og:image" content="https://i.imgur.com/wNSckDW.png">
+<meta property="og:image" content="https://i.imgur.com/YhevbJc.png">
+<meta property="og:image" content="https://i.imgur.com/8Sfa83B.jpg">
+<meta property="og:image" content="https://i.imgur.com/iMPR0TM.png">
+<meta property="og:image" content="https://i.imgur.com/JAOWyFx.png">
+<meta property="og:image" content="https://i.imgur.com/HDUuoVX.png">
+<meta property="og:image" content="https://i.imgur.com/BGVWLZx.png">
+<meta property="og:image" content="https://i.imgur.com/4EjEJ0z.png">
+<meta property="og:image" content="https://i.imgur.com/UHVzflE.png">
+<meta property="og:image" content="https://i.imgur.com/jI2dh0T.png">
+<meta property="og:image" content="https://i.imgur.com/dCdpUHi.png">
+<meta property="og:image" content="https://i.imgur.com/lUUK4mq.png">
+<meta property="og:image" content="https://i.imgur.com/Tzy9jbn.png">
+<meta property="og:image" content="https://i.imgur.com/gMulS6z.png">
+<meta property="og:image" content="https://i.imgur.com/siuRNNh.png">
+<meta property="og:image" content="https://i.imgur.com/J2eNCTj.png">
+<meta property="og:image" content="https://i.imgur.com/dez6eGk.png">
+<meta property="og:image" content="https://i.imgur.com/vEzetqE.png">
+<meta property="og:image" content="https://i.imgur.com/Ue2lFpI.png">
+<meta property="og:image" content="https://i.imgur.com/XMCF3v4.png">
+<meta property="og:image" content="https://i.imgur.com/bUVux3z.png">
+<meta property="article:published_time" content="2020-10-02T10:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="SVM">
+<meta property="article:tag" content="SSL">
+<meta property="article:tag" content="Semi supervised learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/Ub0eSuk.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Towards Making Unlabeled Data Never Hurt" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Towards Making Unlabeled Data Never Hurt
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/10/02/Towards%20Making%20Unlabeled%20Data%20Never%20Hurt/" class="article-date">
+	  <time datetime="2020-10-02T10:00:00.000Z" itemprop="datePublished">2020-10-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Towards-Making-Unlabeled-Data-Never-Hurt"><a href="#Towards-Making-Unlabeled-Data-Never-Hurt" class="headerlink" title="Towards Making Unlabeled Data Never Hurt"></a>Towards Making Unlabeled Data Never Hurt</h1><h6 id="tags-‘SSL’-‘SVM’-‘semi-supervised-learning’-‘dual-voting’"><a href="#tags-‘SSL’-‘SVM’-‘semi-supervised-learning’-‘dual-voting’" class="headerlink" title="tags: ‘SSL’, ‘SVM’, ‘semi-supervised learning’, ‘dual voting’"></a>tags: ‘SSL’, ‘SVM’, ‘semi-supervised learning’, ‘dual voting’</h6><p><a href="https://ieeexplore.ieee.org/document/6710159" target="_blank" rel="noopener">原論文在此</a></p>
+<h2 id="Brief-introduction"><a href="#Brief-introduction" class="headerlink" title="Brief introduction"></a>Brief introduction</h2><ul>
+<li><strong>What problem was studied?</strong><br>In this paper, the authors focused on improving the safeness of S3VMs. (Remark: S3VM is a semi-supervised learning approach based on SVM.)<blockquote>
+<p>Safe, here means that the generalization performance is never statistically significantly worse than methods using only labeled data.</p>
+</blockquote>
+</li>
+<li><strong>Why was the study undertaken?</strong><br>Nowadays, semi-supervised learning has become an important issue. However, sometimes semi-supervised leaning performs worse than the supervised learning. So, it’s desirable to research on the safeness of semi-supervised learning. </li>
+</ul>
+<h2 id="Preliminary"><a href="#Preliminary" class="headerlink" title="Preliminary"></a>Preliminary</h2><ul>
+<li>inductive learning<br>訓練時testing data和unlabeled data是分開的。</li>
+<li>transductive learning<br>訓練時testing data就是unlabeled data。<br>（當有新的unknown data進來的時候，要全部重train）</li>
+<li>S3VM: <blockquote>
+<p><img src="https://i.imgur.com/Ub0eSuk.png" alt=""><br>$B$ is a set of label assignments obtained from domain knowledge.<br>${\bf y}={y_{l+1},…,y_{l+u}}$</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><p>In this paper, the authors first proposed two simple approaches: S3VM-c and S3VM-p. However, they found some drawbacks of S3VM-c and S3VM-p. Thus, S3VM-us and S4VM were designed. The main contribution of this paper is S4VM.</p>
+<ul>
+<li><p><strong>How was the problem studied?</strong></p>
+<ul>
+<li>S3VM-us:<br>For S3VM-us, the authors provide the safeness S3VM approach, S3VM-us, by adding the “confidential unlabeled instances” during the learning process.</li>
+<li>S4VM: (the main contribution in this paper)<br>For S4VM, the authors re-examine the foundamental assumption of S3VMs. </li>
+</ul>
+</li>
+<li><p><strong>Notation:</strong></p>
+<ul>
+<li>a set of $l$ labeled instances ${x_i,y_i}_{i=1}^{l},$ where $y_i\in {+1,-1}$</li>
+<li>a set of $u$ unlabeled instances ${x_j}_{j=l+1}^{l+u}$</li>
+<li>$f： X \longrightarrow {+1,-1}$  </li>
+<li>$D = ({x_i,y_i}<em>{i=1}^{l},{x_j}</em>{j=l+1}^{l+u})$<h3 id="S3VM-c"><a href="#S3VM-c" class="headerlink" title="S3VM-c"></a>S3VM-c</h3><blockquote>
+<p><img src="https://i.imgur.com/1YbPVWk.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><em>演算法：*</em></p>
+</li>
+</ul>
+<ul>
+<li>先決定k，之後用K-means clustering將$D$裡的data分群。</li>
+<li>分完群後，對每一群：<ul>
+<li>對群內的所有的點，分別計算「用SVM, S3VM的classifiers $f$」 得到的值。</li>
+<li>計算bias (目的：分別去看SVM, S3VM對這群label的看法)</li>
+<li>計算confidence （目的：看SVM, S3VM對這群的label標註的信心有多大）</li>
+</ul>
+</li>
+<li>如果S3VM和SVM對某群的label的想法一致（bias）、且S3VM的信心極大，才使用S3VM的看法，不然就使用SVM的看法。</li>
+</ul>
+<p><strong>Remark:</strong></p>
+<ul>
+<li><a href="https://ithelp.ithome.com.tw/articles/10209058" target="_blank" rel="noopener">k-means clustering</a></li>
+<li>個人看法：因為目的是要解決safeness的問題，因此只有當「semi-supervised learning的方法」和「supervised方法」看法一致，且很有信心時才加進去。用這樣的方法來確保s「emi supervised learning的方法做出來比supervised learning好」。</li>
+<li>weakness of this method?</li>
+</ul>
+<p>Q: Why do we need $c$ here?</p>
+<hr>
+<h3 id="S3VM-p"><a href="#S3VM-p" class="headerlink" title="S3VM-p"></a>S3VM-p</h3><p>Remark:  S3VM-p is motivated by the<br>confidence estimation in label propagation methods.</p>
+<blockquote>
+<p><img src="https://i.imgur.com/x2XN63t.png" alt=""><br><img src="https://i.imgur.com/wNSckDW.png" alt=""></p>
+</blockquote>
+<p>S3VM-c, S3VM-p問題：</p>
+<blockquote>
+<p>However, they both suffer from some deficiencies. S3VM-c works in a local manner and the relations between clusters are never considered. In S3VM-p, as stated in [41], the confidence estimated with label propagation methods might be incorrect if the label initialization is highly imbalanced. Moreover, both S3VM-c and S3VM-p heavily rely on S3VM predictions. This might be risky when S3VM suffers from a serious reduced performance.</p>
+</blockquote>
+<hr>
+<h3 id="S3VM-us"><a href="#S3VM-us" class="headerlink" title="S3VM-us"></a>S3VM-us</h3><p>考慮到需要加入clusters彼此之間的關係資訊、降低對label initialization起始值的敏感度，作者提出S3VM-us。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/YhevbJc.png" alt=""></p>
+</blockquote>
+<p>補充：</p>
+<ol>
+<li>(只是示意圖)<blockquote>
+<p>single linkage method (Hierarchical clustering)<br><img src="https://i.imgur.com/8Sfa83B.jpg" alt=""><br><a href="https://www.researchgate.net/figure/Conceptual-dendrogram-for-agglomerative-and-divisive-Hierarchical-based-clustering-19_fig2_321399805" target="_blank" rel="noopener">圖片來源</a></p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>If $x_j$ is closer to $n_{j-1}$, then $n_{j-1}&lt;p_{j-1}$.<br>i.e. $t_{j-1}&lt;0$.</li>
+<li>If $x_j$ is closer to $p_{j-1}$, then $n_{j-1}&gt;p_{j-1}$.<br>i.e.  $t_{j-1}&gt;0$.</li>
+</ul>
+<p>Ｑ：為何這樣可以降低sensitivity to the label initialization?<br>Ｑ：為什麼需要step 5?</p>
+<hr>
+<h3 id="S4VM"><a href="#S4VM" class="headerlink" title="S4VM"></a>S4VM</h3><p>S3VM-us跑出來的實驗結果，都和S3VM的差距不大。（Why?)</p>
+<blockquote>
+<p>As previously mentioned, the underlying assumption of S3VMs is low-density separation. That is, the ground-truth is realized by a large-margin low-density separator. However, as illustrated in Fig. 1, given limited labeled data and many more unlabeled data, there usually exist multiple large-margin low-density separators. </p>
+</blockquote>
+<p>因此，作者詳細考慮了S3VM的想法，並提出了S4VM。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/iMPR0TM.png" alt=""><br>However, as illustrated in Fig. 1, given limited labeled data and many more unlabeled data, there usually exist multiple large-margin low-density separators.</p>
+</blockquote>
+<p>S4VM演算法主要有兩步驟：</p>
+<ol>
+<li>找出T組large-margin low-density separators. </li>
+<li>再找出${\bf y}$使得對上面找出的T組separators，ac最大的。<blockquote>
+<p><img src="https://i.imgur.com/JAOWyFx.png" alt=""></p>
+</blockquote>
+</li>
+</ol>
+<p><strong>第1.步驟：</strong> 透過計算以下最佳化去找出T組separators以及其labeling。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/HDUuoVX.png" alt=""></p>
+</blockquote>
+<p>而在論文中，作者提出兩種計算上面的最佳化（14）的方法-Global Simulated Annealing Search(實驗數據中的S4VMa)以及Representative Sampling(實驗數據中的S4VMs)。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/BGVWLZx.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/4EjEJ0z.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/UHVzflE.png" alt=""></p>
+</blockquote>
+<p><strong>第2.步驟：</strong> 期待找出使得和真正結果進步最多的那組y去當實際的label。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/jI2dh0T.png" alt=""></p>
+</blockquote>
+<p>但因為沒有實際的label，因此透過第1.步驟找出的separators去當作label。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/dCdpUHi.png" alt=""><br><img src="https://i.imgur.com/lUUK4mq.png" alt=""></p>
+</blockquote>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul>
+<li><strong>What were the findings?</strong><br>強調比supervised SVM好的穩定度。 （Ｑ：雖然比S3VM穩定，但有些看起來S3VM的結果較好？）<ul>
+<li>S4VMa: S4VM using simulated annealing</li>
+<li>S4VMs: S4VM using sampling<blockquote>
+<p><img src="https://i.imgur.com/Tzy9jbn.png" alt=""><br><img src="https://i.imgur.com/gMulS6z.png" alt=""><br><img src="https://i.imgur.com/siuRNNh.png" alt=""><br><img src="https://i.imgur.com/J2eNCTj.png" alt=""><br><img src="https://i.imgur.com/dez6eGk.png" alt=""><br><img src="https://i.imgur.com/vEzetqE.png" alt=""><br><img src="https://i.imgur.com/Ue2lFpI.png" alt=""><br><img src="https://i.imgur.com/XMCF3v4.png" alt=""><br><img src="https://i.imgur.com/bUVux3z.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Discussions"><a href="#Discussions" class="headerlink" title="Discussions"></a>Discussions</h2><ul>
+<li><strong>What do these findings mean?</strong><br>結果顯示，S4VM較S3VM穩定。</li>
+</ul>
+<h2 id="Related-work"><a href="#Related-work" class="headerlink" title="Related work"></a>Related work</h2><ul>
+<li>T. Joachims, <a href="https://www.cs.cornell.edu/people/tj/publications/joachims_99c.pdf" target="_blank" rel="noopener">“Transductive Inference for Text Classification Using Support Vector Machines,”</a> Proc. 16th Int’l Conf. Machine Learning, pp. 200-209, 1999.</li>
+</ul>
+<h2 id="Questions-in-this-paper"><a href="#Questions-in-this-paper" class="headerlink" title="Questions in this paper"></a>Questions in this paper</h2><h3 id="Methods-1"><a href="#Methods-1" class="headerlink" title="Methods:"></a>Methods:</h3><p>Q: Why do we need $c$ in S3VM-c?</p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/10/02/Towards Making Unlabeled Data Never Hurt/" target="_blank" title="Towards Making Unlabeled Data Never Hurt">https://github.com/dsmilab/dsmi-lab-website/2020/10/02/Towards Making Unlabeled Data Never Hurt/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/SSL/" rel="tag">SSL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/SVM/" rel="tag">SVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/Semi-supervised-learning/" rel="tag">Semi supervised learning</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/10/22/Supervised%20Understanding%20of%20Word%20Embeddings/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Supervised Understanding of Word Embeddings
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/08/28/LSTMEmbed_%20Learning%20Word%20and%20Sense%20Representations%20from%20a%20Large%20Semantically%20Annotated%20Corpus%20with%20Long%20Short-Term%20Memories/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LSTMEmbed- Learning Word and Sense Representations from a Large Semantically Annotated Corpus with Long Short-Term Memories</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Towards-Making-Unlabeled-Data-Never-Hurt"><span class="nav-number">1.</span> <span class="nav-text">Towards Making Unlabeled Data Never Hurt</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-‘SSL’-‘SVM’-‘semi-supervised-learning’-‘dual-voting’"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: ‘SSL’, ‘SVM’, ‘semi-supervised learning’, ‘dual voting’</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Brief-introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Brief introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preliminary"><span class="nav-number">1.2.</span> <span class="nav-text">Preliminary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methods"><span class="nav-number">1.3.</span> <span class="nav-text">Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#S3VM-c"><span class="nav-number">1.3.1.</span> <span class="nav-text">S3VM-c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S3VM-p"><span class="nav-number">1.3.2.</span> <span class="nav-text">S3VM-p</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S3VM-us"><span class="nav-number">1.3.3.</span> <span class="nav-text">S3VM-us</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S4VM"><span class="nav-number">1.3.4.</span> <span class="nav-text">S4VM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">1.4.</span> <span class="nav-text">Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Discussions"><span class="nav-number">1.5.</span> <span class="nav-text">Discussions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-work"><span class="nav-number">1.6.</span> <span class="nav-text">Related work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Questions-in-this-paper"><span class="nav-number">1.7.</span> <span class="nav-text">Questions in this paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methods-1"><span class="nav-number">1.7.1.</span> <span class="nav-text">Methods:</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

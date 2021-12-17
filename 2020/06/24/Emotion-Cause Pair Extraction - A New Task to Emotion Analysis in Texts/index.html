@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>emotion-cause pair extraction - a new task to emotion analysis in texts | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="GoalEmotion cause extraction (ECE) 最原始的資料及論文來源其實在Event-Driven Emotion Cause Extraction with Corpus Construction這篇論文所提出的。 資料長相如下圖：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Emotion-Cause Pair Extraction - A New Task to Emotion Analysis in Texts">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/06/24/Emotion-Cause%20Pair%20Extraction%20-%20A%20New%20Task%20to%20Emotion%20Analysis%20in%20Texts/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="GoalEmotion cause extraction (ECE) 最原始的資料及論文來源其實在Event-Driven Emotion Cause Extraction with Corpus Construction這篇論文所提出的。 資料長相如下圖：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/VoGnmzg.jpg">
+<meta property="og:image" content="https://i.imgur.com/NaqBWxE.jpg">
+<meta property="og:image" content="https://i.imgur.com/vsAuSNW.jpg">
+<meta property="og:image" content="https://i.imgur.com/NoxADsf.jpg">
+<meta property="og:image" content="https://i.imgur.com/WmLVjGo.jpg">
+<meta property="og:image" content="https://i.imgur.com/d48FW6x.jpg">
+<meta property="og:image" content="https://i.imgur.com/PuP3MnE.jpg">
+<meta property="og:image" content="https://i.imgur.com/8sS3LWm.jpg">
+<meta property="og:image" content="https://i.imgur.com/0nLmbal.jpg">
+<meta property="og:image" content="https://i.imgur.com/zwH3hIJ.jpg">
+<meta property="og:image" content="https://i.imgur.com/GNUcEPl.jpg">
+<meta property="og:image" content="https://i.imgur.com/wAp97BW.jpg">
+<meta property="article:published_time" content="2020-06-24T09:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/VoGnmzg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Emotion-Cause Pair Extraction - A New Task to Emotion Analysis in Texts" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Emotion-Cause Pair Extraction - A New Task to Emotion Analysis in Texts
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/06/24/Emotion-Cause%20Pair%20Extraction%20-%20A%20New%20Task%20to%20Emotion%20Analysis%20in%20Texts/" class="article-date">
+	  <time datetime="2020-06-24T09:30:00.000Z" itemprop="datePublished">2020-06-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>Emotion cause extraction (ECE) 最原始的資料及論文來源其實在<a href="https://www.aclweb.org/anthology/D16-1170.pdf" target="_blank" rel="noopener">Event-Driven Emotion Cause Extraction with Corpus Construction</a>這篇論文所提出的。</p>
+<p>資料長相如下圖：<br><img src="https://i.imgur.com/VoGnmzg.jpg" alt=""></p>
+<a id="more"></a>
+<p>原始目標 (過去本資料集相關論文的目標)：</p>
+<ul>
+<li>給定emotion, 找出此emotion的cause (甚麼原因導致這個emotion)</li>
+</ul>
+<p>本論文目標：</p>
+<ul>
+<li>給一段落，找出數個pair的(emotion, cause)，意即沒有預先給定型emotion的資訊。本文稱此task叫做ECPE。</li>
+<li>本目標也為此論文主打優點，畢竟可以不用”提供模型emotion”資訊，這在實際問題的應用上是非常重要的。</li>
+</ul>
+<p><img src="https://i.imgur.com/NaqBWxE.jpg" alt=""></p>
+<h2 id="模型架構"><a href="#模型架構" class="headerlink" title="模型架構"></a>模型架構</h2><p>他的模型主要分為兩個階段。<br>第一階段為”抽取emotion, cause”兩者的資訊，而第二階段為”將這些資訊組合及過濾”。</p>
+<h3 id="第一階段-抽取資訊"><a href="#第一階段-抽取資訊" class="headerlink" title="第一階段 - 抽取資訊"></a>第一階段 - 抽取資訊</h3><p>我們先來看第一階段”抽取資訊”的模型架構，本文提出共三種架構：</p>
+<ul>
+<li>第一種架構稱為”Indep”,想法很直觀，即將emotion, cuase分為兩個分支而成的模型，如下圖：<br><img src="https://i.imgur.com/vsAuSNW.jpg" alt=""></li>
+</ul>
+<ul>
+<li>計算y及loss<br><img src="https://i.imgur.com/NoxADsf.jpg" alt=""><br><img src="https://i.imgur.com/WmLVjGo.jpg" alt=""></li>
+</ul>
+<ul>
+<li>另外兩種架構基本上是一樣的，只是他的”前提”不一樣，如下圖：<br><img src="https://i.imgur.com/d48FW6x.jpg" alt=""></li>
+</ul>
+<h3 id="第二階段-組合與過濾"><a href="#第二階段-組合與過濾" class="headerlink" title="第二階段 - 組合與過濾"></a>第二階段 - 組合與過濾</h3><ol>
+<li>先將emotion, cause找出目前為候選人的短句兩兩配對組成P_all<br><img src="https://i.imgur.com/PuP3MnE.jpg" alt=""></li>
+<li>每一組兩兩配對的組合，我們可以計算它的embedding s以及兩兩之間的距離<br><img src="https://i.imgur.com/8sS3LWm.jpg" alt=""></li>
+<li>最後經由簡單的regression，得到此組合是否應該刪除或留下<br><img src="https://i.imgur.com/0nLmbal.jpg" alt=""></li>
+<li>剩餘的pairs即為最終的模型結果</li>
+</ol>
+<h3 id="upper-bound"><a href="#upper-bound" class="headerlink" title="upper bound"></a>upper bound</h3><p>對於Inter-CE, Inter-EC，其實有他的upper bound，也就是萃取的y直接換成ground truth。換句話說，在知道cause 的前提下預測emotion；或者相反。<br><img src="https://i.imgur.com/zwH3hIJ.jpg" alt=""></p>
+<h2 id="Experimental-results"><a href="#Experimental-results" class="headerlink" title="Experimental results"></a>Experimental results</h2><p>針對本篇論文提出的方法所整理的結果，其研究指出，”cause extraction”比起emotion困難許多，因此在已經給予cause的ground truth，emotion extraction的效果自然比較好；反之，則效果較差。另外，缺少ground truth前提的Inter-CE, Inter-EC表現自然也比bound系列差許多：<br><img src="https://i.imgur.com/GNUcEPl.jpg" alt=""></p>
+<p>與其他方法的比較：<br><img src="https://i.imgur.com/wAp97BW.jpg" alt=""><br>(話說這裡我有個疑問，其他人都是給予”emotion”的前提，去預測”cause”，作者既然都做了Inter-EC-bound，怎麼不把它也拿進來比一下呢?)</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://arxiv.org/pdf/1906.01267.pdf" target="_blank" rel="noopener">this paper</a></li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Jeff</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/06/24/Emotion-Cause Pair Extraction - A New Task to Emotion Analysis in Texts/" target="_blank" title="Emotion-Cause Pair Extraction - A New Task to Emotion Analysis in Texts">https://github.com/dsmilab/dsmi-lab-website/2020/06/24/Emotion-Cause Pair Extraction - A New Task to Emotion Analysis in Texts/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/06/24/Attention%20is%20not%20not%20explanation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Attention is not not explanation
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/06/19/network-influence-mazimization-in-Network/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">network - influence mazimization in Network</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Goal"><span class="nav-number">1.</span> <span class="nav-text">Goal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型架構"><span class="nav-number">2.</span> <span class="nav-text">模型架構</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一階段-抽取資訊"><span class="nav-number">2.1.</span> <span class="nav-text">第一階段 - 抽取資訊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二階段-組合與過濾"><span class="nav-number">2.2.</span> <span class="nav-text">第二階段 - 組合與過濾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#upper-bound"><span class="nav-number">2.3.</span> <span class="nav-text">upper bound</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experimental-results"><span class="nav-number">3.</span> <span class="nav-text">Experimental results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

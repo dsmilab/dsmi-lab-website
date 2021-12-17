@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>introduction of transfer learning | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="TL" />
+  
+  
+  
+  
+  <meta name="description" content="Transfer Learning (TL) Similar domain, Different task Different domain, Similar task  Q : 能不能在有些不相干的data情況下，來幫助我們現在要做的task.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction of Transfer Learning">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/03/29/Introduction%20of%20Transfer%20Learning/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Transfer Learning (TL) Similar domain, Different task Different domain, Similar task  Q : 能不能在有些不相干的data情況下，來幫助我們現在要做的task.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/P84T4qv.png">
+<meta property="og:image" content="https://i.imgur.com/puUJLRl.png">
+<meta property="og:image" content="https://i.imgur.com/kfxYgLu.png">
+<meta property="og:image" content="https://i.imgur.com/zlR4GcJ.png">
+<meta property="og:image" content="https://i.imgur.com/ndEw2Hx.png">
+<meta property="og:image" content="https://i.imgur.com/15DUZpN.png">
+<meta property="og:image" content="https://i.imgur.com/ahOb79v.png">
+<meta property="og:image" content="https://i.imgur.com/zSmwWJ7.png">
+<meta property="og:image" content="https://i.imgur.com/GLv4y8J.png">
+<meta property="og:image" content="https://i.imgur.com/1r6q4Vl.png">
+<meta property="og:image" content="https://i.imgur.com/1FyJMEH.png">
+<meta property="og:image" content="https://i.imgur.com/CpRVDWX.png">
+<meta property="og:image" content="https://i.imgur.com/JRCezln.png">
+<meta property="og:image" content="https://i.imgur.com/MrTQjPn.png">
+<meta property="og:image" content="https://i.imgur.com/TD3XXEE.png">
+<meta property="og:image" content="https://i.imgur.com/EX8iYrk.png">
+<meta property="og:image" content="https://i.imgur.com/GyyFW5R.png">
+<meta property="og:image" content="https://i.imgur.com/jPCotMx.png">
+<meta property="og:image" content="https://i.imgur.com/tk71wRS.png">
+<meta property="og:image" content="https://i.imgur.com/cLjaPlu.png">
+<meta property="article:published_time" content="2020-03-29T12:41:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="TL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/P84T4qv.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Introduction of Transfer Learning" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Introduction of Transfer Learning
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/03/29/Introduction%20of%20Transfer%20Learning/" class="article-date">
+	  <time datetime="2020-03-29T12:41:00.000Z" itemprop="datePublished">2020-03-29</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/Learning-Note/">Learning Note</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Transfer-Learning-TL"><a href="#Transfer-Learning-TL" class="headerlink" title="Transfer Learning (TL)"></a>Transfer Learning (TL)</h1><ol>
+<li>Similar domain, Different task</li>
+<li>Different domain, Similar task</li>
+</ol>
+<p>Q : 能不能在有些不相干的data情況下，來幫助我們現在要做的task.</p>
+<a id="more"></a>
+<p>Why?<br>ex1. 台語語音辨識（data少），但英文、中文的語音相對容易取的。<br>ex2. 醫療影像辨識（有無腫瘤），實際其他圖片的data網路上一堆。<br>ex3. 分析法律文件，網路上其他文件是否有幫助？</p>
+<p>TL Example in real life:<br>漫畫家 -&gt; 責編 -&gt; 畫分鏡 -&gt; 投稿jump<br>研究生 -&gt; 指導教授 -&gt; 跑實驗 -&gt; 投稿期刊</p>
+<p><img src="https://i.imgur.com/P84T4qv.png" alt=""></p>
+<p>我們只會介紹 Source Data 有 label 的部分。</p>
+<h1 id="Labelled-Source-amp-Labelled-Target-Data"><a href="#Labelled-Source-amp-Labelled-Target-Data" class="headerlink" title="Labelled Source &amp; Labelled Target Data"></a>Labelled Source &amp; Labelled Target Data</h1><h2 id="Model-Fine-tune"><a href="#Model-Fine-tune" class="headerlink" title="Model Fine-tune"></a>Model Fine-tune</h2><p>Task description:<br>target data : $(x^{t}, y^{t}) \rightarrow$ very little<br>source data : $(x^{s}, y^{s}) \rightarrow$ A large Amount</p>
+<p>One-shot learning: only a few examples in target domain</p>
+<h3 id="Example-Speaker-Adaption"><a href="#Example-Speaker-Adaption" class="headerlink" title="Example : Speaker Adaption"></a>Example : Speaker Adaption</h3><p>target data: audio data and its transriptions of specific  user.<br>source data: audio data and transriptions from many speakers.</p>
+<h4 id="Main-Idea"><a href="#Main-Idea" class="headerlink" title="Main Idea :"></a>Main Idea :</h4><p>Training the model by source data, then fine tune the model by target data.<br>**Challenge : Only limited target data, so be careful about overfitting.</p>
+<h3 id="How-to-prevent-overfitting"><a href="#How-to-prevent-overfitting" class="headerlink" title="How to prevent overfitting ?"></a>How to prevent overfitting ?</h3><h3 id="1-Conservarive-Learning"><a href="#1-Conservarive-Learning" class="headerlink" title="1. Conservarive Learning"></a>1. Conservarive Learning</h3><p>假設現在有大量的source data假設在語音辨識裡他就是很多不同speaker的聲音都有transciption，就可以拿來train一個語音辨識的neural network。接下來，你有target data，可能只有五句或十句這麼多，如果直接把這些target data去train一個model想必因該是不可行的。這時候在train的時候就可以設定一些限制，讓train完的新model跟舊model不要差太多，那就是新的model跟舊的model看到同一筆data的時候，他們的output越接近越好。或者也可以把constraint放在兩者model他們之間的weight L2 norm越接近越好。</p>
+<p><img src="https://i.imgur.com/puUJLRl.png" alt=""></p>
+<h3 id="2-Layer-Transfer"><a href="#2-Layer-Transfer" class="headerlink" title="2. Layer Transfer"></a>2. Layer Transfer</h3><p><img src="https://i.imgur.com/kfxYgLu.png" alt=""></p>
+<p>source data只需考慮很少的參數，就可以避免overfitting的情形。 當source data量一多也可以考慮fine-tune整個model.</p>
+<h4 id="Q-Which-layer-can-be-transferred-copy"><a href="#Q-Which-layer-can-be-transferred-copy" class="headerlink" title="Q : Which layer can be transferred (copy)?"></a>Q : Which layer can be transferred (copy)?</h4><h5 id="Speech-usually-copy-the-last-few-layers"><a href="#Speech-usually-copy-the-last-few-layers" class="headerlink" title="Speech : usually copy the last few layers."></a>Speech : usually copy the last few layers.</h5><p>每一個人，他用同樣的發音方式，因為口腔結構略有差異，得到的聲音不同。前面幾層layer主要在看語者說話的發音方式，再根據發音方式得到現在説的詞彙，達到辨識結果。所以從發音方式到辨識結果後面幾層layer是跟語者沒關係的可以被copy，不一樣在於從聲音訊號到發音方式這一段，可能是每個人都不一樣。</p>
+<h5 id="Image-usually-copy-the-first-few-layers"><a href="#Image-usually-copy-the-first-few-layers" class="headerlink" title="Image: usually copy the first few layers."></a>Image: usually copy the first few layers.</h5><p><img src="https://i.imgur.com/zlR4GcJ.png" alt=""></p>
+<p>因為CNN前面幾層所做的就是detect最簡單的pattern，像是橫線、直線，或者有沒有簡單的幾何圖形。所以在CNN前幾層learn的東西，是可以transfer到其他task上。<br>而最後幾層learn的東西往往比較具體，他就無法transfer到其他task上</p>
+<h2 id="Multi-task-learning"><a href="#Multi-task-learning" class="headerlink" title="Multi-task learning"></a>Multi-task learning</h2><p>與fine-tune不同，fine-tune在意target domain做得好不好，不管source domain. Multi-task learning是考慮能不能同時做好。</p>
+<p><img src="https://i.imgur.com/ndEw2Hx.png" alt=""></p>
+<p>好處在於，taskA 與 taskB 前面幾層是共用的。前面幾層是用比較多data訓練的，所以可能會有比較好的performance。<br>前提：這兩個task必須是有共通性的，是不是可以共用前面幾個layer。</p>
+<p>另外，input無法share。兩種不同的input都用不同的神經網路把它transfrom到相同domain上，在apply不同的神經網路，一個做taskA，另一個做taskB。如果你覺得這兩個task中間有共同地方的話。</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h3><p><img src="https://i.imgur.com/15DUZpN.png" alt=""></p>
+<p>一大堆不同語言data。可以訓練一個模型同時辨識五種不同語言。前面幾個layer共用參數，後面幾個layer每一個語言會有自己的參數。雖是不同語言，但都為人類說的，前面幾個layer就可以share相同資訊，可以共用相同的參數</p>
+<h2 id="Q-Transfer-是否會造成負面效果？"><a href="#Q-Transfer-是否會造成負面效果？" class="headerlink" title="Q: Transfer 是否會造成負面效果？"></a>Q: Transfer 是否會造成負面效果？</h2><p>有可能，如果兩個task不相近就會有可能造成這樣的結果。但總是思考能不能transfer, try &amp; error太浪費時間的。</p>
+<h3 id="Progressive-neural-netwok"><a href="#Progressive-neural-netwok" class="headerlink" title="Progressive neural netwok"></a>Progressive neural netwok</h3><p><img src="https://i.imgur.com/ahOb79v.png" alt=""></p>
+<p>task 2 他的每一個hidden layer都接前面task 1 某一個hidden layer的output。所以他的好處在於，就算task 1與task 2不像也能夠進行training。</p>
+<p>首先，task 2的model不會去動到task 1的model，所以task1一定不會變得比較差。再來，task 2去借用task 1的參數，但是可以把他借來的參數直接設成0，這樣也不會影響task 2 的performance。最糟的情況就是跟自己train的performance是差不多的。</p>
+<p>所以說如果有5個task不就要接前面4個task嗎？那這篇作者自己也覺得很怪等待別人提出想法～～～～</p>
+<h1 id="Labelled-Source-amp-Unlabelled-Target-Data"><a href="#Labelled-Source-amp-Unlabelled-Target-Data" class="headerlink" title="Labelled Source &amp; Unlabelled Target Data"></a>Labelled Source &amp; Unlabelled Target Data</h1><p>Task description:</p>
+<p>Source data : $(x^{s}, y^{s}) \rightarrow$ training data<br>Target data : $(x^{t}) \rightarrow$ testing data</p>
+<p><img src="https://i.imgur.com/zSmwWJ7.png" alt=""></p>
+<h3 id="Main-problem"><a href="#Main-problem" class="headerlink" title="Main problem:"></a>Main problem:</h3><p><img src="https://i.imgur.com/GLv4y8J.png" alt=""><br>Training data and testing data are mismatch.<br>如何在Source data上的model直接apply在別的Target data上也可以運行呢？</p>
+<h2 id="Domain-Adversarial-training"><a href="#Domain-Adversarial-training" class="headerlink" title="Domain Adversarial training"></a>Domain Adversarial training</h2><p><img src="https://i.imgur.com/1r6q4Vl.png" alt=""></p>
+<p>不應該是兩個不同domain的feature分成兩群，而是不同domain的feature要被混雜再一起。把不同domain的特性給消除。Domain classifer主要就在辨別feature $f$ 是在哪一個domain裡面。<br>前面feature extractor有點類似GAN generator的output，然後domain classifier就是descriminator的結果，使得整個架構很像GAN。<br>但在這邊，你只是把feature混在一起，根本無法進行數字分類，因此整體的Domain Adversarial training長得像這樣:</p>
+<p><img src="https://i.imgur.com/1FyJMEH.png" alt=""></p>
+<p>藍色的部份希望把class分得越精準越好，粉紅色的部分則是希望能準確預測input x 屬於哪一個domain。<br>那feature extractor要做的事情就是同時imporve label predictor的accuray，同時也要minimize domain classifer的accuracy，希望把類別分類做到最好，同時也要移除掉不同domain的特性。</p>
+<p><img src="https://i.imgur.com/CpRVDWX.png" alt=""></p>
+<p>如何移除domin的特型，在做back propagation的時候，多加一個gradient reversal layer把domain classifier的gradient取負號回傳給前面的feature extractor就以簡單做到了。<br>$\textbf但重要的問題來了$: traget data根本沒label那要怎麼train label classifier? 根據paper我覺得是，target data不會參與label classifier的training。也就是說在train model時，target data的作用只會在domain classifier 的loss上。（這是我看他sudo code覺得因該是這樣，因為他沒細講ＱＱ）</p>
+<h2 id="Zero-shot-Learning"><a href="#Zero-shot-Learning" class="headerlink" title="Zero-shot Learning"></a>Zero-shot Learning</h2><p>Zero-shot learning對於domain的要求更嚴苛一點，他的define是source data 和 target data的task是不一樣的，不像先前是對不同doamin下的數字進行辨識。</p>
+<p>example :<br>Source data $(x^{s}, y^{s})$ 都是貓和狗圖片。<br>Target data $(x^{t})$ 是草泥馬的圖片，在Source data中是沒看過的。</p>
+<p>語音上很常遇到這樣的問題。<br>假設，把不同的word都當作是一個詞彙一個class，本來在training和testing中就很長有可能看到不同的詞彙。在語音上的做法是，不要直接判斷這一段聲音屬於哪一個word，而是判斷這一段聲音屬於哪一個phoneme(音位，是人類語言中能夠區別意義的最小聲音單位，是音位學分析的基礎概念)，之後在根據人類的知識在做一個phoneme與文字對應關係的table。 在辨識的時候，只要辨識出phoneme就好，再去查表看看這一段phoneme對應到哪一個word。 因此就算有些word在training data沒看過，只要他在你建的lexicon(詞典)有出現過，model就可以辨識聲音屬於哪一個phoneme的話。</p>
+<p>那在圖片上，我們可以把每一個class用他的attribute來表示。每一個class最好有獨一無二的attribute。 在training的時候，我們output的是圖片的特徵而不是類別。</p>
+<p><img src="https://i.imgur.com/JRCezln.png" alt=""></p>
+<p>所以當有一個從沒在training set出現過的圖片，我們就透過model找出他的特徵，並且查表來找哪一個和output的最接近(不一定會一樣)，那那個動物就是要找的。</p>
+<p><img src="https://i.imgur.com/MrTQjPn.png" alt=""></p>
+<p>有時後，我們產生的attribute可能很複雜，dimension可能很大，這時候我們就能夠做attribute的embedding。我們就把每一個training data的image都透過一個transform變成embedding space上的一個點，然後也把每個image對應的attribute也都變成embedding space上得點。$f$和$g$可以想像成是兩個不同的NN。在training時會希望$f(x^{n})$和$g(y^{n})$越接近越好。如此一來在testing時，當有一個不在training data上的圖片，我們就把這個image的attribute轉變至embedding space看哪個動物在embedding space和他最相近。<br><img src="https://i.imgur.com/TD3XXEE.png" alt=""></p>
+<p>但在這邊會牽涉到一個問題，如果我根本沒有database紀錄動物的attribute呢？<br>A: 借用word vector</p>
+<p>word vector的給個dimension就代表這個word的某種attribute，所以不一定需要一個database跟你說每一個動物的attribute是什麼。假設你知道每個動物他對應的word的word vector(例如説從很大量的corpse wikipedia train出來)，那就可以直接把attribute直接換成word vector，再做剛剛的embedding就ＯＫ了。</p>
+<p><img src="https://i.imgur.com/EX8iYrk.png" alt=""></p>
+<p>那在learn zero-shot的時候需要注意一些事情。如果我們單純只用第一個式子只要求$f(x^{n})$跟$g(y^{n})$越近越好，解出來你就會發現最後的結果是 $\forall n, f(x^{n})=g(y^{n})$，那顯然這不是我們要的結果。</p>
+<p>所以在定loss function時我們因該還要考慮$x^{n}$跟$y^{m}$如果不是同一個pair，那麼他們再embedding space得距離因該要越大越好，於是就有了第二個式子。這裡的$k$代表的是margin，再training時必須事先設定好。那我們來看看後面summation什麼時候會是zero-loss呢，只有當後面那一長串小於0的時候。那我們把後面那一長串小於0做一下整理，我們便可以清楚知道這一長串的含義是什麼:</p>
+<p>“當$f(x^{n})$與$g(y^{n})$他的inner product都大於$f(x^{n})$與其他任一$g(y^{m}) k$個單位”</p>
+<p>因此，如果定這樣一個loss function，不只把同一個pair起來的attribute跟image拉近，同時也要把不成pair的拆開。</p>
+<p><img src="https://i.imgur.com/GyyFW5R.png" alt=""></p>
+<p>其實還有一個更簡單的zero-shot learing方法。這個方法就是說，我們也不需要任何的learning。假設現在有一個現成的Imagenet model跟word vector，把一張圖丟到NN他覺得有0.5的機率是lion，0.5的機率是tiger，就把lion跟tiger的word vector比例用1:1混合，在看哪個word和word vector的混合結果最近。那可以發現最接近的就是liger(獅虎)。</p>
+<p><img src="https://i.imgur.com/jPCotMx.png" alt=""></p>
+<p>之前我們都是舉圖片的例子，我們再舉一個speech在zero-shot learning的例子。<br>下面這是google做的一個實驗，這是在做machine translation。machine看過如何把英文翻成韓文，也知道怎麼把韓文翻成英文，也知道怎麼把英文翻譯成日文，也知道怎麼把日文翻成英文，有這些data。但machine從沒看過日文翻韓文跟韓文翻日文，但是他卻可以翻。</p>
+<p>為什麼zero-shot learning在這樣的task是可行的？<br>因為如果用同一個model做了不同語言之間的translation，他可以學到不同語言的句子project到相同的space上，而在這個space上他們是language independent的，在這space上，只跟句子的semantic有關。</p>
+<p><img src="https://i.imgur.com/tk71wRS.png" alt=""></p>
+<p>這個是paper説根據learn好的translator。translator會有一個encoder，會把input轉換成一個vector，一個decoder根據這個vector解回翻譯的結果。如果把不同語言都丟進這個encoder裡頭，讓它變成vector的話，這些不同語言的不同句子，在這個space上的分佈關西會有什麼關係？</p>
+<p>比如說圖上有三個句子分別是英文、韓文以及日文的句子，這三個句子講的都是同樣的事情，是一樣的意思。通過encoder，可以發現它們都在space上都在差不多的位置。左邊(ａ)圖不同顏色代表是說這些句子都來自相同意思，但可能來自不同語言。machine做到的事情就是，他發現一種sequence language，對每一個語言，都先轉換成只有machine自己知道的 sequence language，就算是有某一個task，input跟output是machine沒看過的，它也可以透過自己學出的sequence language來做translation。</p>
+<p><img src="https://i.imgur.com/cLjaPlu.png" alt=""></p>
+<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q &amp; A"></a>Q &amp; A</h1><h1 id="感謝觀看～～～"><a href="#感謝觀看～～～" class="headerlink" title="感謝觀看～～～"></a>感謝觀看～～～</h1>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Chris</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/03/29/Introduction of Transfer Learning/" target="_blank" title="Introduction of Transfer Learning">https://github.com/dsmilab/dsmi-lab-website/2020/03/29/Introduction of Transfer Learning/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/TL/" rel="tag">TL</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/03/30/Leetcode%20-%20sudoku/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode - Sodoku solver
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/03/26/Leetcode%20--%20linked%20list/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode -- linked list</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Transfer-Learning-TL"><span class="nav-number">1.</span> <span class="nav-text">Transfer Learning (TL)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Labelled-Source-amp-Labelled-Target-Data"><span class="nav-number">2.</span> <span class="nav-text">Labelled Source &amp; Labelled Target Data</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-Fine-tune"><span class="nav-number">2.1.</span> <span class="nav-text">Model Fine-tune</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-Speaker-Adaption"><span class="nav-number">2.1.1.</span> <span class="nav-text">Example : Speaker Adaption</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Main-Idea"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">Main Idea :</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-prevent-overfitting"><span class="nav-number">2.1.2.</span> <span class="nav-text">How to prevent overfitting ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Conservarive-Learning"><span class="nav-number">2.1.3.</span> <span class="nav-text">1. Conservarive Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Layer-Transfer"><span class="nav-number">2.1.4.</span> <span class="nav-text">2. Layer Transfer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q-Which-layer-can-be-transferred-copy"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">Q : Which layer can be transferred (copy)?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Speech-usually-copy-the-last-few-layers"><span class="nav-number">2.1.4.1.1.</span> <span class="nav-text">Speech : usually copy the last few layers.</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Image-usually-copy-the-first-few-layers"><span class="nav-number">2.1.4.1.2.</span> <span class="nav-text">Image: usually copy the first few layers.</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-task-learning"><span class="nav-number">2.2.</span> <span class="nav-text">Multi-task learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.2.1.</span> <span class="nav-text">Example:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-Transfer-是否會造成負面效果？"><span class="nav-number">2.3.</span> <span class="nav-text">Q: Transfer 是否會造成負面效果？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Progressive-neural-netwok"><span class="nav-number">2.3.1.</span> <span class="nav-text">Progressive neural netwok</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Labelled-Source-amp-Unlabelled-Target-Data"><span class="nav-number">3.</span> <span class="nav-text">Labelled Source &amp; Unlabelled Target Data</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Main-problem"><span class="nav-number">3.0.1.</span> <span class="nav-text">Main problem:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Domain-Adversarial-training"><span class="nav-number">3.1.</span> <span class="nav-text">Domain Adversarial training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zero-shot-Learning"><span class="nav-number">3.2.</span> <span class="nav-text">Zero-shot Learning</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">4.</span> <span class="nav-text">Q &amp; A</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#感謝觀看～～～"><span class="nav-number">5.</span> <span class="nav-text">感謝觀看～～～</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

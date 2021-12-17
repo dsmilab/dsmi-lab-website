@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>basic overview of convolutional neural network | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cv" />
+  
+  
+  
+  
+  <meta name="description" content="這篇文章主要是提供一個CV domain的overview，帶領大家快速回顧CNN的發展及應用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Basic Overview of Convolutional Neural Network">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/03/26/Basic%20Overview%20of%20Convolutional%20Neural%20Network/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="這篇文章主要是提供一個CV domain的overview，帶領大家快速回顧CNN的發展及應用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/U1BSfIx.jpg">
+<meta property="og:image" content="https://www-users.cs.york.ac.uk/~nep/research/3Dface/tomh/Filters.jpg">
+<meta property="og:image" content="https://i.imgur.com/NMQu4D9.jpg">
+<meta property="og:image" content="https://i.imgur.com/4Mgk4cQ.jpg">
+<meta property="og:image" content="https://i.imgur.com/1VbS0mr.png">
+<meta property="og:image" content="https://i.imgur.com/H77Ng1M.png">
+<meta property="og:image" content="https://i.imgur.com/lAFg1nk.png">
+<meta property="og:image" content="https://i.imgur.com/tqVTTsc.png">
+<meta property="og:image" content="https://i.imgur.com/mFMAQqE.jpg">
+<meta property="og:image" content="https://i.imgur.com/diKak2T.png">
+<meta property="og:image" content="https://i.imgur.com/kHFshSf.png">
+<meta property="og:image" content="https://i.imgur.com/CO20L9J.png">
+<meta property="og:image" content="https://i.imgur.com/YqqsbdK.png">
+<meta property="og:image" content="https://i.imgur.com/h6d73AI.png">
+<meta property="og:image" content="https://i.imgur.com/fmnV6BS.png">
+<meta property="og:image" content="https://i.imgur.com/B7u0EpC.png">
+<meta property="og:image" content="https://i.imgur.com/SvlChJG.png">
+<meta property="og:image" content="https://i.imgur.com/tgwSscQ.jpg">
+<meta property="og:image" content="https://i.imgur.com/XDbgyJ8.png">
+<meta property="og:image" content="https://i.imgur.com/1kRQLTX.png">
+<meta property="og:image" content="https://i.imgur.com/QVbPd3D.jpg">
+<meta property="og:image" content="https://i.imgur.com/OPwl68t.jpg">
+<meta property="article:published_time" content="2020-03-26T13:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="cv">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/U1BSfIx.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Basic Overview of Convolutional Neural Network" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Basic Overview of Convolutional Neural Network
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/03/26/Basic%20Overview%20of%20Convolutional%20Neural%20Network/" class="article-date">
+	  <time datetime="2020-03-26T13:30:00.000Z" itemprop="datePublished">2020-03-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <p><img src="https://i.imgur.com/U1BSfIx.jpg" alt=""></p>
+<p>這篇文章主要是提供一個CV domain的overview，帶領大家快速回顧CNN的發展及應用</p>
+<a id="more"></a>
+<h2 id="Convolution-in-CNN"><a href="#Convolution-in-CNN" class="headerlink" title="Convolution in CNN"></a>Convolution in CNN</h2><p>傳統影像處理的技術會使用Image filter的技術來處理圖像，透過不同的濾波器可以對圖片進行convolution而得到不同的結果:</p>
+<ul>
+<li>low pass filter</li>
+<li>high pass filter</li>
+</ul>
+<p><img src="https://www-users.cs.york.ac.uk/~nep/research/3Dface/tomh/Filters.jpg" alt=""></p>
+<p>在以往這些filter的權重是透過研究而得出的，也就是一堆人都在研究各式各樣不同的filter。但是有沒有辦法讓電腦自己學習什麼樣的filter對我們的task最好呢?</p>
+<p>這就是Convolutional Neural Network, CNN在做的事情。</p>
+<h2 id="CNN-in-Computer-Vision-domain"><a href="#CNN-in-Computer-Vision-domain" class="headerlink" title="CNN in Computer Vision domain"></a>CNN in Computer Vision domain</h2><p>常見的CV領域應用如下，接下來會快速go through一遍每個領域，最後聚焦在Object Classification的各種模型。</p>
+<ul>
+<li>Object Classification</li>
+<li>Object Detection and Localization</li>
+<li>Object Segmentation</li>
+<li>Object Identification</li>
+<li>Object tracking + ActionRecognition</li>
+</ul>
+<h2 id="Object-Detection-and-Localization"><a href="#Object-Detection-and-Localization" class="headerlink" title="Object Detection and Localization"></a>Object Detection and Localization</h2><p><img src="https://i.imgur.com/NMQu4D9.jpg" alt=""></p>
+<p>除了判斷物體類別外，還要知道物體的bounding box</p>
+<h3 id="Issue探討"><a href="#Issue探討" class="headerlink" title="Issue探討:"></a>Issue探討:</h3><ul>
+<li>是先找到物體在去框box，還是先找box在來判斷物體?</li>
+<li>當透過模型得出一個物體有多個可能符合的box，如何找到最佳的box?</li>
+<li>找box跟classification看似是兩個不同的task，是否可以一起做(end-to-end)?</li>
+</ul>
+<h3 id="Related-research"><a href="#Related-research" class="headerlink" title="Related research:"></a>Related research:</h3><p>R-CNN, SPPnet, Fast R-CNN, Faster R-CNN, YOLO, SSD, YOLOv2, YOLO9000, FPN, YOLOv3</p>
+<h2 id="Object-Segmentation"><a href="#Object-Segmentation" class="headerlink" title="Object Segmentation"></a>Object Segmentation</h2><p><img src="https://i.imgur.com/4Mgk4cQ.jpg" alt=""></p>
+<p>Segmentation可以說是 pixel-wise的classification，能夠提供更有效的語意資訊</p>
+<h3 id="Issue探討-1"><a href="#Issue探討-1" class="headerlink" title="Issue探討:"></a>Issue探討:</h3><ul>
+<li>核心概念: patch + sliding window<ul>
+<li>將圖片分成許多小patch，針對每個patch去預測center pixel的label</li>
+<li>Issue1: high computational cost?</li>
+<li>Issue2: accuracy/localization trade off?</li>
+</ul>
+</li>
+<li>Unsampling(deConvolution)如何對應回原本的點?</li>
+<li>Pooling具有平移不變性(translation invariance)，對於classification較robust，但對於segmentation則不好，如何解決?</li>
+<li>Semantic Segmentation (category-wise) v.s. Instance Segmentation (object-aware)</li>
+</ul>
+<h3 id="Related-research-1"><a href="#Related-research-1" class="headerlink" title="Related research:"></a>Related research:</h3><p>FCN, DeepLab, SegNet, Enet, ICNet, DeepMask, SharpMask, InstanceFCN, R-FCN, MNC, Mask R-CNN</p>
+<h2 id="Object-Identification"><a href="#Object-Identification" class="headerlink" title="Object Identification"></a>Object Identification</h2><h3 id="Issue探討-2"><a href="#Issue探討-2" class="headerlink" title="Issue探討:"></a>Issue探討:</h3><ul>
+<li>臉部辨識技術?<br><img src="https://i.imgur.com/1VbS0mr.png" alt=""></li>
+<li>如何有有效率的用一個向量來表達一張圖片?<br><img src="https://i.imgur.com/H77Ng1M.png" alt=""><ul>
+<li>應用在圖像檢索(image retrieval)</li>
+<li>Binary descriptor + Hamming distance</li>
+</ul>
+</li>
+</ul>
+<h3 id="Related-research-2"><a href="#Related-research-2" class="headerlink" title="Related research:"></a>Related research:</h3><p>Deepface, FaceNet, Binary Hashing Code, DeepBit</p>
+<h2 id="Object-tracking-ActionRecognition"><a href="#Object-tracking-ActionRecognition" class="headerlink" title="Object tracking + ActionRecognition"></a>Object tracking + ActionRecognition</h2><p>Conv有1d, 2d, 那Conv3d到底用在什麼地方? 就是這裡了!<br><img src="https://i.imgur.com/lAFg1nk.png" alt=""></p>
+<p>辨識影片中某時刻的動作:<br><img src="https://i.imgur.com/tqVTTsc.png" alt=""></p>
+<p>追蹤影片中的物體:<br><img src="https://i.imgur.com/mFMAQqE.jpg" alt=""></p>
+<h2 id="Object-Classification"><a href="#Object-Classification" class="headerlink" title="Object Classification"></a>Object Classification</h2><p>ImageNet Large Scale Visual Recognition Challenge(ILSVRC)<br><img src="https://i.imgur.com/diKak2T.png" alt=""></p>
+<ul>
+<li>ImageNet dataset</li>
+<li>最後一屆2017年，Why?<ul>
+<li>已經比人眼辨識率還低了你還想怎樣QQ</li>
+</ul>
+</li>
+</ul>
+<h3 id="LeNet"><a href="#LeNet" class="headerlink" title="LeNet"></a>LeNet</h3><p><img src="https://i.imgur.com/kHFshSf.png" alt=""></p>
+<ul>
+<li>for MNIST digit recognition</li>
+<li>2 Conv(Convolution layer) + 2 FC(Fully Connected layer) </li>
+</ul>
+<h3 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h3><p><img src="https://i.imgur.com/CO20L9J.png" alt=""></p>
+<ul>
+<li>2 GPU to train</li>
+<li>2012 ILSVRC Winner(top 5 error rate: 16.4%)</li>
+<li>8 layers architecture</li>
+<li>first use “ReLU” as activation function</li>
+<li>use data augumentation for training</li>
+</ul>
+<p>從此之後開始，正式進入<del>大調參時代</del></p>
+<h3 id="ZFNet"><a href="#ZFNet" class="headerlink" title="ZFNet"></a>ZFNet</h3><p><img src="https://i.imgur.com/YqqsbdK.png" alt=""></p>
+<ul>
+<li>2013 ILSVRC Winner(top 5 error rate: 11.7%)</li>
+<li>Same to AlexNet, but use smaller kernel size &amp; increase kernel numbers </li>
+</ul>
+<h3 id="VGG"><a href="#VGG" class="headerlink" title="VGG"></a>VGG</h3><p><img src="https://i.imgur.com/h6d73AI.png" alt=""></p>
+<ul>
+<li>2014 ILSVRC 2nd place(top 5 error rate:7.3%)</li>
+<li>more deeper! 19 layers</li>
+<li>use 3x3 Conv &amp; 2x2 Maxpooling only: 目的是用多層的較小的filter達到一個大的filter包含的資訊。舉例來說2個3×3的Conv可以和1個5×5的Conv涵蓋一樣的資訊量，但參數量卻比較少。</li>
+</ul>
+<p><img src="https://i.imgur.com/fmnV6BS.png" alt=""></p>
+<ul>
+<li>do pooling after mutli-time Conv: 相較於以前一個Conv後面就接一個Pooling，VGG做了很多次Conv才接Pooling，因為這樣可以透過activation function使data有更多non-linear的變化。</li>
+</ul>
+<h3 id="GoogLeNet"><a href="#GoogLeNet" class="headerlink" title="GoogLeNet"></a>GoogLeNet</h3><p><img src="https://i.imgur.com/B7u0EpC.png" alt=""></p>
+<ul>
+<li>2014 ILSVRC Winner(top 5 error rate: 6.7% )</li>
+<li>Let’s  keep go deeper!!</li>
+<li>22 layers</li>
+<li>inception model<br><img src="https://i.imgur.com/SvlChJG.png" alt=""></li>
+<li>use 1x1 Conv to reduction dimension<ul>
+<li>1D-CNN? NIN!</li>
+<li>人在江湖飄，不能不知道。走CV你不能不知道的牛逼論文: Network In Network</li>
+</ul>
+</li>
+</ul>
+<h3 id="ResNet"><a href="#ResNet" class="headerlink" title="ResNet"></a>ResNet</h3><ul>
+<li>2015 ILSVRC Winner(top 5 error rate: 3.6% )</li>
+<li>more!!give me more depper!!!!!</li>
+<li>152 layers</li>
+<li>residual block<ul>
+<li>層數越多時，其實效果不一定會越好，因為information在高層中會很難進行傳播<br><img src="https://i.imgur.com/tgwSscQ.jpg" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="SENet"><a href="#SENet" class="headerlink" title="SENet"></a>SENet</h3><ul>
+<li>2017 ILSVRC Winner(top 5 error rate: 2.251% )</li>
+<li>ResNet + SE block<ul>
+<li>learn weights for different kernel</li>
+<li>可以想成是對feature map做attention<br><img src="https://i.imgur.com/XDbgyJ8.png" alt=""></li>
+</ul>
+</li>
+<li>Global Average Pooling<ul>
+<li>GAP? NIN!</li>
+<li>再說一次，人在江湖飄，不能不知道。走CV你不能不知道的牛逼論文: Network In Network<br><img src="https://i.imgur.com/1kRQLTX.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="Issue探討-3"><a href="#Issue探討-3" class="headerlink" title="Issue探討"></a>Issue探討</h3><p>CNN越來越大到底GPU怎麼吃 ( •́ _ •̀)？</p>
+<h4 id="DenseNet"><a href="#DenseNet" class="headerlink" title="DenseNet"></a>DenseNet</h4><p><img src="https://i.imgur.com/QVbPd3D.jpg" alt=""></p>
+<ul>
+<li>Dense Block </li>
+<li>每一層的輸入都包含了前一層的資訊(concat)，降低了在層數過大時不容易propagation的問題</li>
+<li>每一層的輸入雖然很多，但參數量其實很少(Densnet的每一層的kernel數不用像其他model那麼多)<ul>
+<li>因為特徵共用，大部分輸入來自其它層</li>
+</ul>
+</li>
+<li>越深層，concat的input還是會越來越多，怎麼辦?<ul>
+<li>GAP<ul>
+<li>GAP? NIN! </li>
+<li>再說一遍，走CV你不能不知道的牛逼論文: Network In Network</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="MobileNet"><a href="#MobileNet" class="headerlink" title="MobileNet"></a>MobileNet</h4><p><img src="https://i.imgur.com/OPwl68t.jpg" alt=""></p>
+<ul>
+<li>Depthwise separable convolution: 透過不同的計算方式，在減少參數計算量下達到和一般convolution等價的結果<ul>
+<li>Depthwise convolution</li>
+<li>pointwise convolution<ul>
+<li>Conv1d -&gt; NIN! </li>
+<li>最後一遍，走CV你不能不知道的牛逼論文: Network In Network</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>也就是說，任何CNN model都可以透過Depthwise separable convolution得到計算量跟參數量更小的等價model</li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>John</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/03/26/Basic Overview of Convolutional Neural Network/" target="_blank" title="Basic Overview of Convolutional Neural Network">https://github.com/dsmilab/dsmi-lab-website/2020/03/26/Basic Overview of Convolutional Neural Network/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/cv/" rel="tag">cv</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/03/26/Leetcode%20--%20linked%20list/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode -- linked list
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/03/25/NLP%20Automated%20Collocation%20Suggestion%20for%20Japanese%20Second%20Language%20Learners/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">NLP Automated Collocation Suggestion for Japanese Second Language Learners</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Convolution-in-CNN"><span class="nav-number">1.</span> <span class="nav-text">Convolution in CNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CNN-in-Computer-Vision-domain"><span class="nav-number">2.</span> <span class="nav-text">CNN in Computer Vision domain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-Detection-and-Localization"><span class="nav-number">3.</span> <span class="nav-text">Object Detection and Localization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Issue探討"><span class="nav-number">3.1.</span> <span class="nav-text">Issue探討:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Related-research"><span class="nav-number">3.2.</span> <span class="nav-text">Related research:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-Segmentation"><span class="nav-number">4.</span> <span class="nav-text">Object Segmentation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Issue探討-1"><span class="nav-number">4.1.</span> <span class="nav-text">Issue探討:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Related-research-1"><span class="nav-number">4.2.</span> <span class="nav-text">Related research:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-Identification"><span class="nav-number">5.</span> <span class="nav-text">Object Identification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Issue探討-2"><span class="nav-number">5.1.</span> <span class="nav-text">Issue探討:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Related-research-2"><span class="nav-number">5.2.</span> <span class="nav-text">Related research:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-tracking-ActionRecognition"><span class="nav-number">6.</span> <span class="nav-text">Object tracking + ActionRecognition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-Classification"><span class="nav-number">7.</span> <span class="nav-text">Object Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LeNet"><span class="nav-number">7.1.</span> <span class="nav-text">LeNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AlexNet"><span class="nav-number">7.2.</span> <span class="nav-text">AlexNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZFNet"><span class="nav-number">7.3.</span> <span class="nav-text">ZFNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VGG"><span class="nav-number">7.4.</span> <span class="nav-text">VGG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GoogLeNet"><span class="nav-number">7.5.</span> <span class="nav-text">GoogLeNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ResNet"><span class="nav-number">7.6.</span> <span class="nav-text">ResNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SENet"><span class="nav-number">7.7.</span> <span class="nav-text">SENet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Issue探討-3"><span class="nav-number">7.8.</span> <span class="nav-text">Issue探討</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DenseNet"><span class="nav-number">7.8.1.</span> <span class="nav-text">DenseNet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MobileNet"><span class="nav-number">7.8.2.</span> <span class="nav-text">MobileNet</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>bert - bidirectional encoder representations from transformers | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta property="og:type" content="article">
+<meta property="og:title" content="BERT - Bidirectional Encoder Representations from Transformers">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/05/13/BERT%20-%20Bidirectional%20Encoder%20Representations%20from%20Transformers/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/DRmP7UU.jpg">
+<meta property="og:image" content="https://i.imgur.com/33rzQPd.jpg">
+<meta property="og:image" content="https://i.imgur.com/xBkH5WK.jpg">
+<meta property="og:image" content="https://i.imgur.com/jEICXBm.jpg">
+<meta property="og:image" content="https://i.imgur.com/IdwW8yt.jpg">
+<meta property="og:image" content="https://i.imgur.com/Wz5TPiQ.jpg">
+<meta property="og:image" content="https://i.imgur.com/7kwZWjQ.jpg">
+<meta property="og:image" content="https://i.imgur.com/0OVol1F.jpg">
+<meta property="og:image" content="https://i.imgur.com/Lvk5Ego.jpg">
+<meta property="og:image" content="https://i.imgur.com/4tle5Gw.jpg">
+<meta property="og:image" content="https://i.imgur.com/cZ3XX84.jpg">
+<meta property="og:image" content="https://i.imgur.com/ksGzorJ.jpg">
+<meta property="og:image" content="https://i.imgur.com/DzsTEqZ.jpg">
+<meta property="og:image" content="https://i.imgur.com/wePRvBT.gif">
+<meta property="article:published_time" content="2020-05-13T11:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/DRmP7UU.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-BERT - Bidirectional Encoder Representations from Transformers" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      BERT - Bidirectional Encoder Representations from Transformers
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/05/13/BERT%20-%20Bidirectional%20Encoder%20Representations%20from%20Transformers/" class="article-date">
+	  <time datetime="2020-05-13T11:00:00.000Z" itemprop="datePublished">2020-05-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <p><img src="https://i.imgur.com/DRmP7UU.jpg" alt=""></p>
+<a id="more"></a>
+
+<h2 id="Main-concept-of-BERT"><a href="#Main-concept-of-BERT" class="headerlink" title="Main concept of BERT"></a>Main concept of BERT</h2><p>利用不同的任務來pre-train模型，當使用者需要使用時，可以直接把BERT串接到自己的任務上，再稍微針對自己的模型訓練一下(fine tune)即可。<br><img src="https://i.imgur.com/33rzQPd.jpg" alt=""><br>這就像是先學了一堆基礎的先輩知識，<del>再去學高微時你就覺得輕鬆自在</del>。</p>
+<h2 id="Training-tasks-of-BERT"><a href="#Training-tasks-of-BERT" class="headerlink" title="Training tasks of BERT"></a>Training tasks of BERT</h2><p>BERT的pre-training有兩項主要的訓練方式。<br><a href="https://github.com/huggingface/transformers">hugging face</a>已經幫我們預訓練好各國語言的模型(含中文)，因此大家可以直接下載他們訓練好的模型參數直接使用。</p>
+<h3 id="BERT-模型架構"><a href="#BERT-模型架構" class="headerlink" title="BERT 模型架構"></a>BERT 模型架構</h3><p>採用transformer<br><img src="https://i.imgur.com/xBkH5WK.jpg" alt=""></p>
+<h3 id="Training-task-1-Predicting-mask-words"><a href="#Training-task-1-Predicting-mask-words" class="headerlink" title="Training task 1 - Predicting mask words"></a>Training task 1 - Predicting mask words</h3><p>隨機遮罩15%的字，模型需要預測這些是那些字。<br><img src="https://i.imgur.com/jEICXBm.jpg" alt=""></p>
+<h3 id="Training-task-2-next-sentence-classifier"><a href="#Training-task-2-next-sentence-classifier" class="headerlink" title="Training task 2 - next sentence classifier"></a>Training task 2 - next sentence classifier</h3><p>給予兩句話，模型需要判斷這兩句話是否為前後關係。<br><img src="https://i.imgur.com/IdwW8yt.jpg" alt=""><br><img src="https://i.imgur.com/Wz5TPiQ.jpg" alt=""></p>
+<h2 id="How-to-use-BERT"><a href="#How-to-use-BERT" class="headerlink" title="How to use BERT"></a>How to use BERT</h2><h3 id="BERT-input-formula"><a href="#BERT-input-formula" class="headerlink" title="BERT input formula"></a>BERT input formula</h3><h4 id="taggings"><a href="#taggings" class="headerlink" title="taggings"></a>taggings</h4><p>首先要先了解瞭面的tagging所代表的意義</p>
+<ul>
+<li>[CLS]：在做分類任務時其最後一層的 repr. 會被視為整個輸入序列的 repr.</li>
+<li>[SEP]：有兩個句子的文本會被串接成一個輸入序列，並在兩句之間插入這個 token 以做區隔</li>
+<li>[UNK]：沒出現在 BERT 字典裡頭的字會被這個 token 取代</li>
+<li>[PAD]：zero padding 遮罩，將長度不一的輸入序列補齊方便做 batch 運算</li>
+<li>[MASK]：未知遮罩，僅在預訓練階段會用到</li>
+</ul>
+<h4 id="input-embedding"><a href="#input-embedding" class="headerlink" title="input embedding"></a>input embedding</h4><p>在BERT的使用中，你需要有三種embedding，最後把三種embedding合併起來當作完整的input<br><img src="https://i.imgur.com/7kwZWjQ.jpg" alt=""></p>
+<ul>
+<li>token embedding : 代表識別每個 token 的index，用 tokenizer 轉換即可</li>
+<li>segment embedding : 用來識別句子界限。第一句為 0，第二句則為 1。另外注意句子間的 [SEP] 為 0</li>
+<li>position embedding : 用來界定自注意力機制範圍。1 讓 BERT 關注該位置，0 則代表是 padding 不需關注 (通常使用狀況為：在補上[PAD]tagging時，我們會在該位置將此embedding設置為0，其他句子的部分則設置為1)</li>
+</ul>
+<h3 id="Four-main-usage-of-BERT"><a href="#Four-main-usage-of-BERT" class="headerlink" title="Four main usage of BERT"></a>Four main usage of BERT</h3><p>BERT提供了四種fine tune模型的使用方式給大家，使用時也不需要自己重新架設及串接，你只需要指定你要接哪一種，你的output class要幾類，他其實都幫你寫好囉😍！(當然，如果這四種都不是你想要使用的，你就必須自己刻一下了)<br><img src="https://i.imgur.com/0OVol1F.jpg" alt=""></p>
+<ul>
+<li>使用方式a : sentence pair classifier<br><img src="https://i.imgur.com/Lvk5Ego.jpg" alt=""></li>
+<li>使用方式b : single sentence classifier<br><img src="https://i.imgur.com/4tle5Gw.jpg" alt=""></li>
+<li>使用方式c : Question Answering<br><img src="https://i.imgur.com/cZ3XX84.jpg" alt=""></li>
+</ul>
+<p>*這裡要注意的是，output為paragraph的start index及end index，若end inddex比start還前面，則答案會回傳此題無解。</p>
+<ul>
+<li>使用方式d : sentence tagging<br><img src="https://i.imgur.com/ksGzorJ.jpg" alt=""></li>
+</ul>
+<h4 id="沒有足夠強大的gpu來fine-tune怎麼辦？"><a href="#沒有足夠強大的gpu來fine-tune怎麼辦？" class="headerlink" title="沒有足夠強大的gpu來fine tune怎麼辦？"></a>沒有足夠強大的gpu來fine tune怎麼辦？</h4><p><img src="https://i.imgur.com/DzsTEqZ.jpg" alt=""></p>
+<ul>
+<li>抽取word embedding<ul>
+<li>直接把文字餵進BERT取得embedding，再用這些embedding做你的任務！</li>
+</ul>
+</li>
+<li>使用<a href="https://colab.research.google.com/" target="_blank" rel="noopener">colab</a>，雖然跑比較慢，但至少能+-用</li>
+</ul>
+<h2 id="BERT-實驗結果"><a href="#BERT-實驗結果" class="headerlink" title="BERT 實驗結果"></a>BERT 實驗結果</h2><p><img src="https://i.imgur.com/wePRvBT.gif" alt=""></p>
+<h2 id="Follow-up-How-to-use-BERT-for-code"><a href="#Follow-up-How-to-use-BERT-for-code" class="headerlink" title="Follow up - How to use BERT (for code)"></a>Follow up - How to use BERT (for code)</h2><p>大家可以參考<a href="https://leemeng.tw/attack_on_bert_transfer_learning_in_nlp.html" target="_blank" rel="noopener">進擊的BERT：NLP界的巨人之力與遷移學習</a>，不過這篇有段時日了，部分使用BERT的指令及方法有更新過，因此不能完全直接使用他所提供的code。我有空再整理我的code更新到這裡給大家@@</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://arxiv.org/pdf/1810.04805.pdf?fbclid=IwAR1G4CIwUAvLSI1PPS8p8XcnifuvvHEUzXkBXMb0uAdtsucBk7VXMcHPPv0" target="_blank" rel="noopener">BERT 論文</a></li>
+<li><a href="https://leemeng.tw/attack_on_bert_transfer_learning_in_nlp.html" target="_blank" rel="noopener">進擊的BERT：NLP界的巨人之力與遷移學習</a></li>
+<li>陳縕儂教授 - Contextual Word Embeddings ELMo BERT 解析</li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Jeff</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/05/13/BERT - Bidirectional Encoder Representations from Transformers/" target="_blank" title="BERT - Bidirectional Encoder Representations from Transformers">https://github.com/dsmilab/dsmi-lab-website/2020/05/13/BERT - Bidirectional Encoder Representations from Transformers/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/05/14/Overview%20for%20Semi-Supervised%20Learning/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Overview for Semi-Supervised Learning
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/05/12/Data%20argumentation%20method%20-%20Attentive%20Cutmix%20&%20Cutmix/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Data argumentation method - Attentive Cutmix &amp; Cutmix</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-concept-of-BERT"><span class="nav-number">1.</span> <span class="nav-text">Main concept of BERT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Training-tasks-of-BERT"><span class="nav-number">2.</span> <span class="nav-text">Training tasks of BERT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BERT-模型架構"><span class="nav-number">2.1.</span> <span class="nav-text">BERT 模型架構</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-task-1-Predicting-mask-words"><span class="nav-number">2.2.</span> <span class="nav-text">Training task 1 - Predicting mask words</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-task-2-next-sentence-classifier"><span class="nav-number">2.3.</span> <span class="nav-text">Training task 2 - next sentence classifier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use-BERT"><span class="nav-number">3.</span> <span class="nav-text">How to use BERT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BERT-input-formula"><span class="nav-number">3.1.</span> <span class="nav-text">BERT input formula</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#taggings"><span class="nav-number">3.1.1.</span> <span class="nav-text">taggings</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#input-embedding"><span class="nav-number">3.1.2.</span> <span class="nav-text">input embedding</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Four-main-usage-of-BERT"><span class="nav-number">3.2.</span> <span class="nav-text">Four main usage of BERT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#沒有足夠強大的gpu來fine-tune怎麼辦？"><span class="nav-number">3.2.1.</span> <span class="nav-text">沒有足夠強大的gpu來fine tune怎麼辦？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-實驗結果"><span class="nav-number">4.</span> <span class="nav-text">BERT 實驗結果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Follow-up-How-to-use-BERT-for-code"><span class="nav-number">5.</span> <span class="nav-text">Follow up - How to use BERT (for code)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>bart denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension論文網址 AbstractBart爲預訓練Sequence to Sequence model而設計的去噪自編碼器基於之前的預訓練結構之後，利用兩種方法去得到BART(1)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BART Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/07/16/BART%20Denoising%20Sequence-to-Sequence%20Pre-training%20for%20Natural%20Language%20Generation,%20Translation,%20and%20Comprehension/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension論文網址 AbstractBart爲預訓練Sequence to Sequence model而設計的去噪自編碼器基於之前的預訓練結構之後，利用兩種方法去得到BART(1)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/FAaIkRq.png">
+<meta property="og:image" content="https://i.imgur.com/LWokY4H.png">
+<meta property="og:image" content="https://i.imgur.com/s64uU2q.png">
+<meta property="og:image" content="https://i.imgur.com/dMPaw37.png">
+<meta property="og:image" content="https://i.imgur.com/jx5lram.png">
+<meta property="og:image" content="https://i.imgur.com/qBDoxPc.png">
+<meta property="og:image" content="https://i.imgur.com/cIEvkgn.png">
+<meta property="og:image" content="https://i.imgur.com/jBa7DHu.png">
+<meta property="og:image" content="https://i.imgur.com/seGoam2.png">
+<meta property="og:image" content="https://i.imgur.com/Ed4SygI.png">
+<meta property="article:published_time" content="2020-07-16T23:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/FAaIkRq.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-BART Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      BART Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/07/16/BART%20Denoising%20Sequence-to-Sequence%20Pre-training%20for%20Natural%20Language%20Generation,%20Translation,%20and%20Comprehension/" class="article-date">
+	  <time datetime="2020-07-16T23:00:00.000Z" itemprop="datePublished">2020-07-16</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="BART-Denoising-Sequence-to-Sequence-Pre-training-for-Natural-Language-Generation-Translation-and-Comprehension"><a href="#BART-Denoising-Sequence-to-Sequence-Pre-training-for-Natural-Language-Generation-Translation-and-Comprehension" class="headerlink" title="BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension"></a>BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension</h1><p><a href="https://arxiv.org/pdf/1910.13461.pdf?fbclid=IwAR3I8mUMgAqzigPkGoD0F6eWkOHXN0f_eieOxpGEA3i5chIm9iv4RqAoyPA" target="_blank" rel="noopener"><strong>論文網址</strong></a></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>Bart爲預訓練Sequence to Sequence model而設計的去噪自編碼器<br>基於之前的預訓練結構之後，利用兩種方法去得到BART<br>(1) 使用任意的噪聲去破壞文本<br>(2) 學習重建文本(原本為有破壞的文本)<br>會在生成文本之類的任務相當有效，例如：問答，對話，總結等等…。其他類型也都跟RoBerta差不多</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">We present BART, a denoising autoencoderfor pretraining sequence-to-sequence models.</span><br><span class="line">BART is trained by (1) corrupting text with anarbitrary noising function, </span><br><span class="line">and (2) learning amodel to reconstruct the original text.</span><br></pre></td></tr></table></figure>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>BART 是一個預訓練的模型組合了 Bidirectional and Auto-Regressive Transformers<br>BART 基礎模型是使用standard Transformer-based neural machine translation結構，但可以看作是對BERT（雙向編碼器），GPT（從左至右解碼器）以及許多其他較新的預訓練方案進行了概括。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BART uses a standard Tranformer-based neural machine translation architecture</span><br><span class="line">which, despite its simplicity, can be seen as generalizing BERT(due to the</span><br><span class="line">bidirectional encoder), GPT (with the left-to-right decoder), and many other </span><br><span class="line">more recent pretraining schemes.</span><br></pre></td></tr></table></figure>
+<p>BERT採用隨機選擇token進行mask，但Bidirectional Encode會去獨立預測單個mask的字，故不太適合文本生成任務。<br>GPT採用單向Encoder和利用Autoregressive Decoder去預測下一個字的token是什麼，但缺陷在於無法學習到雙向的部位<br>BART採用Sequence-to-Sequence的架構把BERT和GPT做一個整合，使用雙向模型去對損壞文本做編碼，在用自回歸模型做解碼去預測該字的下個字，最後的Finetune也會把完整的文本拿進來做微調的動作。<br>（這邊的mask不只改掉一個，有可能會連續的抹掉）<br><img src="https://i.imgur.com/FAaIkRq.png" alt=""></p>
+<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>base model : 6 layers in encoder and decoder<br>large model : 12 layers in encoder and decoder<br>基本模型跟BERT相似（transformer Sequence-to-Sequence）<br>並且還刪除了最後不需要的Linear的地方，整個模型縮小了10%</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1) each layer of the decoder additionally performs cross-attention over</span><br><span class="line">the final hidden layer of the encoder (as in the transformer </span><br><span class="line">sequence-to-sequence model)</span><br><span class="line">(2) BERT uses an additional feed-forward network before wordprediction,</span><br><span class="line">which BART does not. In total, BART contains roughly 10% more parameters </span><br><span class="line">than the equivalently sized BERT model.</span><br></pre></td></tr></table></figure>
+<h2 id="Pretraining-in-Noising-input"><a href="#Pretraining-in-Noising-input" class="headerlink" title="Pretraining in Noising input"></a>Pretraining in Noising input</h2><p>他們實驗了很多種類的加噪的方法（還說這個地方是可以被研究，應該是一個很重要的地方）</p>
+<ol>
+<li>Token Masking : 如同Bert一樣，單純對某些東西做隱藏</li>
+<li>Token Deletion : 隨機的刪除輸入中的tokens，只需要決定tokens的位置即可(要給定的)</li>
+<li>Sentence Permutation : 將句子做亂數排列，same as XLNET.</li>
+<li>Document Rotation : 在句子內隨機選取一個token，然後將該token設為開始旋轉，目的是要認得句子的開頭。</li>
+<li>Text Infilling : 自poison分佈($\lambda = 3$)，對句字的某段部分做採樣(mask超過1個)，similar to spanBERT(different distribution).</li>
+</ol>
+<p><img src="https://i.imgur.com/LWokY4H.png" alt=""></p>
+<h2 id="Fine-tuning-BART"><a href="#Fine-tuning-BART" class="headerlink" title="Fine-tuning BART"></a>Fine-tuning BART</h2><p>在模型的訓練完之後會有一個fine-tuning的微調動作</p>
+<ol>
+<li>Sequence Classification Tasks : 給予encoder和decoder相同的輸入，並且將最後一層的decoder 的 hidden state 再丟入一個linear classifier去做預測label的動作。<br><img src="https://i.imgur.com/s64uU2q.png" alt=""></li>
+<li>Token Classification Tasks : 給予encoder和decoder相同的輸入，但這次是給予decoder 的 hidden state，用這個state去分類這些token</li>
+<li>Sequence Generation Tasks : 由於有自回歸的decoder，所以可以直接執行生成文本的任務訓練。</li>
+<li>Machine Translation : 神奇的解釋（你只要多加了一個encoder，就會變好喔，出處：<a href="https://www.aclweb.org/anthology/N19-1409/" target="_blank" rel="noopener">Edunov et al. (2019)</a>)，train end-to-end, 用randomly initialized Encoder取代原本的embedding, 並訓練其將外來詞映射到BART（BART能將其降噪成英語的輸入）。訓練步驟如下：<br>步驟1 : 先將pretrained encoder, decoder 去固定住，用bitext(平行機器翻譯文本)去對randomly initialized Encoder 去做訓練<br>步驟2 : 再將全部不要固定住，再做一次fine-tuning<br><code>Previous work Edunov et al (2019) has shown that models can be improved by incorporating pre-trained encoders, but gains from using pre-trained language models in decoders have been limited.</code><br><img src="https://i.imgur.com/dMPaw37.png" alt=""><h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2></li>
+<li>SQuAD : (Rajpurkar et al., 2016) an extractive question answering task onWikipedia paragraphs. Answers are text spans extracted from a given document context.(問答任務)</li>
+<li>MNLI : (Williams et al., 2017), a bitext classification task to predict whether one sentence entails another. （觀看句子包含的任務）</li>
+<li>ELI5 : (Fan et al., 2019), a long-form abstractive question answering dataset.（很長的問答任務）</li>
+<li>XSum : (Narayan et al., 2018), a news summarization dataset with highly abstractive summaries.（新聞抽象式摘要任務）</li>
+<li>ConvAI2 : (Dinan et al., 2019), a dialogue response generation task, conditioned on context and a persona.（對話生成文本任務）</li>
+<li>CNN/DM : (Hermann et al., 2015), a news summarization dataset. Summaries here are typically closely related to source sentences.（同為新聞摘要任務）</li>
+</ol>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p>Comparing with pretrain objects<br>我只是站得夠高而已！！！<br><img src="https://i.imgur.com/jx5lram.png" alt=""></p>
+<ol>
+<li>每個方法都是獨立的在每個任務(language model best at ELI5, bad at SQUAD)</li>
+<li>Token masking 很重要 (4,5的表現都差了一點 在BART上)</li>
+<li>Left-to-right pre-training improves generation</li>
+<li>BART achieves the most consistently strong performance.(除了ELI5以外都是最好的</li>
+</ol>
+<p>Result:<br>他的設定基本都跟Roberta一樣，large model with 12 layers in each of encoder and decoder，use a batch size of 8000, and train the model for 500000 steps,mask 30% of tokens in each document, and permute all sentences.並且為了更好的fitting, 最後的10% step是不使用dropout的.<br><img src="https://i.imgur.com/qBDoxPc.png" alt=""><br><img src="https://i.imgur.com/cIEvkgn.png" alt=""><br><img src="https://i.imgur.com/jBa7DHu.png" alt=""><br><img src="https://i.imgur.com/seGoam2.png" alt=""><br><img src="https://i.imgur.com/Ed4SygI.png" alt=""></p>
+<h2 id="Future-work"><a href="#Future-work" class="headerlink" title="Future work"></a>Future work</h2><ol>
+<li>破壞文檔的預訓練的新方法</li>
+<li>針對特別文檔的演算法</li>
+</ol>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong></a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/07/16/BART Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension/" target="_blank" title="BART Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension">https://github.com/dsmilab/dsmi-lab-website/2020/07/16/BART Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/07/24/Sentence%20Meta-Embeddings%20for%20Unsupervised%20Semantic%20Textual%20Similarity/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/07/09/Leetcode%20-%20N-Queens/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode - N-Queens</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BART-Denoising-Sequence-to-Sequence-Pre-training-for-Natural-Language-Generation-Translation-and-Comprehension"><span class="nav-number">1.</span> <span class="nav-text">BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model"><span class="nav-number">1.3.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pretraining-in-Noising-input"><span class="nav-number">1.4.</span> <span class="nav-text">Pretraining in Noising input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fine-tuning-BART"><span class="nav-number">1.5.</span> <span class="nav-text">Fine-tuning BART</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset"><span class="nav-number">1.6.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">1.7.</span> <span class="nav-text">Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future-work"><span class="nav-number">1.8.</span> <span class="nav-text">Future work</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

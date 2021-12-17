@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>topic modeling in embedding spaces | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP Topic_Modeling" />
+  
+  
+  
+  
+  <meta name="description" content="Topic Modeling in Embedding Spacestags: NLP,Topic Modeling論文網址參考網址LDA LDA(Latent Dirichlet allocation)假設有一個字典詞庫，在不同的topic下，同一個詞有不同的被選擇的機率，當然，同一個topic下，不同的詞有不同的被選擇的機率。考慮有D個文檔的羽料庫，包含V個不同的術語$w_{dn} \in {">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Topic Modeling in Embedding Spaces">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/10/24/Topic%20Modeling%20in%20Embedding%20Spaces/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Topic Modeling in Embedding Spacestags: NLP,Topic Modeling論文網址參考網址LDA LDA(Latent Dirichlet allocation)假設有一個字典詞庫，在不同的topic下，同一個詞有不同的被選擇的機率，當然，同一個topic下，不同的詞有不同的被選擇的機率。考慮有D個文檔的羽料庫，包含V個不同的術語$w_{dn} \in {">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/syQqsUS.png">
+<meta property="og:image" content="https://i.imgur.com/2H7sy0D.png">
+<meta property="og:image" content="https://i.imgur.com/Ce8h6gA.png">
+<meta property="og:image" content="https://i.imgur.com/QpWyvKB.png">
+<meta property="og:image" content="https://i.imgur.com/ZLyRvNE.png">
+<meta property="og:image" content="https://i.imgur.com/AQjy7Pl.png">
+<meta property="og:image" content="https://i.imgur.com/GFVEQsz.png">
+<meta property="og:image" content="https://i.imgur.com/zr8ZCrH.png">
+<meta property="og:image" content="https://i.imgur.com/iww2988.png">
+<meta property="og:image" content="https://i.imgur.com/p5mR6mL.png">
+<meta property="og:image" content="https://i.imgur.com/96bunsw.png">
+<meta property="og:image" content="https://i.imgur.com/U7HMHxB.png">
+<meta property="article:published_time" content="2020-10-24T12:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP Topic_Modeling">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/syQqsUS.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Topic Modeling in Embedding Spaces" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Topic Modeling in Embedding Spaces
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/10/24/Topic%20Modeling%20in%20Embedding%20Spaces/" class="article-date">
+	  <time datetime="2020-10-24T12:00:00.000Z" itemprop="datePublished">2020-10-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Topic-Modeling-in-Embedding-Spaces"><a href="#Topic-Modeling-in-Embedding-Spaces" class="headerlink" title="Topic Modeling in Embedding Spaces"></a>Topic Modeling in Embedding Spaces</h1><h6 id="tags-NLP-Topic-Modeling"><a href="#tags-NLP-Topic-Modeling" class="headerlink" title="tags: NLP,Topic Modeling"></a>tags: <code>NLP</code>,<code>Topic Modeling</code></h6><p><a href="https://arxiv.org/abs/1907.04907" target="_blank" rel="noopener">論文網址</a><br><a href="https://zhuanlan.zhihu.com/p/105741773" target="_blank" rel="noopener">參考網址</a><br><a href="https://taweihuang.hpd.io/2019/01/10/topic-modeling-lda/" target="_blank" rel="noopener">LDA</a><br><img src="https://i.imgur.com/syQqsUS.png" alt=""></p>
+<p>LDA(Latent Dirichlet allocation)假設有一個字典詞庫，在不同的topic下，同一個詞有不同的被選擇的機率，當然，同一個topic下，不同的詞有不同的被選擇的機率。<br>考慮有D個文檔的羽料庫，包含V個不同的術語$w_{dn} \in {1…V}$表示在d個文檔的第n個字<br>在LDA中，topic distribution：$\theta$ 和 vocabulary distribution：$\psi$都是根據類別而來的。所以LDA要預先確定主題的數量：K:$\psi_{1:K}$(每一個主題都是整個vocabulary的分佈)，不同的主題有對應的distribution，總計有k種不同的distribution，且LDA假設每一個文檔都是來自主題的混合，主題在語料庫是共享的，每一個文檔的比例都是唯一的(對不同document會有不同的主題分佈)。<br>$\psi_i,{i\in (1,K)}$<br>對一個document有K個topic，而對一個corpus有D個document，對不同的document會有不同的topic，其對應的$\theta_d$也會不同。<br>以下為LDA的distribution流程：</p>
+<ul>
+<li>確定文檔數目$D$，主題數目$K$，單詞字典集$V$，預設參數$\alpha = (\alpha_1,…,\alpha_d,…,\alpha_D)$和$\beta = (B_1,…,B_k,…,B_K)$</li>
+<li>生成$K$個主題的單詞分佈$\psi = {\psi_1,…,\psi_k,…,\psi_K}$</li>
+<li>對特定的文檔$w_d$：<ul>
+<li>生成文檔對應的主題分佈$\theta_d \sim Dirichlet(\alpha_\theta)$</li>
+<li>對文檔的$w_d$中的第n個字$w_{dn}$<ul>
+<li>生成其主題 $z_{dn}\sim cat(\theta_d)$(cat表示分類的分佈)</li>
+<li>生成對詞的distribution : $w_{dn}\sim cat(\psi_{z_{dn}})$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>其中$\psi_k\sim Dirichlet(\alpha_\psi)$ for k = 1,…,K</p>
+<p>從上面我們可以發現，LDA的效果受預設的主題數$K$ ，以及預設參數 $\alpha$和 $\beta$ 的影響。</p>
+<hr>
+<p>雖然LDA有著廣泛的應用，但是其也存在不少問題，LDA面對擁有large vocabulary（long tail effect）的語料時效果不好，時常需要去除最常發生和最不常發生的word，單是這樣做會去除掉一些重要的word且限制model的範圍。其次LDA是基於 bow(bag of words)來實作的，所以詞彙間的關係常常被忽略。<br>後續的做法分成兩類</p>
+<ol>
+<li>引入 knowledge<ul>
+<li>external knowledge：使用WordNet 引入相近關係的word</li>
+<li>lexical and semantic knowledge：將句子變成parsing tree，考慮字詞之間的關係</li>
+<li>Makov modeling(HMM)：建構詞與詞之間的關係</li>
+</ul>
+</li>
+<li>引入 embedding<ul>
+<li>改變原本bow的word distribution，有主題性的 word distribution改成 normal distribution</li>
+<li>用 NN學出 distribution<br>分析文檔來學習有意義的單詞表達，現有的model對於大型以及heavy-tailed(尾端分佈不小的vocabulary table)的表現不好，作者提出ETM(embedded topic model)，用傳統的topic modeling 與 word embedding做結合，可以用有分類(topic model)的分佈對每一個單詞做modeling 分類分布的參數是word embedding 和 topic embedding的內積。對於 rare word 和 stop word 的  large vocabulary dictionary，ETM也可以發現可解釋的主題，在topic prediction方面比傳統的LDA較好。</li>
+</ul>
+</li>
+</ol>
+<p>topic model是發現文檔中的Latent semantic structure的統計方法。</p>
+<hr>
+<p>關注CBOW的word embedding作法，每一個$w_{dn}$的likelihood為<br>$w_{dn}\sim softmax(\rho^T\alpha_{dn})$<br>此論文的具體做法：<br>詞變成word embedding $\rho \in \mathbb{R}<em>{(L,V)}$  V($\rho_v\in \mathbb{R}^L$)是詞的數量 L是word embedding size。而context embedding是$w</em>{dn}$周圍單辭的embedding總和($\alpha_v$ for each word v)同樣把K個topic訂為K個長度為L的向量$\alpha_k$，主題和word處於同一個semantic space，與傳統的topic modeling不同。</p>
+<p>在傳統 topic modeling 每一個主題都是整個vocabulary的分佈，但是在ETM中，第k個主題是在embedding space中的一點$\alpha_k\in \mathbb{R}^L$稱$\alpha_k$是一個主題embedding，它是單詞語義空間中第k個主題的分佈式表示。</p>
+<p>在生成過程，ETM使用topic embedding在vocabulary上形成按主題的分佈，具題來說ETM使用loglinear model(用word embedding 和 topic embedding的內積)。ETM通過測試單詞embedding和topic embedding的一致性為單詞v的主題k分佈判斷</p>
+<h2 id="ETM"><a href="#ETM" class="headerlink" title="ETM"></a>ETM</h2><p>在ETM下文章的生成過程和LDA一樣，依然需要使用文檔的topic distribution $\theta$以及topic vocabulary distribution(主題的單詞分佈)$\psi$<br>在LDA中 $\theta \sim Dir(\alpha), \psi\sim Dir(\beta)$。而ETM中$\theta \sim LN(0,I)\Longleftrightarrow\delta \sim N(0,I),\theta = softmax(\delta),\psi_k\sim softmax(\rho^T\alpha_k)$。讓文檔的topic distribution跟一個 logistic-normal distribution一樣，而主題的單詞分佈則是topic distribution和每一個詞的word vector 點乘後再softmax的結果。<br>生成過變為：</p>
+<ul>
+<li>確定文檔數目$D$，主題數目$K$，單詞字典集$V$</li>
+<li>對文檔 $w_d$：<ul>
+<li>1生成對應於文檔的主題分佈 $\theta_d = softmax(\delta_d),\delta_d \sim N(0,I)$</li>
+<li>2對文檔 $w_d$中的每一個詞 $w_{dn}$：<ul>
+<li>a生成對應主題 $z_{dn} \sim cat(\theta_d)$</li>
+<li>b生成詞 $w_{dn}\sim softmax(\rho^T\alpha_{z_{dn}})$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>LN表示log normalize distribution，其中抽取的$\theta_d$表示為$\theta_d = softmax(\delta_d),\delta_d \sim N(0,I)$(（我們將Dirichlet替換為logistic normal distribution，以便更輕鬆地在推理算法(amortize algorithm)中使用reparameterization；請參閱第5節。）)</li>
+<li>1 and 2a主題建模的標準步驟:文檔表示為topic distribution，並且為觀測到的每一個單詞作出他的topic distribution，與2b不同，使用$\rho$和topic embedding$\alpha_{z_{dn}}$($z_{dn}$的topic embedding)</li>
+<li>2b的topic embedding反映了CBOW的likelihood(CBOW使用上下文單字反映向量$\alpha_{dn}$)。與之相反的，ETM使用$\alpha_{z_{dn}}$作為上下文向量，其中$z_{dn}$為從每一個文檔的變量$\theta_d$抽取的主題分布，ETM從文檔的上下文抽取而不是從單詞周圍的字</li>
+<li>ETM likelihood 使用了$\rho$表示低維空間的vocabulary，實際上他也可以使用預先訓練好的或是逐步訓練(當ETM在訓練過程訓練embedding時他會找到topic和embedding space)</li>
+<li>當ETM用先訓練好的embedding時，他會在特定的空間學習主題分布，當embedding中有沒有出現在羽料庫的單詞時，這招特別有用，ETM可以使得這些未出現過的如何分配到主題，因為它可以計算$\rho_v^T\alpha_k$，即便v沒有出現在corpus內</li>
+</ol>
+<h2 id="Inference-and-Estimation"><a href="#Inference-and-Estimation" class="headerlink" title="Inference and Estimation"></a>Inference and Estimation</h2><p>參數說明:<br>corpus of documents{$w_1…w_D$}, $w_d$ 是$N_d$的字集合而成<br>word embedding : $\rho_{1:V}$<br>topic embedding : $\alpha_{1:K}$每一個$\alpha_k$是在embedding空間中的一個點</p>
+<p>在訓練過程中，word embedding可以使用預訓練好的也可以動態訓練。 topic embedding則需要動態訓練。這時候，ETM的參數就變為word embedding $\rho$ 和topic embedding $\alpha$ 。所以，一個文檔的marginal likelihood表示為：<br>$L(\alpha,\rho)=\sum^D_{d=1} = logp(w_d|\alpha,\rho)$</p>
+<ol>
+<li>因為每個文檔的marginal likelihood 難以計算(它涉及了主題模型$\delta_d$的積分)<img src="https://i.imgur.com/2H7sy0D.png" alt=""></li>
+<li>每個單字的條件分布會邊緣化主題分布$z_{dn}$<br>因此$\theta_{dk}$表示(轉換後的)topic proportions<img src="https://i.imgur.com/Ce8h6gA.png" alt=""></li>
+<li>$\beta_{kv}$代表傳統的topic(由word embedding和topic embedding來的$\beta_{kv} = softmax(\rho^T\alpha_k)|_v$)</li>
+</ol>
+<p>使用邊分方法(variational inference)迴避難以推理的積分問題，用以優化每一個文檔的log marginal likelihood範圍(Eq.4)，所有有兩套參數需要優化: 如上所述的model parameter和 variational parameter(用來拉近marginal likelihood的範圍)</p>
+<h3 id="Variational-parameter"><a href="#Variational-parameter" class="headerlink" title="Variational parameter"></a>Variational parameter</h3><p>首先假定未經轉換的topic distribution(proportions) $q(\delta_d;w_d,v)$，使用amortized inference，其中$\delta_d$的分佈取自於文檔$w_d$和v而來，且$q(\delta_d;w_d,v)$也是一個gaussian distribution，其mean 和variance來自v參數的NN，算出$\delta_d$的mean和variance，為了容納不同長度的文檔，透過用單詞數量$N_d$normalize bag of  word 來當成inference network的input。<br>使用這組variational distribution來限制marginal likelihood(ELBO(包含model parameter和variational parameter))<br><img src="https://i.imgur.com/QpWyvKB.png" alt=""><br>第一項注重在優先觀察單字的topic distribution$\delta_d$<br>第二項鼓勵他們接近先驗機率(prior)$p(\delta_d)$<br>且開object function最大化了原先預期的log-likelihood<br>$\sum_d logp(\delta_d,w_d|\alpha,\rho)$</p>
+<p>因為 $p(w_d|\alpha,\rho)$涉及到一個latent variable $\delta_d$的積分，如果將$\delta_d$的所有可能都計算，積分會變得intractable。所以文章中使用了近似方法（假設），由於$\delta_d$取決於$w_d$和$v$，且由於$\delta_d\sim N(0,I)$，所以$q(\delta_d;w_d,v)$是一個normal distribbution，文章使用了VAE的想法，將原本encoder出來的output分成$\mu$以及$\sigma$再藉由reparameter trick使得bp可以成立（也同時讓$\delta_d$可以被運算），這時log-likelihood function變成<br>$$L(\alpha,\rho,v) = \sum^D_{d=1} \sum^{n_d}<em>{n=1}E_q[logp(w</em>{nd}|\delta_d,\rho,\alpha ）]-\sum^D_{d=1}KL(q(\delta_d;w_d,v)|p(\delta_d)) $$</p>
+<p>通過reparameter trick將全梯度的Monte Carlo引進noisy gradient，還使用subsampling來處理large collection of documents，Lr: Adam</p>
+<p>整體算法為：<br>NN(x;v)表示輸入x和參數v的NN<br><img src="https://i.imgur.com/ZLyRvNE.png" alt=""><br>在training時的loss：使用kld_theta + recon loss(predition*bag of words)</p>
+<h2 id="Emperical"><a href="#Emperical" class="headerlink" title="Emperical"></a>Emperical</h2><p>dataset : 20Newsgroups , New York Times<br>為了研究ETM的性能:<br>一個好的document model 應該要提供語言連貫性和單字的準確度，因此要根據預測的準確性和主題的可解釋性來衡量效果。以loglikelihood來衡量文檔完成特定task的準確度，以主題一致性和文字多樣性的結合來衡量可解釋性，實驗結果顯示:在可解釋的模型中，ETM是提供更好的預測和主題的模型。</p>
+<p>在6.1節研究了停用詞存在時各種方法的robustness。<br>標準的topic model會在這種情況下出問題，因為停用詞在很多文檔中，所以所學習到的主題都包含一些停用詞，導致其解釋性很差。相反ETM能再用停用詞下可解釋。</p>
+<p>20Newsgroup是新聞集合，透過過濾掉在70%以上文檔都出現的字來預處理。<br>將閾值從100（較小的詞彙表，其中V = 3,102）更改為2（較大的詞彙表，其中V = 52,258）。 預處理後，我們進一步從驗證和測試集中刪除單字文檔。 我們將語料庫分為11260個文檔的訓練集，7552個文檔的測試集和100個文檔的驗證集。<br>在相同處理方法下New York Times<br>V = 5,921到V = 212,237的詞彙表形成該語料庫的版本。 預處理後，我們將85％的文檔用於培訓，10％的文檔用於測試，並將5％的文檔用於驗證。</p>
+<h3 id="對照model"><a href="#對照model" class="headerlink" title="對照model"></a>對照model</h3><p>我們將ETM的性能與其他兩個文檔模型進行了比較：</p>
+<ol>
+<li>latent Dirichlet allocation（LDA）和the neural variational document model（NVDM）。<br>LDA 主題$\beta_k$主題分布$\theta_d\sim Dirichlet \ prior$這是一個條件共軛模型，可以通過坐標上升進行變分推斷。</li>
+<li>NVDM假設likelihood$w_{dn}\sim softmax(\beta^T\theta_d)$且$\theta_d\sim N(0,I_k)$(K-dimensional vector 對每一個文檔都有各自的變量)，$\beta \in \mathbb_{(KxV)}$，NVDM使用了對每個文檔的latent vector $\theta_d$ 對 $\beta$ embedding做平均。跟ETM依樣NVDM也是永amortized variational inference來找出近似的posterior for $\theta_d和\beta$，由於NVDM不能解釋為主題模型，他的latent variable沒有限制，所以提出了其變體(∆-NVDM)約束$\theta_d$用logistic normal取代原本的Gaussian priorThis can be thought of as a semi-nonnegative matrix factorization.)</li>
+</ol>
+<p>用pre train好的embedding: labeled ETM(使用skip-gram embedding)</p>
+<p>算法設定:給定corpus每個model都有一個近似的posterior inference problem，實驗中使用了variational inference且使用stochastic variational inference (SVI)來加速優化，minibatch :1000<br>對LDA delay is 10 and the forgetting factor is 0.85.<br>在SVI中，LDA享受坐標上升變化更新，並通過5個內部步驟來優化局部變量。 對於其他模型，我們對局部變量θd使用攤銷推斷。 我們使用三層推理網絡，並將本地學習率設置為0.002。 我們對變分參數使用2正則化（權重衰減參數為1.2×10−6）</p>
+<p>表1說明了不同模型的嵌入。 所有方法都提供可解釋的嵌入-具有相關含義的詞彼此接近。 ETM和NVDM從嵌入圖中學習與嵌入類似的嵌入。 ∆-NVDM的嵌入方式不同； 局部變量上的單純形約束改變了嵌入的性質。</p>
+<p>接下來，我們將學習所學的主題。 表2(K=300個主題)顯示了所有方法使用的7個最常用的主題前五個字，由主題分布$\theta_d$的平均值給出。 LDA和ETM都提供了可解釋的主題。 NVDM和∆-NVDM均未提供可解釋的主題。 它們的模型參數β不能解釋為混合形成文檔的詞彙分佈</p>
+<h3 id="Quantitative-results"><a href="#Quantitative-results" class="headerlink" title="Quantitative results"></a>Quantitative results</h3><p>而在evaluation時使用了3種function來作指標：</p>
+<ol>
+<li>topic coherence(主題一致性) ：選取同一個topic 內的兩個自的 mutual information的平均值，認為一個連貫的主題通常標示那些經常在相同文檔中出現的詞（代表mutual infrmation會較高）。<br><img src="https://i.imgur.com/AQjy7Pl.png" alt=""><br><img src="https://i.imgur.com/GFVEQsz.png" alt=""><br>$P(w_i,w_j)$是單詞$w_i,w_j$同時出現在文檔中的機率，而$P(w_i)$是單詞$w_i$的marginal probability(用empirical counts近似)<br>想法: 一個具有一致性的主題應該會有一些在一個文檔中一直出現的字，其mutual information較高(那些字彼此相關性較高)</li>
+<li>topic diversity(主題多樣性) ： 我們將主題多樣性定義為所有主題的前25個單詞中唯一單詞的百分比。所有主題的前n個詞裡面不同詞的比例。分數愈接近０代表相同字出現愈多，接近１代表主題的多樣性愈高。我們將模型主題質量的總體指標定義為模型主題多樣性和主題一致性的產物</li>
+<li>好的主題模型應該提供好的word distribution ：計算ETM在文檔補全任務上的log-likelihood，做法是將每一個文檔分成２個字典集，前半用來獲取topic distribution，並且依照這個distribution來生成其文檔剩下的詞，將生成分布與另外一半的詞做比較，計算log-likelihood ，較好的model會有較高的值。<code>&#39;A good document model should provide higher log-likelihood on the second half.&#39;</code><br>Note: 1,2,3只會有一個來計算，3的計算方法和在計算training loss時接近</li>
+</ol>
+<p><img src="https://i.imgur.com/zr8ZCrH.png" alt=""><br><img src="https://i.imgur.com/iww2988.png" alt=""><br>通過主題一致性和主題多樣性的標準化乘積（越高越好）衡量的主題質量與通過文檔完成時的標準化對數似然法衡量的預測性能（越好）相比。<br>圖4顯示了主題質量與預測能力的關係。 （為簡化可視化，我們通過減去均值並除以標準偏差來對兩個指標進行歸一化。）最佳模型位於右上角。<br>NVDM的主題質量遠遠低於其他方法。 （它不提供“主題”，因此我們評估其β矩陣的可解釋性。）在預測中，兩種ETM版本至少與單純形約束的∆-NVDM一樣好。</p>
+<h3 id="Stop-word"><a href="#Stop-word" class="headerlink" title="Stop word"></a>Stop word</h3><p>現在，我們研究包含所有停用詞的《紐約時報》語料庫。 我們刪除不常用的單詞以形成10,283大小的詞彙表。 我們的目標是證明標記的ETM即使在停用詞的存在下也能提供可解釋的主題，這是主題模型通常失敗的另一種情況。 特別是，鑑於停用詞出現在許多文檔中，傳統的主題模型將學習包含停用詞的主題，而與主題的實際語義無關。 這導致較差的主題可解釋性。<br>我們將LDA，∆-NVDM和帶標籤的ETM與K = 300的主題進行擬合。 （我們不報告NVDM，因為它不提供可解釋的主題。）表3顯示了主題質量（主題一致性和主題多樣性的乘積）。 總體而言，貼有標籤的ETM在主題質量方面可提供最佳性能<img src="https://i.imgur.com/p5mR6mL.png" alt=""></p>
+<p>ETM有一些專門針對停用詞的“停用主題”（請參見圖5），而∆NVDM和LDA幾乎在每個主題中都有停用詞。 原因是停用詞與其他每個詞同時出現在同一文檔中； 因此，傳統主題模型很難區分內容詞和停用詞。 帶標籤的ETM識別停用詞在嵌入空間中的位置； 它使他們脫離了自己的主題。<img src="https://i.imgur.com/96bunsw.png" alt=""></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>開發了ETM，這是一種將LDA與單詞嵌入結合起來的文檔生成模型。 ETM假定主題和單詞生活在相同的嵌入空間中，並且單詞是從分類分佈生成的，其參數是單詞嵌入和所分配主題的嵌入的內積。<br>ETM甚至在帶有大量詞彙的語料庫中也學習可解釋的詞嵌入和主題。 我們針對幾種文檔模型研究了ETM的性能。 ETM學習語言的連貫模式和單詞的準確分佈。</p>
+<p>大型vocabulary<br>對於大多數主題模型，主題比例的後驗很難計算。 我們推導了一種有效的算法，可以用變分推斷來近似後驗，並另外使用攤銷推斷來有效地近似主題比例。 生成的算法使ETM適合具有大量詞彙的大型語料庫。 ETM的算法既可以使用先前擬合的單詞嵌入，也可以與其他參數一起擬合。 （特別是，圖1至圖3是使用ETM版本獲得的，該版本已獲得pretrain的skip-gram單詞嵌入。）</p>
+<hr>
+<p>Related work<br>單詞相似度納入主題模型，並且已有先前的研究分享了這一目標。 這些方法要么修改主題先驗（Petterson等，2010; Zhao等，2017b; Shi等，2017; Zhao等，2017a），要么修改主題分配先驗（Xie等，2015）。</p>
+<p>還有其他幾種組合LDA和嵌入的方法。 Nguyen等。 （2015年）將LDA定義的似然性與使用預擬合詞嵌入的對數線性模型混合； Bunk和Krestel（2018）用從高斯中提取的嵌入內容隨機替換了從某個主題中提取的單詞; 和徐等。 （2018）採用了幾何學的觀點，利用Wasserstein距離共同學習主題和單詞嵌入。</p>
+<p> 具體來說，這些方法通過攤銷推斷和變分自動編碼器來減少文本數據的大小（Kingma和Welling，2014年； Rezende等人，2014年）。 為了在ETM中執行推理，我們還利用了攤銷的推理方法</p>
+<p> ETM建立在LDA基礎上</p>
+<h2 id="Code-Explain"><a href="#Code-Explain" class="headerlink" title="Code Explain"></a>Code Explain</h2><p> <img src="https://i.imgur.com/U7HMHxB.png" alt=""></p>
+<p> 在ETM model內</p>
+<ol>
+<li>當input bows:會經過nn.Linear將vocab_size的bows encode到hidden_size當成是q_theta</li>
+<li>再透過q_theta 做出vae中的latent space 的mu和variance(800-&gt;50維)，透過sample從mu和variance sample出一個gaussian distribution，在經過reparameterization trick 形成一個gaussian $z\sim N(0,I)$(batch_size,num_topics)</li>
+<li>alpha：word embedding(vocab,embed_size(300)) * nn.Linear(embed_size(300),num_topics)</li>
+<li>beta：alpha.transpose(1,0)</li>
+<li>再將 z(batch_size,num_topics)與 beta(num_topics,vocab)做內積</li>
+<li>做出來的prediction(vocab,batch_size)與原先的bows(vocab,batch_size)相乘當成loss</li>
+</ol>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>PoH_Ko</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/10/24/Topic Modeling in Embedding Spaces/" target="_blank" title="Topic Modeling in Embedding Spaces">https://github.com/dsmilab/dsmi-lab-website/2020/10/24/Topic Modeling in Embedding Spaces/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP-Topic-Modeling/" rel="tag">NLP Topic_Modeling</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/11/03/A%20Defense%20Against%20Adversarial%20Attacks%20Using%20Deep%20Denoising%20Sparse%20Autoencoder(DDSA)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder(DDSA)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/10/22/Get%20To%20The%20Point_%20Summarization%20with%20Pointer-Generator%20Networks/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Get To The Point- Summarization with Pointer-Generator Networks</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Topic-Modeling-in-Embedding-Spaces"><span class="nav-number">1.</span> <span class="nav-text">Topic Modeling in Embedding Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-NLP-Topic-Modeling"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: NLP,Topic Modeling</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ETM"><span class="nav-number">1.1.</span> <span class="nav-text">ETM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inference-and-Estimation"><span class="nav-number">1.2.</span> <span class="nav-text">Inference and Estimation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Variational-parameter"><span class="nav-number">1.2.1.</span> <span class="nav-text">Variational parameter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Emperical"><span class="nav-number">1.3.</span> <span class="nav-text">Emperical</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#對照model"><span class="nav-number">1.3.1.</span> <span class="nav-text">對照model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Quantitative-results"><span class="nav-number">1.3.2.</span> <span class="nav-text">Quantitative results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stop-word"><span class="nav-number">1.3.3.</span> <span class="nav-text">Stop word</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.4.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-Explain"><span class="nav-number">1.5.</span> <span class="nav-text">Code Explain</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

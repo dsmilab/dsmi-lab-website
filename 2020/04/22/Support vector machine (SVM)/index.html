@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>support vector machine (svm) | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="SVM" />
+  
+  
+  
+  
+  <meta name="description" content="Support vector machine (SVM)author:Puchidate:2020.04.22 tags: ‘SVM’, ‘study group’SVM (Hard margin) SVM training時間遠低過DNN。 SVM可以將linear extend到non-linear（運用kernel trick） 有統計理論support目標（問題解釋）：  給定一個trai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Support vector machine (SVM)">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/04/22/Support%20vector%20machine%20(SVM)/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Support vector machine (SVM)author:Puchidate:2020.04.22 tags: ‘SVM’, ‘study group’SVM (Hard margin) SVM training時間遠低過DNN。 SVM可以將linear extend到non-linear（運用kernel trick） 有統計理論support目標（問題解釋）：  給定一個trai">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/jNjmvvZ.png">
+<meta property="og:image" content="https://i.imgur.com/XX8ICEb.png">
+<meta property="og:image" content="https://i.imgur.com/RDF6Op9.png">
+<meta property="og:image" content="https://i.imgur.com/N9rAArP.png">
+<meta property="og:image" content="https://i.imgur.com/prbuSS1.png">
+<meta property="og:image" content="https://i.imgur.com/e5NTEea.png">
+<meta property="og:image" content="https://i.imgur.com/X7iP8gf.png">
+<meta property="og:image" content="https://i.imgur.com/1QC481Q.png">
+<meta property="og:image" content="https://i.imgur.com/3KjBxLZ.png">
+<meta property="og:image" content="https://i.imgur.com/QUecnBR.png">
+<meta property="og:image" content="https://i.imgur.com/VZPTkUB.png">
+<meta property="og:image" content="https://i.imgur.com/33YzYO9.png">
+<meta property="og:image" content="https://i.imgur.com/g9Wqizk.png">
+<meta property="og:image" content="https://i.imgur.com/7Eie6cJ.png">
+<meta property="og:image" content="https://paper-attachments.dropbox.com/s_D77CBDA84E9A3CA442E9AE36518D3D4E33DD7AEBC18BB57F9BE487DDB9DDC2C4_1569572942047_diff_variances_plot.png">
+<meta property="og:image" content="https://paper-attachments.dropbox.com/s_D77CBDA84E9A3CA442E9AE36518D3D4E33DD7AEBC18BB57F9BE487DDB9DDC2C4_1569572679250_PnnRbf.jpg">
+<meta property="og:image" content="https://i.imgur.com/56lUUNe.png">
+<meta property="og:image" content="https://i.imgur.com/0Cnm0CG.png">
+<meta property="og:image" content="https://i.imgur.com/DLmYhBN.png">
+<meta property="og:image" content="https://i.imgur.com/ncf5HY6.png">
+<meta property="og:image" content="https://i.imgur.com/2YRIYwf.png">
+<meta property="og:image" content="https://i.imgur.com/zNPpQCL.png">
+<meta property="og:image" content="https://i.imgur.com/sHCWwBM.png">
+<meta property="og:image" content="https://i.imgur.com/OujoCAH.png">
+<meta property="article:published_time" content="2020-04-22T20:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="SVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/jNjmvvZ.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Support vector machine (SVM)" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Support vector machine (SVM)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/04/22/Support%20vector%20machine%20(SVM)/" class="article-date">
+	  <time datetime="2020-04-22T20:30:00.000Z" itemprop="datePublished">2020-04-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Support-vector-machine-SVM"><a href="#Support-vector-machine-SVM" class="headerlink" title="Support vector machine (SVM)"></a>Support vector machine (SVM)</h1><p>author:Puchi<br>date:2020.04.22</p>
+<h6 id="tags-‘SVM’-‘study-group’"><a href="#tags-‘SVM’-‘study-group’" class="headerlink" title="tags: ‘SVM’, ‘study group’"></a>tags: ‘SVM’, ‘study group’</h6><h2 id="SVM-Hard-margin"><a href="#SVM-Hard-margin" class="headerlink" title="SVM (Hard margin)"></a>SVM (Hard margin)</h2><ul>
+<li>SVM training時間遠低過DNN。</li>
+<li>SVM可以將linear extend到non-linear（運用kernel trick）</li>
+<li>有統計理論support<h3 id="目標（問題解釋）："><a href="#目標（問題解釋）：" class="headerlink" title="目標（問題解釋）："></a>目標（問題解釋）：</h3><img src="https://i.imgur.com/jNjmvvZ.png" alt=""></li>
+</ul>
+<p>給定一個training dataset<br>$$S={(x^i,y_i)|x^i\in R^n, y_i\in{-1,1},i=1,…,l}$$$$x_+\in A_+\quad iff\quad y=1 \quad and \quad x_-\in A_-\quad iff \quad y=-1.$$<br>想要從training data的資訊找出一個function f:R^n-&gt;R 使得<br>$f(x)&gt;0 \rightarrow x\in A_+$ and $f(x)&lt;0 \rightarrow x\in A_-$<br>目標：預測新進來的data的label </p>
+<h3 id="最原始的SVM在解的最佳化問題："><a href="#最原始的SVM在解的最佳化問題：" class="headerlink" title="最原始的SVM在解的最佳化問題："></a>最原始的SVM在解的最佳化問題：</h3><p>$$min_{ {\bf x},\gamma}\dfrac{1}{2}|{\bf w}|^2_2,$$$$s.t.\quad y_i({\bf w}^T{\bf x}_i+b)&gt;=1,\quad i=1,…,n.$$</p>
+<h3 id="Primal-form-and-Dual-form"><a href="#Primal-form-and-Dual-form" class="headerlink" title="Primal form and Dual form"></a>Primal form and Dual form</h3><p>Primal form:<br>$$min_{ {\bf x},\gamma}\dfrac{1}{2}|{\bf w}|^2_2,$$$$s.t.\quad y_i({\bf w}^T{\bf x}_i+b)&gt;=1,\quad i=1,…,n.$$</p>
+<p>Dual form:<br>$$max_\alpha\quad 1^T\alpha-\dfrac{1}{2}{\bf\alpha}^TDAA^TD{\bf\alpha}$$$$s.t.\quad 1^TD{\bf\alpha}=0,\quad {\bf\alpha}\geq 0.$$</p>
+<h3 id="Dual-form推導："><a href="#Dual-form推導：" class="headerlink" title="Dual form推導："></a>Dual form推導：</h3><p>$$L(w,b,\alpha)＝\dfrac{1}{2}w^Tw+\alpha^T(1-D(Aw+1b)),\alpha\geq 0$$$$\dfrac{\partial}{\partial w}L(w,b,\alpha)=w-ATD\alpha=0$$$$\dfrac{\partial}{\partial b}L(w,b,\alpha)=a^TD\alpha=\sum_{i=1}^ly_i\alpha_i=0$$</p>
+<p>Recall Dual form : $\max_{\alpha} \min_{w,b}  L(w,b,\alpha) \quad s.t. \quad \alpha \geq 0.$</p>
+<p>So, we have Dual form:<br>$$max\quad 1^T\alpha-\dfrac{1}{2}\alpha^TDAA^TD\alpha$$$$s.t.\quad 1^TD\alpha=0,\quad \alpha\geq 0.$$</p>
+<p><strong>值得注意的是：</strong><br>$w=A^TD\alpha=\sum_{i=1}^{l}y_i\alpha_iA_i^T$，所以原 linear classifier $f$ 可以寫<br>$f(x)=\sum_{i=1}^n\alpha_iy_i{\bf x_i}{\bf x}^T_i+b \equiv \sum_{i=1}^nu_i{\bf x_i}{\bf x}^T_i+b$，且我們也可知用KKT condiction把b算回去。因此我們只要算出dual問題，就可帶回原本的問題。</p>
+<p><strong>為什麼要用Dual form去求解最佳化？</strong><br>因為Dual的objective function整個是一個concave function,且限制條件只有一個，計算起來容易很多。（注意：$max$ $\theta(\alpha)$ iff $-min$ $-\theta(\alpha)$，解concave,convex問題是一樣的）</p>
+<h3 id="support-vector的意義"><a href="#support-vector的意義" class="headerlink" title="support vector的意義"></a>support vector的意義</h3><p>$\alpha$與$w^Tx+b$相垂直，且$\alpha_i\geq 0$。<br>當$\alpha&gt;0$代表這些限制條件是active constraint。對整個限制條件才有影響。<br>$\alpha_i=0$是inactive constraint,也就是$w^Tx+b$嚴格大於0，因此有這個限制或沒有限制都一樣。透過$\alpha_i$正負可知道。$\alpha_i=0$的對整個結果沒有影響。<br>support vector: $\alpha_i&gt;0$，也就是在線上的。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/XX8ICEb.png" alt=""><br>(圖片來自老師SVM的投影片)</p>
+</blockquote>
+<h3 id="Remark"><a href="#Remark" class="headerlink" title="Remark"></a>Remark</h3><p>一個好的model應該要考慮到：<br>model bias, model variance都應該小</p>
+<ol>
+<li><p><strong>Structural Risk Minimization</strong><br>training error (衡量model bias) +VC error bound （衡量 model variance）<br>實驗誤差和<br>$|w|_2$ 和VC bound成正比<br>$min$ VC bound iff $min$ $\dfrac{1}{2}|w|_2^2$ iff max Margin </p>
+</li>
+<li><p><strong>KKT condiction</strong></p>
+</li>
+</ol>
+<h3 id="SMO-Sequential-Minimal-Optimization"><a href="#SMO-Sequential-Minimal-Optimization" class="headerlink" title="SMO  (Sequential Minimal Optimization)"></a>SMO  (Sequential Minimal Optimization)</h3><p>   由Microsoft的人提出，是早期的一種非常知名的加速計算SVM的方法，當然也可以用quadratic programming的方法來計算，但比較慢。(quadratic programming方法包含：Newton method, steepest descent, …等)<br>   若對SMO詳細推倒有興趣，可參考這篇<a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-98-14.pdf" target="_blank" rel="noopener">論文。</a></p>
+<ul>
+<li><p>回想我們原本的最佳化問題(引用<a href="http://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf" target="_blank" rel="noopener">李育杰老師的投影片</a>)：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/RDF6Op9.png" alt=""></p>
+</blockquote>
+</li>
+<li><p>SMO核心想法：每次只挑出兩個 $\alpha_i, \alpha_j$ 搭配做更新，其餘固定不動。為什麼是兩個呢？因為需要有人來搭配，一個增加、一個減少，去固定改變的量(以下圖片引用<a href="http://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf" target="_blank" rel="noopener">李育杰老師的投影片</a>)</p>
+<blockquote>
+<p><img src="https://i.imgur.com/N9rAArP.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<p>經過一連串轉換後，原本的問題就轉變為以下(詳細數學推導可以去看論文，以下圖片引用<a href="http://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf" target="_blank" rel="noopener">李育杰老師的投影片</a>)：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/prbuSS1.png" alt=""></p>
+</blockquote>
+<ul>
+<li>演算法流程：<br>以下演算法引用自此<a href="http://staff.ustc.edu.cn/~ketang/PPT/PRLec5.pdf" target="_blank" rel="noopener">投影片</a><blockquote>
+<p><img src="https://i.imgur.com/e5NTEea.png" alt=""><br><img src="https://i.imgur.com/X7iP8gf.png" alt=""><br><img src="https://i.imgur.com/1QC481Q.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Soft-Margin-SVM-nonseparable-case"><a href="#Soft-Margin-SVM-nonseparable-case" class="headerlink" title="Soft-Margin SVM (nonseparable case)"></a>Soft-Margin SVM (nonseparable case)</h2><p>為什麼需要Soft-margin SVM?因為有些問題，他不是linearly separable，也就是找不到$w,b$使得資料完全被分乾淨。（也就是說，primal problem是infeasible，Dual problem是umbounded）</p>
+<p>因此我們給每一個training data都給一點點調整量$\xi_i$，即可。<br>$$y_i(w^Tx^i+b)\geq 1-\xi_i,\quad \xi_i\geq 0, \forall i.$$ </p>
+<p>但仍希望調整量越少越好（除此之外，也記得：原始問題是讓margin越大越好）</p>
+<h3 id="1-norm-soft-margine"><a href="#1-norm-soft-margine" class="headerlink" title="1-norm soft margine:"></a>1-norm soft margine:</h3><ul>
+<li><h4 id="Primal-form"><a href="#Primal-form" class="headerlink" title="Primal form:"></a>Primal form:</h4>$$\min \quad \dfrac{1}{2}|w|^2+C\sum_{i=1}^n\xi_i,$$$$s.t.\quad y_i(w^Tx_i+b)\geq 1-\xi_i,$$ $$\qquad \xi_i\geq 0, i=1,…,n.$$</li>
+</ul>
+<p><strong>Remark</strong>:<br>$1^T\xi$ (1 norm measure of error vector) 就是training error</p>
+<ul>
+<li><h4 id="Dual-form"><a href="#Dual-form" class="headerlink" title="Dual form:"></a>Dual form:</h4>$$\max \sum_{i=1}^n\alpha_i-\dfrac{1}{2}\sum_{i,j=1}^n\alpha_i\alpha_j y_i y_j &lt;x_i,x_j&gt;$$<br>$$s.t.\quad 0\leq\alpha_i\leq C, i=1,…,n,$$ $$ \sum_{i=1}^n\alpha_i y_i=0.$$</li>
+</ul>
+<p><img src="https://i.imgur.com/3KjBxLZ.png" alt=""></p>
+<p>We call $\xi_i\geq 0$ the <strong>slack variable</strong>.</p>
+<h3 id="2-norm-soft-margin"><a href="#2-norm-soft-margin" class="headerlink" title="2-norm soft margin"></a>2-norm soft margin</h3><ul>
+<li><h4 id="Primal-form-1"><a href="#Primal-form-1" class="headerlink" title="Primal form:"></a>Primal form:</h4><p>$$\min \quad \dfrac{1}{2}|w|^2+\dfrac{C}{2}\sum_{i=1}^n\xi_i^2,$$$$s.t.\quad y_i(w^Tx_i+b)\geq 1-\xi_i.$$</p>
+</li>
+<li><h4 id="Dual-form-（詳細推導可看此）"><a href="#Dual-form-（詳細推導可看此）" class="headerlink" title="Dual form: （詳細推導可看此）"></a>Dual form: （詳細推導可<a href="http://www.svcl.ucsd.edu/courses/ece271B-F09/handouts/SoftSVMs.pdf" target="_blank" rel="noopener">看此</a>）</h4><h3 id="Remark-1"><a href="#Remark-1" class="headerlink" title="Remark"></a>Remark</h3><p>我們稱 $C$ 為 weighted varialbe。<br>當我們做SVM的最佳化時，其實我們希望：</p>
+</li>
+</ul>
+<ol>
+<li>讓margin分越開越好 </li>
+<li>讓slack variable不要太大（不希望讓太多太遠的也跑進來）</li>
+</ol>
+<p>當 $C$ 調大時，只要有一點的$\xi_i$，就會讓目標函數放很大。亦即「很看重training error」，因此若有overfitting的現象，須將 $C$ 調小。</p>
+<h3 id="Remark-2"><a href="#Remark-2" class="headerlink" title="Remark:"></a>Remark:</h3><p>1-Norm SVM:<br>$$min\quad |w|_1+C1^T\xi$$$$D(Aw+1b)+\xi\geq 1 $$$$\xi\geq 0$$</p>
+<p>等價於<br>$$min \quad 1s+C1^T\xi$$$$D(Aw+1b)+\xi\geq 1 $$$$-s\leq w\leq s$$$$\xi\geq 0$$</p>
+<ul>
+<li><h3 id="How-to-tune-gamma-and-C"><a href="#How-to-tune-gamma-and-C" class="headerlink" title="How to tune $\gamma$ and $C$?"></a>How to tune $\gamma$ and $C$?</h3>在李育杰老師的<a href="https://www.sciencedirect.com/science/article/pii/S0167947307000552" target="_blank" rel="noopener">Model selection for support vector machines via uniform design</a>這篇論文，提到可用uniform design的方法來tune。<br>並提到：SVM Ｃ建議的range在$10^{-2}$及$10^4$，但RSVM需要大一點的Ｃ，約$10^0$到$10^{6}$。<br><a href="http://www.math.hkbu.edu.hk/UniformDesign/" target="_blank" rel="noopener">http://www.math.hkbu.edu.hk/UniformDesign/</a></li>
+</ul>
+<p>以下截圖自<a href="https://www.sciencedirect.com/science/article/pii/S0167947307000552" target="_blank" rel="noopener">Model selection for support vector machines via uniform design</a>：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/QUecnBR.png" alt=""><br><img src="https://i.imgur.com/VZPTkUB.png" alt=""></p>
+</blockquote>
+<h2 id="Non-linear-SVM"><a href="#Non-linear-SVM" class="headerlink" title="Non-linear SVM"></a>Non-linear SVM</h2><blockquote>
+<p><img src="https://i.imgur.com/33YzYO9.png" alt=""><br>（圖片來自李育杰老師的投影片）</p>
+</blockquote>
+<p>有些資料，在原始空間可能沒辦法很容易的用linear classifier去分開。<br>Non-linear SVM的想法來自將原資料映射到某個較高維度的空間，在那個高維度空間去做分類（把資料轉換後，再做SVM的意思）。</p>
+<p>藉著 $\phi$ 將原資料做完映射後，classifier長相：<br>classifier for primal form: $$f(x)=(\sum_{j=1}^? w_j\phi_j(x))+b$$</p>
+<p>dual form:<br>$$f(x)=(\sum_{i=1}^l\alpha_iy_i&lt;\phi(x^i),\phi(x)&gt;)+b=(\sum_{i=1}^l\alpha_iy_iK(x^i,x))+b$$</p>
+<h3 id="Kernel"><a href="#Kernel" class="headerlink" title="Kernel"></a>Kernel</h3><blockquote>
+<p><img src="https://i.imgur.com/g9Wqizk.png" alt=""><br>此圖來自李育杰老師投影片</p>
+</blockquote>
+<p>我們可以把kernel想像成「用不同的方式去描述資料」，kernel matrix裡的每k個row，就是第k筆資料與其他資料之間的相似度。（有n筆training資料,kernel matrix的size就是nxn）</p>
+<p><strong>常見的kernel function</strong> (以下<a href="http://staff.ustc.edu.cn/~ketang/PPT/PRLec5.pdf" target="_blank" rel="noopener">截圖自此</a>):<br><img src="https://i.imgur.com/7Eie6cJ.png" alt=""></p>
+<h4 id="RBF-kernel-（Radial-basis-or-Gaussian-k-x-y-e-beta-x-y-2-e-frac-x-y-2-2-sigma-2-sigma-in-mathbb-R-setminus-0"><a href="#RBF-kernel-（Radial-basis-or-Gaussian-k-x-y-e-beta-x-y-2-e-frac-x-y-2-2-sigma-2-sigma-in-mathbb-R-setminus-0" class="headerlink" title="RBF kernel （Radial basis or Gaussian) $k(x,y)=e^{-\beta|x-y|^2}=e^{-\frac{|x-y|^2}{2\sigma^2} }, \sigma\in \mathbb R\setminus{0}.$"></a>RBF kernel （Radial basis or Gaussian) $k(x,y)=e^{-\beta|x-y|^2}=e^{-\frac{|x-y|^2}{2\sigma^2} }, \sigma\in \mathbb R\setminus{0}.$</h4><ul>
+<li><p>$\beta$大小 v.s. RBF kernel:<br><img src="https://paper-attachments.dropbox.com/s_D77CBDA84E9A3CA442E9AE36518D3D4E33DD7AEBC18BB57F9BE487DDB9DDC2C4_1569572942047_diff_variances_plot.png" alt="[圖一] x軸為 $$x$$, y軸為 $$e^{-\beta\|x-0\|^2}$$"><br>[註]：圖片來源<a href="http://vlabs.iitb.ac.in/vlabs-dev/labs_local/machine_learning/labs/exp3/theory.php" target="_blank" rel="noopener">在此</a></p>
+</li>
+<li><p>距離與kernel值的關係:</p>
+<blockquote>
+<p><img src="https://paper-attachments.dropbox.com/s_D77CBDA84E9A3CA442E9AE36518D3D4E33DD7AEBC18BB57F9BE487DDB9DDC2C4_1569572679250_PnnRbf.jpg" alt="[圖二]"></p>
+</blockquote>
+</li>
+</ul>
+<p>[註]：圖片來源<a href="https://www.dtreg.com/solution/view/25" target="_blank" rel="noopener">在此</a></p>
+<blockquote>
+<p><img src="https://i.imgur.com/56lUUNe.png" alt=""></p>
+</blockquote>
+<p>可想像成用不同方式描述一筆資料（用和其他筆資料的相似度）。</p>
+<ul>
+<li><h4 id="Mercer-condiction"><a href="#Mercer-condiction" class="headerlink" title="Mercer condiction"></a>Mercer condiction</h4>如果kernel function滿足Mercer condiction,就一定有相對應的non linear map。</li>
+</ul>
+<h2 id="SSVM-Smooth-Support-Vector-Machine"><a href="#SSVM-Smooth-Support-Vector-Machine" class="headerlink" title="SSVM (Smooth Support Vector Machine)"></a>SSVM (Smooth Support Vector Machine)</h2><h3 id="SSVM在解的最佳化問題："><a href="#SSVM在解的最佳化問題：" class="headerlink" title="SSVM在解的最佳化問題："></a>SSVM在解的最佳化問題：</h3><p>$$\min_{(w,b)\in R^{n+1} }\dfrac{C}{2}|p((1-D(Aw+{\bf 1}b),\beta))|^2_2+b^2$$<br>重點：SSVM使用一個二次可微分的函數去近似原本的plus function，因此可以使用newton method去解這個最佳化問題，且SSVM是一個strongly convex的問題，因此有唯一解。</p>
+<h3 id="式子推導"><a href="#式子推導" class="headerlink" title="式子推導"></a>式子推導</h3><ol>
+<li><h4 id="constraint-轉成-unconstraint"><a href="#constraint-轉成-unconstraint" class="headerlink" title="constraint 轉成 unconstraint"></a>constraint 轉成 unconstraint</h4>我們可透過以下方法將原本的constraint的問題轉成unconstraint問題。<blockquote>
+<p><img src="https://i.imgur.com/0Cnm0CG.png" alt=""></p>
+</blockquote>
+</li>
+</ol>
+<p><strong>Remark</strong>: 加上b只是為了數學上確保是strongly convex function (有unique solution).<br>$\xi=0$ or 小於$0$: 函數不用調整<br>因為少了constraint，變數從原本的n+1+l變成n+1</p>
+<ol start="2">
+<li><h4 id="原本不是二次可微分的的plus-function-轉換成二次可微分的p函數"><a href="#原本不是二次可微分的的plus-function-轉換成二次可微分的p函數" class="headerlink" title="原本不是二次可微分的的plus function 轉換成二次可微分的p函數"></a>原本不是二次可微分的的plus function 轉換成二次可微分的p函數</h4><img src="https://i.imgur.com/DLmYhBN.png" alt=""></li>
+</ol>
+<p>從上圖可以清楚看到 Plus function $(*)_+$ 不是二次可微分(紅色的圈圈點，不可微分)，所以不能用newton method去計算這個最佳化問題。我們會想去找一個二次可微的函數去近似plus function，讓我們能夠用newton method去解這個問題。</p>
+<p>事實上，在訊號處理的領域常用sigmoid function去近似step function。而step function的積分就是plus function。因此希望透過sigmoid function的積分來近似plus function。</p>
+<h4 id="Remark-3"><a href="#Remark-3" class="headerlink" title="Remark:"></a>Remark:</h4><p>Sigmoid function: $\dfrac{1}{1+e^{-\beta x} }$<br>Sigmoid function的積分：<br>$$p(x,\beta)\equiv x+\dfrac{1}{\beta}log(1+e^{-\beta x})$$</p>
+<p>SSVM在做的事就是用$p(x,\beta)$這個二次可微分的函數來取代原本的plus function。（這裡一直強調二次可微，主要是因為牛頓法需要二次可微）。</p>
+<h4 id="在此使用-Newton-Armoijo-Algorithm-（之後再詳細寫）"><a href="#在此使用-Newton-Armoijo-Algorithm-（之後再詳細寫）" class="headerlink" title="在此使用 Newton Armoijo Algorithm （之後再詳細寫）"></a>在此使用 Newton Armoijo Algorithm （之後再詳細寫）</h4><blockquote>
+<p><img src="https://i.imgur.com/ncf5HY6.png" alt=""></p>
+</blockquote>
+<p>Remark:原本牛頓法其實就是$\lambda=1$時。<br>從$\lambda=1$開始試，直到滿足Armijo rule為止。Armijo rule直觀的意思就是保證從原本的點走到新的點要下降一定的量。</p>
+<p>此方法保證：不論起始值多少，都可在有限步找到解。<br>且一定會在有限步求出解。（通常只要 6-8 iterations 就可收斂。）</p>
+<hr>
+<p>我們現在知道SSVM是一個好算的方法，那我們再回頭去看要怎麼用SSVM去解non-linear SVM呢？先看一下原始的SVM:</p>
+<blockquote>
+<p><img src="https://i.imgur.com/2YRIYwf.png" alt=""></p>
+</blockquote>
+<p>注意：在這裡講的Dual指的是用 dual variable去替換primal variable。但我們仍然是在解primal problem。</p>
+<p><strong>extend到non linear</strong>:我們其實就是把$AA^T$用kernel去做替換（實際上原本的SVM就是linear kernel。）</p>
+<blockquote>
+<p><img src="https://i.imgur.com/zNPpQCL.png" alt=""></p>
+</blockquote>
+<p>我們可以仔細觀察一開始的SVM和經過dual varible替換後，式子的差別，事實上我們只差在input，因此我們解最佳化時，其實我們只需要改變我們的input就好。（求出classifier的參數後，記得代入的點也要先經過kernel轉換。）</p>
+<h2 id="RSVM-Reduced-Support-Vector-Machine"><a href="#RSVM-Reduced-Support-Vector-Machine" class="headerlink" title="RSVM (Reduced Support Vector Machine)"></a>RSVM (Reduced Support Vector Machine)</h2><p>從上面我們知道，nonlinear SVM 的 classifier就是：$$f(x)=\sum_{i=1}^l \alpha_ik(x,A_i)+b，$$其實這個classifier就像是一個由$\beta={1}\bigcup{k(.,x^i)}_{i=1}^l$這組basis做線性組合而成的函數（注意$\alpha_i$個數就是training data的個數）</p>
+<p>因此RSVM在想的事情就是用subset of $\beta$，其實也就是從原本的training data裡面抽出一些點，來從kernel看相似度。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/sHCWwBM.png" alt=""><br>(李育杰老師投影片)<br><img src="https://i.imgur.com/OujoCAH.png" alt=""></p>
+</blockquote>
+<p>註：當$l$越多，VC dimention就越大，因為你可以用更多的組合來組出classifier，但也可能造成overfitting。</p>
+<h2 id="Different-tools-for-SVM"><a href="#Different-tools-for-SVM" class="headerlink" title="Different tools for SVM"></a>Different tools for SVM</h2><p>可直接參考這篇文章：<br><a href="https://blog.csdn.net/weixin_43746433/article/details/97808078" target="_blank" rel="noopener">https://blog.csdn.net/weixin_43746433/article/details/97808078</a></p>
+<ul>
+<li><a href="https://www.csie.ntu.edu.tw/~cjlin/libsvm/" target="_blank" rel="noopener">台大林智仁教授libsvm</a> -用SMO</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" target="_blank" rel="noopener">sklearn.svm.SVC</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.NuSVC.html#sklearn.svm.NuSVC" target="_blank" rel="noopener">sklearn.svm.NuSVC</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" target="_blank" rel="noopener">sklearn.svm.LinearSVC</a></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://link.springer.com/referenceworkentry/10.1007%2F978-0-387-73003-5_299" target="_blank" rel="noopener">https://link.springer.com/referenceworkentry/10.1007%2F978-0-387-73003-5_299</a></li>
+<li><a href="http://blog.fukuball.com/lin-xuan-tian-jiao-shou-ji-qi-xue-xi-ji-fa-machine-learning-techniques-di-3-jiang-xue-xi-bi-ji/" target="_blank" rel="noopener">林軒田教授機器學習技法 Machine Learning Techniques 第 3 講學習筆記</a></li>
+<li><a href="https://rpubs.com/skydome20/R-Note14-SVM-SVR" target="_blank" rel="noopener">R筆記 – (14)Support Vector Machine/Regression(支持向量機SVM)</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/svm.html" target="_blank" rel="noopener">sklearn-1.4. Support Vector Machines</a></li>
+<li><a href="https://blog.csdn.net/v_july_v/article/details/7624837" target="_blank" rel="noopener">支持向量机通俗导论（理解SVM的三层境界）</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/22400898" target="_blank" rel="noopener">我所理解的 SVM（支持向量机）- 1</a></li>
+<li><a href="https://www.zhihu.com/question/21094489" target="_blank" rel="noopener">支持向量机(SVM)是什么意思？</a></li>
+<li><a href="https://medium.com/@chih.sheng.huang821/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E6%94%AF%E6%92%90%E5%90%91%E9%87%8F%E6%A9%9F-support-vector-machine-svm-%E8%A9%B3%E7%B4%B0%E6%8E%A8%E5%B0%8E-c320098a3d2e" target="_blank" rel="noopener">機器學習-支撐向量機(support vector machine, SVM)詳細推導</a></li>
+<li><a href="http://www.cmlab.csie.ntu.edu.tw/~cyy/learning/tutorials/SVM2.pdf" target="_blank" rel="noopener">Support Vector Machines 簡介</a></li>
+<li><a href="http://cs229.stanford.edu/notes/cs229-notes3.pdf" target="_blank" rel="noopener">CS229 Lecture notes</a></li>
+</ul>
+<p><strong>paper</strong></p>
+<ul>
+<li><a href="https://reader.elsevier.com/reader/sd/pii/S0167947307000552?token=B15D9314AEA2D2924B5D735B026CE4FB034A3B8C31480AE172A6E0BFE08B5F929032877D18B42BF8E531DB19C6CD4E51" target="_blank" rel="noopener">Model selection for support vector machines via uniform design</a></li>
+<li><a href="https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf" target="_blank" rel="noopener">A Practical Guide to Support Vector Classification</a></li>
+<li><a href="https://www.sciencedirect.com/topics/computer-science/support-vector-machine" target="_blank" rel="noopener">support vector machine</a></li>
+<li><a href="http://www.stat.sinica.edu.tw/syhuang/papersdownload/TNN04-P332R1.pdf" target="_blank" rel="noopener">Reduced Support Vector Machines: A Statistical Theory</a></li>
+</ul>
+<h2 id="paper-list"><a href="#paper-list" class="headerlink" title="paper list:"></a>paper list:</h2><p>about loss function:</p>
+<ul>
+<li><a href="https://projecteuclid.org/download/pdf_1/euclid.aos/1079120130" target="_blank" rel="noopener">Statistical behavior and consistency of classification methods based on convex risk minimization</a></li>
+<li><a href="http://jmlr.csail.mit.edu/papers/volume5/zhang04b/zhang04b.pdf" target="_blank" rel="noopener">Statistical analysis of some multi-category large margin classification methods</a></li>
+</ul>
+<p>SMO:</p>
+<ul>
+<li>Sequential Minimal Optimization：A Fast Algorithm for Training Support Vector Machines</li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/04/22/Support vector machine (SVM)/" target="_blank" title="Support vector machine (SVM)">https://github.com/dsmilab/dsmi-lab-website/2020/04/22/Support vector machine (SVM)/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/SVM/" rel="tag">SVM</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/04/23/How%20Use%20clustering%20to%20improve%20a%20language%20model/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          How to use clustering to improve a language model
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/04/22/Sequence%20to%20Sequence%20Learning%20with%20Neural%20Networks/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Sequence to Sequence Learning with Neural Networks</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Support-vector-machine-SVM"><span class="nav-number">1.</span> <span class="nav-text">Support vector machine (SVM)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-‘SVM’-‘study-group’"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: ‘SVM’, ‘study group’</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVM-Hard-margin"><span class="nav-number">1.1.</span> <span class="nav-text">SVM (Hard margin)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目標（問題解釋）："><span class="nav-number">1.1.1.</span> <span class="nav-text">目標（問題解釋）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最原始的SVM在解的最佳化問題："><span class="nav-number">1.1.2.</span> <span class="nav-text">最原始的SVM在解的最佳化問題：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Primal-form-and-Dual-form"><span class="nav-number">1.1.3.</span> <span class="nav-text">Primal form and Dual form</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dual-form推導："><span class="nav-number">1.1.4.</span> <span class="nav-text">Dual form推導：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#support-vector的意義"><span class="nav-number">1.1.5.</span> <span class="nav-text">support vector的意義</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remark"><span class="nav-number">1.1.6.</span> <span class="nav-text">Remark</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMO-Sequential-Minimal-Optimization"><span class="nav-number">1.1.7.</span> <span class="nav-text">SMO  (Sequential Minimal Optimization)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Soft-Margin-SVM-nonseparable-case"><span class="nav-number">1.2.</span> <span class="nav-text">Soft-Margin SVM (nonseparable case)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-norm-soft-margine"><span class="nav-number">1.2.1.</span> <span class="nav-text">1-norm soft margine:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Primal-form"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Primal form:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dual-form"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Dual form:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-norm-soft-margin"><span class="nav-number">1.2.2.</span> <span class="nav-text">2-norm soft margin</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Primal-form-1"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Primal form:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dual-form-（詳細推導可看此）"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Dual form: （詳細推導可看此）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remark-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">Remark</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remark-2"><span class="nav-number">1.2.4.</span> <span class="nav-text">Remark:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-tune-gamma-and-C"><span class="nav-number">1.2.5.</span> <span class="nav-text">How to tune $\gamma$ and $C$?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Non-linear-SVM"><span class="nav-number">1.3.</span> <span class="nav-text">Non-linear SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kernel"><span class="nav-number">1.3.1.</span> <span class="nav-text">Kernel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RBF-kernel-（Radial-basis-or-Gaussian-k-x-y-e-beta-x-y-2-e-frac-x-y-2-2-sigma-2-sigma-in-mathbb-R-setminus-0"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">RBF kernel （Radial basis or Gaussian) $k(x,y)&#x3D;e^{-\beta|x-y|^2}&#x3D;e^{-\frac{|x-y|^2}{2\sigma^2} }, \sigma\in \mathbb R\setminus{0}.$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mercer-condiction"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Mercer condiction</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSVM-Smooth-Support-Vector-Machine"><span class="nav-number">1.4.</span> <span class="nav-text">SSVM (Smooth Support Vector Machine)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSVM在解的最佳化問題："><span class="nav-number">1.4.1.</span> <span class="nav-text">SSVM在解的最佳化問題：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#式子推導"><span class="nav-number">1.4.2.</span> <span class="nav-text">式子推導</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#constraint-轉成-unconstraint"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">constraint 轉成 unconstraint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原本不是二次可微分的的plus-function-轉換成二次可微分的p函數"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">原本不是二次可微分的的plus function 轉換成二次可微分的p函數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Remark-3"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">Remark:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在此使用-Newton-Armoijo-Algorithm-（之後再詳細寫）"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">在此使用 Newton Armoijo Algorithm （之後再詳細寫）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSVM-Reduced-Support-Vector-Machine"><span class="nav-number">1.5.</span> <span class="nav-text">RSVM (Reduced Support Vector Machine)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Different-tools-for-SVM"><span class="nav-number">1.6.</span> <span class="nav-text">Different tools for SVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.7.</span> <span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paper-list"><span class="nav-number">1.8.</span> <span class="nav-text">paper list:</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

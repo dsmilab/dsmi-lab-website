@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>discourse-aware neural extractive text summarization | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLPpapers" />
+  
+  
+  
+  
+  <meta name="description" content="Discourse-Aware Neural Extractive Text Summarizationtags: references NLP論文BERT 的sentence-based extractive model 通常extracte出多餘的或沒有訊息的summary 且 long dependency on document 也是一個問題(since bert pretrain is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Discourse-Aware Neural Extractive Text Summarization">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/07/08/Discourse-Aware%20Neural%20Extractive%20Text%20Summarization/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Discourse-Aware Neural Extractive Text Summarizationtags: references NLP論文BERT 的sentence-based extractive model 通常extracte出多餘的或沒有訊息的summary 且 long dependency on document 也是一個問題(since bert pretrain is">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/E01BdaN.png">
+<meta property="og:image" content="https://i.imgur.com/xJJN3FC.png">
+<meta property="og:image" content="https://i.imgur.com/nlsQT3A.png">
+<meta property="og:image" content="https://i.imgur.com/rsiySRl.png">
+<meta property="og:image" content="https://i.imgur.com/9Lpdc5k.png">
+<meta property="og:image" content="https://i.imgur.com/OoAMHhs.png">
+<meta property="og:image" content="https://i.imgur.com/ZHhJNip.png">
+<meta property="og:image" content="https://i.imgur.com/t22eEn3.png">
+<meta property="og:image" content="https://i.imgur.com/9QpmRV2.png">
+<meta property="og:image" content="https://i.imgur.com/yijIECc.png">
+<meta property="og:image" content="https://i.imgur.com/7xbKpqV.png">
+<meta property="og:image" content="https://i.imgur.com/IhOxQfO.png">
+<meta property="og:image" content="https://i.imgur.com/sVxBc4G.png">
+<meta property="og:image" content="https://i.imgur.com/Kv9AlEX.png">
+<meta property="og:image" content="https://i.imgur.com/c4YABMc.png">
+<meta property="og:image" content="https://i.imgur.com/gsNrknN.png">
+<meta property="og:image" content="https://i.imgur.com/IgYXo2t.png">
+<meta property="og:image" content="https://i.imgur.com/hTxsdGR.png">
+<meta property="og:image" content="https://i.imgur.com/TAOCWf8.png">
+<meta property="og:image" content="https://i.imgur.com/FjW2Kg0.png">
+<meta property="og:image" content="https://i.imgur.com/yGyy2Z4.png">
+<meta property="og:image" content="https://i.imgur.com/5Hhkw9S.png">
+<meta property="article:published_time" content="2020-07-08T18:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="papers">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/E01BdaN.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Discourse-Aware Neural Extractive Text Summarization" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Discourse-Aware Neural Extractive Text Summarization
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/07/08/Discourse-Aware%20Neural%20Extractive%20Text%20Summarization/" class="article-date">
+	  <time datetime="2020-07-08T18:00:00.000Z" itemprop="datePublished">2020-07-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Discourse-Aware-Neural-Extractive-Text-Summarization"><a href="#Discourse-Aware-Neural-Extractive-Text-Summarization" class="headerlink" title="Discourse-Aware Neural Extractive Text Summarization"></a>Discourse-Aware Neural Extractive Text Summarization</h1><h6 id="tags-references-NLP"><a href="#tags-references-NLP" class="headerlink" title="tags: references NLP"></a>tags: <code>references</code> <code>NLP</code></h6><p><a href="https://www.aclweb.org/anthology/2020.acl-main.451.pdf?fbclid=IwAR3u4-_4b0vjzZ91sZK-DhzZTckvohj5NCwEGmNmASO9--dcMJeXDtX045s" target="_blank" rel="noopener">論文</a><br>BERT 的sentence-based extractive model 通常extracte出多餘的或沒有訊息的summary 且 long dependency on document 也是一個問題(since bert pretrain is sentence-based)</p>
+<p>DISCOBERT extracts 一些子句的discourse unit(而非整個句子)更精細的來選出較好結果<br>而long dependency on discourse unit的問題 透過使用RST tree and coreference mentions(Graph Convolutional Networks) 解決<br>通常summary 分成兩種</p>
+<ol>
+<li>extractive summary : Directly selects sentences from the document to assemble into a summary.</li>
+<li>abstractive summary : Genterated word-by-word after encoding whole document</li>
+</ol>
+<ul>
+<li>各自優點<ul>
+<li>extractive 有更好的呈現，和較快</li>
+<li>abstractive summary 更靈活，產生較少多餘文章</li>
+</ul>
+</li>
+<li>Hybrid -&gt; pipeline or candidate 原目的是丟棄所選句子中沒有信息的短語 但是會受到pipeline分開產生而產生的語意斷層</li>
+<li>EDU(elementary discourse unit):<img src="https://i.imgur.com/E01BdaN.png" alt=""></li>
+</ul>
+<p>而在這個paper使用EDU當成基礎單元而非原來的句子，來進行提取壓縮和減少句子間的冗言贅字</p>
+<ul>
+<li>Here is the  example of  document<br><img src="https://i.imgur.com/xJJN3FC.png" alt=""><br>透過使用EDU可以減少使用多餘的細節，保留了更多的包含主要概念或事件的資訊，從而產生更簡潔，內容更豐富的摘要。此外使用已知的知識來finetune 句子內的資訊，透過使用2種graphic model (都是base on EDU)</li>
+</ul>
+<ul>
+<li>RST graph  $G_R$</li>
+<li>Coreference graph $G_C$  有點像是BFS+cluster:找定一點(core) explore 與其互相影響的 other point(event/concepts) ，亦用來讓model找long-dependency<br>最後使用 Graph Convolutional Network (GCN)(bse on EDU) 來解決long-range interaction問題</li>
+</ul>
+<p>主要的貢獻有三</p>
+<ol>
+<li>提出discourse base 的summarization model 生成簡潔且較少冗句的摘要</li>
+<li>結構化兩種類型的 graphic model</li>
+<li>在summary 上贏過bert<h2 id="Discourse-Graph-Construction"><a href="#Discourse-Graph-Construction" class="headerlink" title="Discourse Graph Construction"></a>Discourse Graph Construction</h2></li>
+</ol>
+<ul>
+<li>Initial with disconnection on all point </li>
+<li>Discourse focus on unit間的關係</li>
+<li>In the RST framework, document can be segmented into (1)contiguous,(2)adjacent and (3)non-overlapping text spans(=EDU,其通常標記為 1.Nucleus or 2.Satellite)</li>
+</ul>
+<ol>
+<li>Nucleus : 通常位於中心位置</li>
+<li>Satellite : 位於外圍，且這類在內容和語意相依性不太重要。<br><img src="https://i.imgur.com/nlsQT3A.png" alt=""></li>
+</ol>
+<p>Note : EDU 存在相依性，代表著它們互相的修飾關係，但是當考慮修飾關係會使得summary more ambiguous，因此修飾關係不在model的考量當中。</p>
+<h3 id="RST-Graph"><a href="#RST-Graph" class="headerlink" title="RST Graph"></a>RST Graph</h3><p>當選擇句子作為提取摘要的候選者時，假設每個句子在語法上是獨立的。 但是對於EDU，有些額外限制以確保語法。<br><img src="https://i.imgur.com/rsiySRl.png" alt=""><br>在圖中 [2]EDU是完整句子而[3]不是。只看那些不完整EDU-&gt;需要了解EDU之間的依賴性，以確保所選組合的語法合法。<br><code>We use the converted dependency version of the
+tree to build the RST Graph G_R, by initializing an
+empty graph and treating every discourse dependency from the i-th EDU to the j-th EDU as a
+directed edge, i.e., G_R[i][j] = 1</code></p>
+<h3 id="Coreference-Graph"><a href="#Coreference-Graph" class="headerlink" title="Coreference Graph"></a>Coreference Graph</h3><ul>
+<li>Text summarization 通常會有’position bias’ 問題：即為關鍵訊息聚集在特定地方。i.e.,在新聞中大部分關鍵訊息都是在一開始就描述的。</li>
+<li>Coreference meaning <img src="https://i.imgur.com/9Lpdc5k.png" alt=""></li>
+</ul>
+<h4 id="演算法"><a href="#演算法" class="headerlink" title="演算法"></a>演算法</h4><p><img src="https://i.imgur.com/OoAMHhs.png" alt=""><br>首先使用Stanford CoreNLP來檢測文章中的所有coreference clusters。 對於每個coreference clusters，將提及同一cluster的所有語篇單元link在一起。 在所有coreference clusters上重複此過程，以創建最終的Coreference Graph。</p>
+<ul>
+<li>但是，在文檔的中間或末尾仍然散佈了大量的信息，匯總模型通常會忽略這些信息。</li>
+<li>經過觀察大約25％的 oracle  sentence 出現在CNNDM數據集中的前10個句子之外。</li>
+<li>此外，在長篇新聞文章中，整個文檔中經常有多個核心人物和事件。但是，現有的神經模型在建模這樣的長篇上下文時效果不佳，尤其是當存在多個模棱兩可的共指關係(兩種詞共指同物)要解析時。</li>
+</ul>
+<p>在圖一中也顯示<img src="https://i.imgur.com/ZHhJNip.png" alt=""><br>構造圖$G_C$時，由於提到了“ Pulitzer prizes”，因此1-1、2-1、20-1和22-1之間的邊都連接在一起。</p>
+<h2 id="DISCOBERT-Model"><a href="#DISCOBERT-Model" class="headerlink" title="DISCOBERT Model"></a>DISCOBERT Model</h2><p><img src="https://i.imgur.com/t22eEn3.png" alt=""><br>首先使用BERT encode整個篇章，使用BERT得到的hidden state表示，每個EDU內部做selfattentive span extractor得到新的EDU的表示，由得到的EDU表示和兩個矩陣表示$G_R$和$G_C$，做GCN得到EDU新的表示， 通過MLP預測EDU是否被抽取出來做EDU（0-1序列標註）[ where each EDU $d_i$ is scored by neural networks]。<br>而在生成過程中，需要進一步考慮語篇依賴性，以確保輸出摘要的連貫性和語法性。<br>Note :<code>Insert &lt;CLS&gt; and &lt;SEP&gt; tokens at the beginning and the end of each &quot;sentence&quot;, respectively</code></p>
+<h3 id="Document-Encoder"><a href="#Document-Encoder" class="headerlink" title="Document Encoder"></a>Document Encoder</h3><p><img src="https://i.imgur.com/9QpmRV2.png" alt=""><br><img src="https://i.imgur.com/yijIECc.png" alt=""></p>
+<ul>
+<li>Self-Attentive Span Extractor<img src="https://i.imgur.com/7xbKpqV.png" alt=""><br>Note : all the W matrices and b vectors are parameters to learn,$h^S = {h^S_1,…h^S_n} \in R^{d_h*n}$</li>
+</ul>
+<h3 id="Graph-Encoder"><a href="#Graph-Encoder" class="headerlink" title="Graph Encoder"></a>Graph Encoder</h3><p><img src="https://i.imgur.com/IhOxQfO.png" alt=""></p>
+<ul>
+<li>LN(·) represents Layer Normalization, $N_i$ denotes the neighorhood of the i-th EDU node.</li>
+<li>For different graphs, the parameter of DGEs are not shared. If we use both graphs, their output are concatenated with:(合2圖的結果再丟進2分類器)<img src="https://i.imgur.com/sVxBc4G.png" alt="">)<img src="https://i.imgur.com/Kv9AlEX.png" alt=""></li>
+<li>Loss:BCE loss<img src="https://i.imgur.com/c4YABMc.png" alt=""><br><code>we sort y^ in descending order, and select EDUs accordingly. Note that the dependencies between EDUs are also enforced in prediction to ensure grammacality of generated summaries</code><h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3></li>
+<li>NYT(<a href="https://catalog.ldc.upenn.edu/LDC2008T19" target="_blank" rel="noopener">New York Times</a>)</li>
+<li>CNNDM(<a href="https://papers.nips.cc/paper/5945-teaching-machines-to-read-and-comprehend.pdf" target="_blank" rel="noopener">CNN and Dailymail</a>)</li>
+</ul>
+<h3 id="Toolkit"><a href="#Toolkit" class="headerlink" title="Toolkit"></a>Toolkit</h3><ul>
+<li><a href="https://arxiv.org/abs/1704.04368" target="_blank" rel="noopener">See et al.</a>用於extract summaries</li>
+<li>Stanford CoreNLP for sentence boundary detection,tokenization and parsing</li>
+<li>Detail<img src="https://i.imgur.com/gsNrknN.png" alt=""></li>
+<li>Theedges in $G_C$ are undirected, while those in $G_R$ are directional.</li>
+<li>AllenNLP  as the code framework</li>
+<li>DGL as the implementation of graph encoding</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Datasets</th>
+<th>training</th>
+<th>validation</th>
+<th>test</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CNNDM</td>
+<td>287226</td>
+<td>13368</td>
+<td>11490</td>
+</tr>
+<tr>
+<td>NYT</td>
+<td>137778</td>
+<td>17222</td>
+<td>17223</td>
+</tr>
+</tbody></table>
+<h3 id="Compare-with-State-of-the-art-Baselines"><a href="#Compare-with-State-of-the-art-Baselines" class="headerlink" title="Compare with  State-of-the-art Baselines"></a>Compare with  State-of-the-art Baselines</h3><ol>
+<li>Extractive Models: <ul>
+<li>BanditSum is a policy gradient methods</li>
+<li>NeuSum is a seq2seq architecture, where the attention mechanism scores the document and emits the index as the selection</li>
+</ul>
+</li>
+<li>Compressive Models: <ul>
+<li>JECS(BiLSTM as the encoder)The first stage is selecting sentences, and the second stage is sentence compression by pruning constituency parsing tree</li>
+</ul>
+</li>
+<li>BERT-based Models:<ul>
+<li>BertSum(model re-implementation as baseline)</li>
+<li>PNBert proposed a BERT-based model with various training strategies, including “reinforcement learning” and “Pointer Networks”</li>
+<li>HiBert is a hierarchical BERT-based model for document encoding, which is further pretrained with unlabeled data</li>
+</ul>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Hardware</th>
+<th>NVIDIA P100 card</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mini-batch</td>
+<td>6</td>
+</tr>
+<tr>
+<td>length</td>
+<td>768 BPEs</td>
+</tr>
+<tr>
+<td>pre-trained</td>
+<td>bert-base-uncased</td>
+</tr>
+<tr>
+<td>Iter</td>
+<td>80000</td>
+</tr>
+<tr>
+<td>evaluation metrics</td>
+<td>ROUGE</td>
+</tr>
+<tr>
+<td>validation criteria</td>
+<td>R-2</td>
+</tr>
+</tbody></table>
+<p>Note:EDU之間的依賴性對於所選EDU的語法至關重要。 這是學習依賴關係的兩個步驟：head inheritance andtree conversion。<br>Head inheritance:為每個有效的非終止樹定義Head node。 對於每個葉節點，頭部都是自身。 我們根據非終止樹的Nucleus數確定其Head node<br>ex:<img src="https://i.imgur.com/IgYXo2t.png" alt=""></p>
+<ul>
+<li>If model selects “[5])(N) being carried … Liberia.” as a candidate span, we will enforce the model to select “[3](N) and shows … 8,” and “[2](N) This … series,” as well.</li>
+<li>通過篇章分析，可以在篇章上構造得到一棵樹，樹的葉子節點是EDU，樹上的邊代表的是對應子節點的重要性程度，N代表主要，S代表次要，可以認為S是N的補充。相鄰兩個子節點可以有三種關係，N-N,N-S,S-N。</li>
+<li>作者提出假設：S依賴N,所以存在一條路徑從S指向N；如果兩個節點都是N，就認為是右N依賴做N。</li>
+<li>根據這個假設，可以將RST discourse tree轉成成RST dependence graph。</li>
+</ul>
+<h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><h4 id="CNNDM"><a href="#CNNDM" class="headerlink" title="CNNDM"></a>CNNDM</h4><p><img src="https://i.imgur.com/hTxsdGR.png" alt=""></p>
+<ul>
+<li>The second section lists the performance of baseline models, including non-BERT-based and BERTbased variants</li>
+<li>By a significant margin (0.52/0.61/1.04 on R-1/-2/-L on F1).<h4 id="NYT"><a href="#NYT" class="headerlink" title="NYT"></a>NYT</h4><img src="https://i.imgur.com/TAOCWf8.png" alt=""></li>
+<li>DISCOBERT provides 1.30/1.29/1.82 gain on R-1/-2/-L over the BERT baseline. However, the use of discourse graphs does not help much in this case.</li>
+</ul>
+<h4 id="Grammatical-problem"><a href="#Grammatical-problem" class="headerlink" title="Grammatical problem"></a>Grammatical problem</h4><ul>
+<li>由於句子的分割和部分選擇，我們模型的輸出在語法上可能不如原始句子。 需要手動檢查並自動評估模型輸出，並觀察到總體而言，考慮到RST依賴樹限制了EDU之間的修辭關係，所生成的摘要仍然是語法上的。 一組簡單而有效的後處理規則在某些情況下有助於完成EDU。<ul>
+<li><a href="https://arxiv.org/abs/1902.00863" target="_blank" rel="noopener"><strong>Automatic Grammar Checking</strong></a><img src="https://i.imgur.com/FjW2Kg0.png" alt=""></li>
+<li><strong>Human Evaluation</strong><img src="https://i.imgur.com/yGyy2Z4.png" alt=""></li>
+<li><strong>Examples &amp; Analysis</strong> : We notice that a decent<br>amount of irrelevant details are removed from the<br>extracted summary.<img src="https://i.imgur.com/5Hhkw9S.png" alt=""><br>In this example “[‘Johnny is believed to have drowned,]1 [but actually he is fine,’]2 [the police say.]3”, only selecting the second EDU yields a sentence “actually he is fine”, which is not clear who is ‘he’ mentioned here.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>發現錯誤主要源自RST依賴關係解析和語篇解析的解析錯誤。<br>RST依賴關係的錯誤分類和手工製定的依賴關係解決規則損害了生成輸出的語法和連貫性。 常見的標點符號問題包括逗號過多或缺失以及引號缺失。 </li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ol>
+<li>在本文中，我們提出了DISCOBERT，它使用EDU作為最小選擇基礎來減少摘要冗句，並利用兩種類型的圖model作為來捕獲EDU之間以及長期依賴性。 </li>
+<li>在兩個摘要生成數據集上驗證了所提出的方法，並觀察到相對於baseline模型的一致改進。 </li>
+<li>在以後的工作中，我們將探索更好的圖形編碼方法，並將圖model應用於需要長文檔編碼的其他任務。</li>
+</ol>
+<hr>
+<p>忘了做圖 之後再++ 南部網路真滴慢</p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Kohpo</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/07/08/Discourse-Aware Neural Extractive Text Summarization/" target="_blank" title="Discourse-Aware Neural Extractive Text Summarization">https://github.com/dsmilab/dsmi-lab-website/2020/07/08/Discourse-Aware Neural Extractive Text Summarization/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/papers/" rel="tag">papers</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/07/09/Leetcode%20-%20N-Queens/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode - N-Queens
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/07/01/Is%20Attention%20Interpretable_%20(1)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Is Attention Interpretable?</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Discourse-Aware-Neural-Extractive-Text-Summarization"><span class="nav-number">1.</span> <span class="nav-text">Discourse-Aware Neural Extractive Text Summarization</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-references-NLP"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: references NLP</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Discourse-Graph-Construction"><span class="nav-number">1.1.</span> <span class="nav-text">Discourse Graph Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RST-Graph"><span class="nav-number">1.1.1.</span> <span class="nav-text">RST Graph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coreference-Graph"><span class="nav-number">1.1.2.</span> <span class="nav-text">Coreference Graph</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#演算法"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">演算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DISCOBERT-Model"><span class="nav-number">1.2.</span> <span class="nav-text">DISCOBERT Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Document-Encoder"><span class="nav-number">1.2.1.</span> <span class="nav-text">Document Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Graph-Encoder"><span class="nav-number">1.2.2.</span> <span class="nav-text">Graph Encoder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">1.3.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Datasets"><span class="nav-number">1.3.1.</span> <span class="nav-text">Datasets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Toolkit"><span class="nav-number">1.3.2.</span> <span class="nav-text">Toolkit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Compare-with-State-of-the-art-Baselines"><span class="nav-number">1.3.3.</span> <span class="nav-text">Compare with  State-of-the-art Baselines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results"><span class="nav-number">1.3.4.</span> <span class="nav-text">Results</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CNNDM"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">CNNDM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NYT"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">NYT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Grammatical-problem"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">Grammatical problem</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.4.</span> <span class="nav-text">Conclusion</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

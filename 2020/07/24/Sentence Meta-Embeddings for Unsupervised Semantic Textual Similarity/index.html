@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>sentence meta-embeddings for unsupervised semantic textual similarity | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLPsentence similarity" />
+  
+  
+  
+  
+  <meta name="description" content="tags: ‘NLP’, ‘paper’, ‘sentence similarity’">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/07/24/Sentence%20Meta-Embeddings%20for%20Unsupervised%20Semantic%20Textual%20Similarity/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="tags: ‘NLP’, ‘paper’, ‘sentence similarity’">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/bZo1pyE.png">
+<meta property="og:image" content="https://i.imgur.com/jPQnoLY.png">
+<meta property="og:image" content="https://i.imgur.com/zidfWIf.png">
+<meta property="og:image" content="https://i.imgur.com/K9Zt1lZ.png">
+<meta property="og:image" content="https://i.imgur.com/dId8i77.png">
+<meta property="og:image" content="https://i.imgur.com/jKBuENO.png">
+<meta property="og:image" content="https://i.imgur.com/wJKHIsW.png">
+<meta property="og:image" content="https://i.imgur.com/KSZ6Lv9.png">
+<meta property="og:image" content="https://i.imgur.com/adZRixb.png">
+<meta property="og:image" content="https://i.imgur.com/vjq6Ul2.png">
+<meta property="og:image" content="https://i.imgur.com/pl5v6Is.png">
+<meta property="article:published_time" content="2020-07-24T02:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="sentence similarity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/bZo1pyE.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/07/24/Sentence%20Meta-Embeddings%20for%20Unsupervised%20Semantic%20Textual%20Similarity/" class="article-date">
+	  <time datetime="2020-07-24T02:00:00.000Z" itemprop="datePublished">2020-07-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h6 id="tags-‘NLP’-‘paper’-‘sentence-similarity’"><a href="#tags-‘NLP’-‘paper’-‘sentence-similarity’" class="headerlink" title="tags: ‘NLP’, ‘paper’, ‘sentence similarity’"></a>tags: ‘NLP’, ‘paper’, ‘sentence similarity’</h6><a id="more"></a>
+
+<p>paper：<a href="https://arxiv.org/pdf/1911.03700.pdf" target="_blank" rel="noopener">Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity</a> </p>
+<h2 id="proper-noun-list-in-this-paper"><a href="#proper-noun-list-in-this-paper" class="headerlink" title="proper noun list in this paper"></a>proper noun list in this paper</h2><ul>
+<li>meta embedding<blockquote>
+<p>Instead of picking one word embedding why not use them all!<br><a href="https://metaembed.github.io/" target="_blank" rel="noopener">Meta Embedding Learning</a></p>
+</blockquote>
+有很多種embedding方法，如：Bert, Ernie, Elmo，meta embedding就是找個方法將他們全部ensemble起來。</li>
+</ul>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><ul>
+<li>本篇論文在做什麼？<br>此篇論文主要是被word meta-embeddings的想法所啟發。並在文中提出幾個sentence meta-embeddings的方法。</li>
+</ul>
+<p><strong>主要探討的議題：</strong><br>Unsupervised Semantic Textual Similarity<br><strong>方法：</strong><br>想法源自於word meta embedding的概念。將此概念應用到句子，在此篇文章中，嘗試用三種不同的meta embedding的方法-Naive meta embedding, SVD, GCCA，將多種sentence embedding結合，並得到了unsupervised的方法中達到State of The Art (簡稱為SoTA).</p>
+<p><strong>貢獻：</strong><br>提出sentence meta embedding的方法，並達到unsupervised方法的SoTA。</p>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><ul>
+<li>符號：<br>$F_1, F_2, …, F_J$ 代表不同方法得到的sentence encoders。<br>每個不同的$F_j$將原句映射到維度為$d_j$的空間。(彼此維度可能不同)<br>$S$表示句子</li>
+</ul>
+<p>整個流程如下：<br>使用不同方法得到不同的sentence embedding，再運用此篇提到的方法，得到meta embedding。最後使用cosine similarity去看句子的相似度，在使用Pearson &amp; Spearman 去做evaluation。<br><img src="https://i.imgur.com/bZo1pyE.png" alt=""></p>
+<h3 id="meta-embedding方法包含："><a href="#meta-embedding方法包含：" class="headerlink" title="meta embedding方法包含："></a>meta embedding方法包含：</h3><p>Naive meta-embeddings, SVD, GCCA, Autoencoders(AEs)</p>
+<ul>
+<li><p>Naive meta-embeddings方法如下:</p>
+<blockquote>
+<p><img src="https://i.imgur.com/jPQnoLY.png" alt=""><br><img src="https://i.imgur.com/zidfWIf.png" alt=""></p>
+</blockquote>
+</li>
+<li><p>SVD方法如下:</p>
+<blockquote>
+<p><img src="https://i.imgur.com/K9Zt1lZ.png" alt=""><br>  可參考此[連結]    (<a href="https://www.cnblogs.com/pinard/p/6251584.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6251584.html</a>)</p>
+</blockquote>
+</li>
+<li><p>GCCA （Generalized Canonical Correlation Analysis）</p>
+<ul>
+<li><p>GCCA是CCA的一般化。<br> <strong>Remark: CCA是什麼？</strong><br> 給定任意兩$x_1$, $x_2$,CCA主要是在找出能使$\theta_1x_1$和$\theta_2x_2$最相關的linear projections。</p>
+<p>作法如下：（可再去詳細看一下GCCA，下次等永祥講了)</p>
+<blockquote>
+<p><img src="https://i.imgur.com/dId8i77.png" alt=""></p>
+</blockquote>
+<p>之後新的句子s’的embedding則為：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/jKBuENO.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>Autoencoders (AEs)<br>  不同方法得到的的sentence encoders $F_j$ （在下圖為$x_j$） 都各自有一個trainable encoder $\varepsilon_j:R^{d_j}\rightarrow R^d$及trainable decoder $D_j:R^d\rightarrow R^{d_j}$ (d是hyperparameter)。<br>  接著計算loss：（希望和encode再decode後的和原embedding相似）</p>
+<blockquote>
+<p><img src="https://i.imgur.com/wJKHIsW.png" alt=""></p>
+</blockquote>
+<p>  最後使用以下做為句子s’的meta embedding：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/KSZ6Lv9.png" alt=""></p>
+</blockquote>
+<p>  結果：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/adZRixb.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="使用的data"><a href="#使用的data" class="headerlink" title="使用的data:"></a>使用的data:</h3><p>使用Billion Word Corpus (BWC）做training。使用STS12-STS16及unsupervised STS Benchmark test set做evaluation。</p>
+<p>資料形式： $（s_1, s_2,y）$ 句子$s_1$, 句子$s_2$, y為相似度分數。</p>
+<h3 id="sentence-embedding方法："><a href="#sentence-embedding方法：" class="headerlink" title="sentence embedding方法："></a>sentence embedding方法：</h3><p>包含Univesal Sentence Encoder (USE), Sentence-BERT(SBERT), ParaNMTa。</p>
+<blockquote>
+<p>We select our ensemble according to the following criteria: Every encoder should have near-SoTA performance on the unsupervised STS benchmark, and the encoders should not be too similar with regards to their training regime.</p>
+</blockquote>
+<h3 id="Experiment-result"><a href="#Experiment-result" class="headerlink" title="Experiment result"></a>Experiment result</h3><p>使用Pearson 及 Spearman相關係數。<br><img src="https://i.imgur.com/vjq6Ul2.png" alt=""><br>值得一提的是，高維度的sentence representations會比低維度的具優勢。為了排除結果僅是因為高維度的關係，作者做了以下實驗：對single USE及single ParaNMT做了up-projected的動作。結果顯示單純升高維度並不會提高效果，藉此去說分數較高是因為meta embedding的關係。 </p>
+<hr>
+<blockquote>
+<p><img src="https://i.imgur.com/pl5v6Is.png" alt=""></p>
+</blockquote>
+<p>從上圖可發現，不同sentence embedding的方法都是有所貢獻的。</p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>由實驗結果顯示sentence meta-embeddings的結果比原先的方法好，並達到的SoTA。</p>
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><ul>
+<li>為什麼在此用SVD, GCCA的方法會比較好？（合理嗎？）</li>
+</ul>
+<p>延伸閱讀：</p>
+<ul>
+<li>GCCA</li>
+<li>Univesal Sentence Encoder (USE), Sentence-BERT(SBERT), ParaNMTa</li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/07/24/Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity/" target="_blank" title="Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity">https://github.com/dsmilab/dsmi-lab-website/2020/07/24/Sentence Meta-Embeddings for Unsupervised Semantic Textual Similarity/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/sentence-similarity/" rel="tag">sentence similarity</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/08/07/Sentence%20Similarity%20Learning%20by%20Lexical%20Decomposition%20and%20Composition/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Sentence Similarity Learning by Lexical Decomposition and CompositionREPRESENTATIONS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/07/16/BART%20Denoising%20Sequence-to-Sequence%20Pre-training%20for%20Natural%20Language%20Generation,%20Translation,%20and%20Comprehension/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">BART Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-‘NLP’-‘paper’-‘sentence-similarity’"><span class="nav-number">1.</span> <span class="nav-text">tags: ‘NLP’, ‘paper’, ‘sentence similarity’</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proper-noun-list-in-this-paper"><span class="nav-number"></span> <span class="nav-text">proper noun list in this paper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number"></span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number"></span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#meta-embedding方法包含："><span class="nav-number"></span> <span class="nav-text">meta embedding方法包含：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number"></span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用的data"><span class="nav-number"></span> <span class="nav-text">使用的data:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sentence-embedding方法："><span class="nav-number"></span> <span class="nav-text">sentence embedding方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiment-result"><span class="nav-number"></span> <span class="nav-text">Experiment result</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結論"><span class="nav-number"></span> <span class="nav-text">結論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Question"><span class="nav-number"></span> <span class="nav-text">Question</span></a>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>glove -- global vectors for word representation | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="本文章簡述了GloVe論文中較為重要的概念，部分細節並無詳細闡述，若有疑問，請參考原始論文。 Related work LSA (Latent Semantic Analysis) HAL (Hyperspace Analogue to Language) word2vec with CBOW word2vec with skip-gram">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GloVe -- Global Vectors for Word Representation">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/04/08/GloVe%20Global%20Vectors%20for%20Word%20Representation/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="本文章簡述了GloVe論文中較為重要的概念，部分細節並無詳細闡述，若有疑問，請參考原始論文。 Related work LSA (Latent Semantic Analysis) HAL (Hyperspace Analogue to Language) word2vec with CBOW word2vec with skip-gram">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/266iIzJ.jpg">
+<meta property="og:image" content="https://i.imgur.com/MZ1ViQD.jpg">
+<meta property="og:image" content="https://i.imgur.com/kV3lloN.jpg">
+<meta property="og:image" content="https://i.imgur.com/f3WPFYc.jpg">
+<meta property="og:image" content="https://i.imgur.com/YFOEqvm.jpg">
+<meta property="og:image" content="https://i.imgur.com/Bgd6sbS.jpg">
+<meta property="og:image" content="https://i.imgur.com/ThwUCEr.jpg">
+<meta property="og:image" content="https://i.imgur.com/BPL8Q5v.jpg">
+<meta property="og:image" content="https://i.imgur.com/wDr0Uvp.jpg">
+<meta property="og:image" content="https://i.imgur.com/T27PAll.png">
+<meta property="og:image" content="https://i.imgur.com/rLnFkFn.jpg">
+<meta property="og:image" content="https://i.imgur.com/dr3YKZk.jpg">
+<meta property="article:published_time" content="2020-04-08T13:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/266iIzJ.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-GloVe Global Vectors for Word Representation" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      GloVe -- Global Vectors for Word Representation
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/04/08/GloVe%20Global%20Vectors%20for%20Word%20Representation/" class="article-date">
+	  <time datetime="2020-04-08T13:30:00.000Z" itemprop="datePublished">2020-04-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <p>本文章簡述了<a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank" rel="noopener">GloVe論文</a>中較為重要的概念，部分細節並無詳細闡述，若有疑問，請參考原始論文。</p>
+<h2 id="Related-work"><a href="#Related-work" class="headerlink" title="Related work"></a>Related work</h2><ul>
+<li>LSA (Latent Semantic Analysis)</li>
+<li>HAL (Hyperspace Analogue to Language)</li>
+<li>word2vec with CBOW</li>
+<li>word2vec with skip-gram</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Main-issue"><a href="#Main-issue" class="headerlink" title="Main issue"></a>Main issue</h2><p>過去的word representation的發法有些問題：</p>
+<ul>
+<li>LSA, HAL : 詞頻高的詞彙影響這些模型太嚴重，導致不重要的詞彙，例如”a, the, …”，讓模型學到一些不必要(錯誤)的詞彙關係。[Matrix Factorization Methods]</li>
+<li>word2vec 僅考慮一定window內，附近詞彙之間的關係。當兩詞彙有關連但相距較遠，word2vec將難以學會這些詞彙之間的關聯。[Shallow Window-Based Methods]</li>
+<li>本論文希望能同時改善上述問題。</li>
+</ul>
+<h2 id="Main-idea"><a href="#Main-idea" class="headerlink" title="Main idea"></a>Main idea</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glove希望能找到更多詞彙之間的有用關聯</span><br></pre></td></tr></table></figure>
+<p>Notations:</p>
+<ul>
+<li>$X_{ij}= word,j 出現在word,i上下文的次數$</li>
+<li>$X_{i}= \sum_{k}{X_{ik}}$</li>
+<li>$P_{ij}=P(j|i)=\dfrac{X_{ij}}{X_i}$，此公式可對應到Main idea的表格</li>
+</ul>
+<ol>
+<li>找出文字之間關聯</li>
+</ol>
+<p><img src="https://i.imgur.com/266iIzJ.jpg" alt=""></p>
+<p>由上圖可以發現，solid出現在ice附近的機率遠大於steam，而gas出現在steam附近的機率大於ice。而water(對於兩詞彙皆有關聯)及fashion(對於兩詞彙皆無關聯)對於ice及steam兩者間的比例則接近於1。</p>
+<ol start="2">
+<li>對於一字多義：則將同一字彙標註為多個，<code>Ex: bank1, bank2, ...</code>。</li>
+</ol>
+<h2 id="Main-model"><a href="#Main-model" class="headerlink" title="Main model"></a>Main model</h2><p>Process for finding cost function:<br>首先，Glove希望能凸顯Main idea所體現的文字關係，換句話說，對於任意三個不同的字，希望能找到function F，以計算他們之間的關係：<br><img src="https://i.imgur.com/MZ1ViQD.jpg" alt=""><br>換句話說，也可以想成是，將兩文字之間相差多大，以及第三者當作輸入(如果想不通，建議可以想想main idea的example)：<br><img src="https://i.imgur.com/kV3lloN.jpg" alt=""><br>為求實際運算上方便，將公式轉換為向量間的乘法：<br><img src="https://i.imgur.com/f3WPFYc.jpg" alt=""> <strong>- Eqn. (3)</strong><br>假設F是homomorphism，則可得到並推得以下：<br><img src="https://i.imgur.com/YFOEqvm.jpg" alt=""><br>將$log(X_{i})$以b替換掉，$\hat b_k$ 是額外加入的bias for $\hat w_k$：<br><img src="https://i.imgur.com/Bgd6sbS.jpg" alt=""><br>最後乘上weight $f(X_{ij})$並當作cost function j:<br><img src="https://i.imgur.com/ThwUCEr.jpg" alt=""><br>其中$f(X_{ij})$可思考一下，他必定不會&gt;1；但當有設置$x_{max}$時，仍需給予條件設置，另外也給予一個$\alpha$值作為模型調整：<br><img src="https://i.imgur.com/BPL8Q5v.jpg" alt=""><br>以下為$X_{ij}$與$f(X_{ij})$之間的關係圖：<br><img src="https://i.imgur.com/wDr0Uvp.jpg" alt=""></p>
+<h2 id="Related-to-other-Models"><a href="#Related-to-other-Models" class="headerlink" title="Related to other Models"></a>Related to other Models</h2><p>就結論而言，會推導出與Main model中eq(8)一樣的cost function，詳細過程請參考<a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank" rel="noopener">GloVe原文</a>。</p>
+<h2 id="complexity"><a href="#complexity" class="headerlink" title="complexity"></a>complexity</h2><p>總之他說他比別人快的樣子(看網路是這樣說)，<br>好像是最差的結果是$O(|V|^2)$, 但可以證明其速度可以到$O(|C|^{0.8})$, window-base是$O(|C|)$。<br>詳細細節請參考<a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank" rel="noopener">GloVe原文</a>。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><p>主要分為兩個部分，測量詞彙向量本身做答題作為測量(內部測量)，以及將文字向量拿去訓練其他問題(外部測量)</p>
+<h3 id="Word-similarity"><a href="#Word-similarity" class="headerlink" title="Word similarity"></a>Word similarity</h3><ol>
+<li>semantic questions (回答相對地名或人名)<ul>
+<li>Athens is to Greece as Berlin is to _____ ?</li>
+</ul>
+</li>
+<li>syntactic questions (找出對應詞彙型態，包含動詞及形容詞)<ul>
+<li>dance is to dancing as fly is to _____ ?</li>
+<li>bad is to worst as good is to _____ ?<br><img src="https://i.imgur.com/T27PAll.png" alt=""></li>
+</ul>
+</li>
+</ol>
+<h3 id="Named-entity-recognition-NER"><a href="#Named-entity-recognition-NER" class="headerlink" title="Named entity recognition (NER)"></a>Named entity recognition (NER)</h3><p>Dataset : <a href="https://github.com/synalp/NER">CoNLL-03</a></p>
+<p>Data : Reuters newswire articles with four entity types: person(人), location(地), organization(機構), and miscellaneous(其他).</p>
+<p>Goal : 標記這些entity</p>
+<p>Result:<br><img src="https://i.imgur.com/rLnFkFn.jpg" alt=""></p>
+<p>More results:<br>他想說越多資料，模型就會越準。<br><del>就我看來，這應該是拿來湊頁數用的。</del><br><img src="https://i.imgur.com/dr3YKZk.jpg" alt=""></p>
+<h2 id="如何使用Glove"><a href="#如何使用Glove" class="headerlink" title="如何使用Glove"></a>如何使用Glove</h2><p>這裡有篇<a href="https://www.itread01.com/content/1541965940.html" target="_blank" rel="noopener">使用教學文</a>，歡迎大家使用看看。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>[paper] <a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank" rel="noopener">https://nlp.stanford.edu/pubs/glove.pdf</a></li>
+<li>[source code] <a href="https://nlp.stanford.edu/projects/glove/" target="_blank" rel="noopener">https://nlp.stanford.edu/projects/glove/</a></li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Jeff</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/04/08/GloVe Global Vectors for Word Representation/" target="_blank" title="GloVe -- Global Vectors for Word Representation">https://github.com/dsmilab/dsmi-lab-website/2020/04/08/GloVe Global Vectors for Word Representation/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/04/08/Leetcode%20-%20687.%20Longest%20Univalue%20Path/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode - 687. Longest Univalue Path
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/04/08/Efficient%20Estimation%20of%20Word%20Representations%20in%20Vector%20Space/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Efficient Estimation of Word Representations in Vector Space</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-work"><span class="nav-number">1.</span> <span class="nav-text">Related work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-issue"><span class="nav-number">2.</span> <span class="nav-text">Main issue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-idea"><span class="nav-number">3.</span> <span class="nav-text">Main idea</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-model"><span class="nav-number">4.</span> <span class="nav-text">Main model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-to-other-Models"><span class="nav-number">5.</span> <span class="nav-text">Related to other Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#complexity"><span class="nav-number">6.</span> <span class="nav-text">complexity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">7.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Word-similarity"><span class="nav-number">7.1.</span> <span class="nav-text">Word similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Named-entity-recognition-NER"><span class="nav-number">7.2.</span> <span class="nav-text">Named entity recognition (NER)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用Glove"><span class="nav-number">8.</span> <span class="nav-text">如何使用Glove</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">9.</span> <span class="nav-text">Reference</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

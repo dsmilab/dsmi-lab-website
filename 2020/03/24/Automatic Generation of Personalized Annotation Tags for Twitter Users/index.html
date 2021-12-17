@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>automatic generation of personalized annotation tags for twitter users | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="papers" />
+  
+  
+  
+  
+  <meta name="description" content="What’s the problem in this paper?In this paper, they want to tag Twitter user’s personal interests via extracting keywords.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automatic Generation of Personalized Annotation Tags for Twitter Users">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/03/24/Automatic%20Generation%20of%20Personalized%20Annotation%20Tags%20for%20Twitter%20Users/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="What’s the problem in this paper?In this paper, they want to tag Twitter user’s personal interests via extracting keywords.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/UKE9e9A.png">
+<meta property="og:image" content="https://i.imgur.com/O17AzbW.png">
+<meta property="og:image" content="https://i.imgur.com/LFiOdyB.png">
+<meta property="og:image" content="https://i.imgur.com/vHTsTB0.png">
+<meta property="og:image" content="https://i.imgur.com/LnAoeS2.png">
+<meta property="article:published_time" content="2020-03-24T22:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="papers">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/UKE9e9A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Automatic Generation of Personalized Annotation Tags for Twitter Users" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Automatic Generation of Personalized Annotation Tags for Twitter Users
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/03/24/Automatic%20Generation%20of%20Personalized%20Annotation%20Tags%20for%20Twitter%20Users/" class="article-date">
+	  <time datetime="2020-03-24T22:30:00.000Z" itemprop="datePublished">2020-03-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h4 id="What’s-the-problem-in-this-paper"><a href="#What’s-the-problem-in-this-paper" class="headerlink" title="What’s the problem in this paper?"></a>What’s the problem in this paper?</h4><p>In this paper, they want to tag Twitter user’s personal interests via extracting keywords.</p>
+<a id="more"></a>
+<h4 id="How-did-they-solve-this-problem"><a href="#How-did-they-solve-this-problem" class="headerlink" title="How did they solve this problem?"></a>How did they solve this problem?</h4><blockquote>
+<p>Identifying an individual user’s interests and concerns can help potential commercial applications.<br>For instance, this information can be employed to produce “following” suggestions, either a person who shares similar interests (for expanding their social network) or a company providing products or services the user is interested in (for personalized advertisement).</p>
+</blockquote>
+<h4 id="Dataset-in-this-paper"><a href="#Dataset-in-this-paper" class="headerlink" title="Dataset in this paper"></a>Dataset in this paper</h4><ul>
+<li>Training: Messages from 11,376 Twitter users. Each user has 180~200 messages.</li>
+<li>Testing: randomly selected 156 Twitter users to evaluate the top-N precision of TFIDF ranking and TextRank</li>
+</ul>
+<h4 id="techniques-in-this-paper"><a href="#techniques-in-this-paper" class="headerlink" title="techniques in this paper"></a>techniques in this paper</h4><p><img src="https://i.imgur.com/UKE9e9A.png" alt=""></p>
+<p>flow chart:<br>針對蒐集起來的twitter進行下列的前處理</p>
+<ol>
+<li>remove reply message: 因為這些回應訊息是比較針對對方的觀點而不是針對自己的言論</li>
+<li>remove emoticons: 對於keyword analysis比較沒有幫助</li>
+<li>Substituting / removing internet slangs(厘語) and abbreviations: 這類詞彙可以分成三類<br> a. 可以被正名的有意義的詞彙: bff(best friend forever), fone(phone)<br> b. 文法上的縮寫: im(i’m), abt(about)，如果刪除會影響POS tagging的結果<br> c. 用來斷句的詞彙，通常沒有實質意義: lol(laugh out loud), clm(cool like me)，在這篇的方法中會被刪除</li>
+</ol>
+<ol start="4">
+<li><p>Part-of-Speech tagging and filtering</p>
+<ul>
+<li><a href="https://nlp.stanford.edu/software/tagger.shtml" target="_blank" rel="noopener">Stanford POS tagger</a>只篩選出<strong>名詞</strong>和<strong>形容詞</strong></li>
+</ul>
+</li>
+<li><p>Stemming and stopword removing：use Porter stemmer去除字尾，然後去除stop words</p>
+</li>
+<li><p>TFIDF ranking: messages from user are put together as one document. </p>
+<ul>
+<li>$n_{i,u}:$ the count of word i in user u’s messages</li>
+<li>$U_i:$ the number of users whose messages containg word i</li>
+<li>$U:$ the total number of users in the Twiter corpus<br><img src="https://i.imgur.com/O17AzbW.png" alt=""></li>
+</ul>
+</li>
+<li><p>TextRank: build a TextRank graph with undirected edges for each Twitter user<br><img src="https://i.imgur.com/LFiOdyB.png" alt=""></p>
+<ul>
+<li>weight of edge: 這兩個字在幾篇文章中有同時出現(co-exist)</li>
+<li>where $w_{ji}$ is the weight of the edge that links $V_{j}$ and $V_{i}$, $E(V_{i})$ is the set of vertices which $V_{i}$ is connected to. $d$(a damping factor) is set to 0.85: reference Google’s PageRank algorithm</li>
+<li>The rank update iteration continues until convergence.</li>
+</ul>
+</li>
+</ol>
+<h4 id="evaluation"><a href="#evaluation" class="headerlink" title="evaluation"></a>evaluation</h4><blockquote>
+<p>After we obtained the topN outputs from the system, three human evaluators were asked to judge whether the output tags from the two systems (unidentified) reflected the corresponding Twitter user’s interests or concerns according to the full set of his/her messages</p>
+</blockquote>
+<h4 id="result"><a href="#result" class="headerlink" title="result"></a>result</h4><p><img src="https://i.imgur.com/vHTsTB0.png" alt=""></p>
+<ul>
+<li>top-N代表選出的前N個標籤都要經過三個專家判斷是否這些tags<strong>都</strong>符合該文章內容，所以很合理的，當N越大的時候precision會越低 </li>
+</ul>
+<p><img src="https://i.imgur.com/LnAoeS2.png" alt=""></p>
+<blockquote>
+<p>Although most Twitter users express their interests to some extent in their messages, there are some<br>users whose message content is not rich enough to<br>extract reliable information. We investigated two<br>measures for identifying such users:</p>
+</blockquote>
+<ul>
+<li>standard deviation of the top-10 TextRank :一個text rank graph，每一個rank所計算出的標準差。越高代表說每一個word之間的rank差異很大，因此找出的tag比較能反應user的偏好。相反越低代表每一個word之間rank差異不大，因此找出的tag就比較不具有鑑別性。</li>
+<li>text entropy: 刻劃user message 的豐富度。越高表示message 內容越豐富。當user message 內容越豐富，越能找出具有代表性的tag。</li>
+</ul>
+<h4 id="new-idea"><a href="#new-idea" class="headerlink" title="new idea"></a>new idea</h4><blockquote>
+<p>To our knowledge, no previously published research has yet addressed problems on tagging user’s personal interests from Twitter messages via keyword extraction, though several studies have looked at keyword extraction using other genres.<br>Previous work on both TFIDF ranking and TextRank has been done mainly on formal language style text, such as academic papers, spoken documents or web pages than that of Twitter messages.</p>
+</blockquote>
+<ul>
+<li>這是第一個如何透過”user message”來找出重要的tag的研究</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ol>
+<li><a href="https://nlp.stanford.edu/software/tagger.shtml" target="_blank" rel="noopener">Stanford Log-linear Part-Of-Speech Tagger</a></li>
+<li><a href="https://tartarus.org/martin/PorterStemmer/" target="_blank" rel="noopener">The Porter Stemming Algorithm</a></li>
+<li><a href="https://www.mondotheque.be/wiki/images/3/33/Pasquinelli_Googles_PageRank_Algorithm.pdf" target="_blank" rel="noopener">Google’s PageRank Algorithm: A Diagram of the<br>Cognitive Capitalism and the Rentier of the Common<br>Intellect</a><ul>
+<li>google search engine早期使用的技術: PageRank</li>
+</ul>
+</li>
+</ol>
+<h4 id="problem"><a href="#problem" class="headerlink" title="problem?"></a>problem?</h4><p>fantastic !<br>wonderful !<br>amazing !<br>fabulous !</p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>John</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/03/24/Automatic Generation of Personalized Annotation Tags for Twitter Users/" target="_blank" title="Automatic Generation of Personalized Annotation Tags for Twitter Users">https://github.com/dsmilab/dsmi-lab-website/2020/03/24/Automatic Generation of Personalized Annotation Tags for Twitter Users/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/papers/" rel="tag">papers</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/03/25/How%20to%20add%20articles%20on%20DSMILab_/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          How to add articles on DSMILab?
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#What’s-the-problem-in-this-paper"><span class="nav-number">1.</span> <span class="nav-text">What’s the problem in this paper?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#How-did-they-solve-this-problem"><span class="nav-number">2.</span> <span class="nav-text">How did they solve this problem?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dataset-in-this-paper"><span class="nav-number">3.</span> <span class="nav-text">Dataset in this paper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#techniques-in-this-paper"><span class="nav-number">4.</span> <span class="nav-text">techniques in this paper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#evaluation"><span class="nav-number">5.</span> <span class="nav-text">evaluation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#result"><span class="nav-number">6.</span> <span class="nav-text">result</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#new-idea"><span class="nav-number">7.</span> <span class="nav-text">new idea</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference"><span class="nav-number">8.</span> <span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#problem"><span class="nav-number">9.</span> <span class="nav-text">problem?</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

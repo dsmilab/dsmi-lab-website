@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>overview of meta learning | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="TL" />
+  
+  
+  
+  
+  <meta name="description" content="Meta LearningIntroductionMeta Learning &#x3D; Learn to learn 讓機器學習如何去做學習這件事。 實際例子：當我們接觸到一個裝糖果的玻璃罐時，我們察覺玻璃罐與保特瓶相似的本質，因而有辦法套用既往的知識快速的移轉到新的任務上，而Meta learning便是在學這個過程，在遍覽多種任務後，學習一組對任務敏感的參數，當新任務進來時能快速的將先驗知識移轉到新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Overview of Meta Learning">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/03/30/Overview%20of%20Meta%20Learning/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Meta LearningIntroductionMeta Learning &#x3D; Learn to learn 讓機器學習如何去做學習這件事。 實際例子：當我們接觸到一個裝糖果的玻璃罐時，我們察覺玻璃罐與保特瓶相似的本質，因而有辦法套用既往的知識快速的移轉到新的任務上，而Meta learning便是在學這個過程，在遍覽多種任務後，學習一組對任務敏感的參數，當新任務進來時能快速的將先驗知識移轉到新">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/k0fAQaH.png">
+<meta property="og:image" content="https://i.imgur.com/VcXOa8N.png">
+<meta property="og:image" content="https://i.imgur.com/aryN0CG.png">
+<meta property="og:image" content="https://i.imgur.com/6KK8s4G.png">
+<meta property="og:image" content="https://i.imgur.com/pCTUIg7.png">
+<meta property="og:image" content="https://i.imgur.com/zLhndPb.png">
+<meta property="og:image" content="https://i.imgur.com/Td2wcgw.png">
+<meta property="og:image" content="https://i.imgur.com/UUP1e9w.png">
+<meta property="og:image" content="https://i.imgur.com/eK2Qu2G.png">
+<meta property="og:image" content="https://i.imgur.com/tu4OMG3.png">
+<meta property="og:image" content="https://i.imgur.com/UPcxtpv.png">
+<meta property="og:image" content="https://i.imgur.com/MmM6kA4.png">
+<meta property="og:image" content="https://i.imgur.com/tHyBf5N.png">
+<meta property="og:image" content="https://i.imgur.com/622KJiK.png">
+<meta property="og:image" content="https://i.imgur.com/AFMsx9Z.png">
+<meta property="og:image" content="https://i.imgur.com/Dno64o3.png">
+<meta property="og:image" content="https://i.imgur.com/Wqjq3Px.png">
+<meta property="og:image" content="https://i.imgur.com/msodhGW.png">
+<meta property="og:image" content="https://i.imgur.com/MD74sKA.png">
+<meta property="og:image" content="https://i.imgur.com/1u0Y1Ag.png">
+<meta property="og:image" content="https://i.imgur.com/OLgk0Nz.png">
+<meta property="og:image" content="https://i.imgur.com/UZ8wlj3.png">
+<meta property="og:image" content="https://i.imgur.com/6ZtolVr.png">
+<meta property="article:published_time" content="2020-03-30T16:28:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="TL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/k0fAQaH.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Overview of Meta Learning" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Overview of Meta Learning
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/03/30/Overview%20of%20Meta%20Learning/" class="article-date">
+	  <time datetime="2020-03-30T16:28:00.000Z" itemprop="datePublished">2020-03-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/Learning-Note/">Learning Note</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Meta-Learning"><a href="#Meta-Learning" class="headerlink" title="Meta Learning"></a>Meta Learning</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Meta Learning = Learn to learn 讓機器學習如何去做學習這件事。</p>
+<p>實際例子：<br>當我們接觸到一個裝糖果的玻璃罐時，我們察覺玻璃罐與保特瓶相似的本質，因而有辦法套用既往的知識快速的移轉到新的任務上，而Meta learning便是在學這個過程，在遍覽多種任務後，學習一組對任務敏感的參數，當新任務進來時能快速的將先驗知識移轉到新任務中。</p>
+<a id="more"></a>
+
+<p>假如在過去我們過去叫機器學了task1(影像辨識)、task2(語音辨識)等等這些事，那他在學習task100(文字辨識)可以學習的更快。雖然影像辨識、語音辨識跟文字辨識沒什麼太大關係，但機器是學到了怎麼去學習這件事，所以未來有新的任務就可以學得更快。</p>
+<p>這跟life long learning挺像的。但很大的差異是，life long learning主要是希望當機器學了那麼多的task，那在新的task上仍然做得很好，希望同個模型能夠學習不同的技能。但在Meta learning中，不同的任務仍有不同的模型，但我們期待機器能夠從過去的學習經驗，學到一些東西使得未來要train一個新的模型可以學得更快更好。</p>
+<p><img src="https://i.imgur.com/k0fAQaH.png" alt=""></p>
+<p>在過去的machine learning，你給他一些training data假設任務是要辨識貓狗的圖片，透過gradient descent、back propagation這些algorithm我們可以得到CNN裡頭的參數並形成 $f^{<em>}$<br>接著要把test的image丟進這個$f^{</em>}$就可以去預測這個image是貓還狗。</p>
+<p>那在meta learning上，可以把learning algorithm也想像成一個function $F$，這個$F$吃進去的是訓練資料$D_{train}$ ，吐出來的是另外一個 function $f^{*}$，在例子下就是吐出一個 function $f^{＊}$ 可以拿來把貓狗進行影像辨識。</p>
+<p>Meta learning的主要點就在於如何讓機器自動找到這個 Learning Algorithm $F$。<br><img src="https://i.imgur.com/VcXOa8N.png" alt=""></p>
+<p>Machine Learning vs. Meta Learning</p>
+<p><img src="https://i.imgur.com/aryN0CG.png" alt=""></p>
+<p>Machine Learning 的目標是$f^{*}$分類器。<br>Meta Learning 的目標則是 $F$ learning algorithm。</p>
+<p><img src="https://i.imgur.com/6KK8s4G.png" alt=""></p>
+<h2 id="How-to-do-Meta-Learning"><a href="#How-to-do-Meta-Learning" class="headerlink" title="How to do Meta Learning ?"></a>How to do Meta Learning ?</h2><p>不同人為設計的Network、initial $\theta^{0}$、update method 以及 learning rate都是不同的learning algorithm。</p>
+<p>Meta Learning主要希望紅色框框的一些人為設計，可以取代為機器自己學。</p>
+<p><img src="https://i.imgur.com/pCTUIg7.png" alt=""></p>
+<p>再來，我們需要一個評量準則來決定Learning Algorithm $F$ 的好壞。</p>
+<p><img src="https://i.imgur.com/zLhndPb.png" alt=""></p>
+<p>在machine learning，我們需要準備的就是很多training的資料以及testing的資料。<br>在meta learning，我們則是需要準備training的task跟testing的task，每一個task裡有training set跟testing set。測試的task當然要跟訓練的任務不太一樣，有時候我們也會從training set切出一個validation set來調整參數。</p>
+<p>meta learning往往都搭配few-shot learning。few-shot learning指的是，假設我們現在要做分類任務的時候，每一種類別只給你很少很少的資料，希望機器可以看很少的例子就可以來分類。因為我要檢查一個learning algorithm好不好的時後，我就必須跑完整個訓練的流程，才知道我的learning algorithm好不好。假設跑完一個訓練流程要一天，那這樣的task根本無法做。所以說，往往在做meta learning的時候，都會假設我們今天是few-shot learning，這些task的訓練資料都很少，比較能快跑出訓練結果。</p>
+<p>那在meta learning中，往往會把每個task的training set叫做support set，testing set叫做query set。因為真正的training set指的會是task，所以必須要給它們其他一個名稱。</p>
+<p><img src="https://i.imgur.com/Td2wcgw.png" alt=""></p>
+<h3 id="Meta-Learning的流程"><a href="#Meta-Learning的流程" class="headerlink" title="Meta Learning的流程:"></a>Meta Learning的流程:</h3><p>最後的結果 $l$ 就是整個Meta Learning這個方法的好壞。</p>
+<p><img src="https://i.imgur.com/UUP1e9w.png" alt=""></p>
+<p>那在Meta Learning中有一個benchmark的dataset，如同在影像辨識的mnist dataset。Omniglot（歐 ㄋ一 嘎）裡頭總共有1623個符號，每一種符號會有20張範例。下面就是一堆不同的符號。</p>
+<p><img src="https://i.imgur.com/eK2Qu2G.png" alt=""></p>
+<p>Omniglot 往往被設計成一個 few-shot classification的task。</p>
+<p>N-ways K-shot classification: In each training and testing tasks, there are N classes, each has K examples.</p>
+<p>20-ways 1-shot : 總共有20個不同符號，每一個類別只有一張圖片，希望機器就可以學出一個20類的分類系統。如果直接用普通方法去學一定爆炸，但就希望meta-learning能幫助我學出一個演算法，只要看過一個example就可以分類的很好。</p>
+<p><img src="https://i.imgur.com/tu4OMG3.png" alt=""></p>
+<h2 id="Split-Train-amp-Test"><a href="#Split-Train-amp-Test" class="headerlink" title="Split Train &amp; Test"></a>Split Train &amp; Test</h2><p>Split your characters into training and testing characters<br>(1623 char. $\rightarrow$ 1200 train char., 423 test char.)</p>
+<ol>
+<li>Sample N training characters, sample K examples from each sampled characters $\rightarrow$ one training task.</li>
+<li>Sample N testing characters, sample K examples from each sampled characters$\rightarrow$ one testing task.</li>
+</ol>
+<h2 id="MAML-Model-Agnostic-Meta-Learning-for-Fast-Adpation-of-Deep-Networks-2017"><a href="#MAML-Model-Agnostic-Meta-Learning-for-Fast-Adpation-of-Deep-Networks-2017" class="headerlink" title="MAML (Model Agnostic Meta-Learning for Fast Adpation of Deep Networks, 2017)"></a>MAML (Model Agnostic Meta-Learning for Fast Adpation of Deep Networks, 2017)</h2><p>缺點：Network structure要一樣</p>
+<p>想法：只focus在每個weight的初始值 $\phi$</p>
+<p><img src="https://i.imgur.com/UPcxtpv.png" alt=""></p>
+<h3 id="MAML-vs-Model-Pre-training"><a href="#MAML-vs-Model-Pre-training" class="headerlink" title="MAML vs. Model Pre-training"></a>MAML vs. Model Pre-training</h3><p>在做transfer learning時會用Model Pre-training的方法。現在我要做的某個任務data很少，但另外一個相關認為data數量很多，把model pre-train在多量資料的任務上，fine tune在少量的資料的任務上。</p>
+<p>在MAML，$l^{n}$是用$\phi$訓練過後的model $\hat{\theta^{n}}$計算出來的。<br>在Model Pre-training，$l^{n}$拿的是現在手上的model去評估他現在在我拿來要做Pre-training的任務，表現怎麼樣。</p>
+<p><img src="https://i.imgur.com/MmM6kA4.png" alt=""></p>
+<p>MAML的主要想法:<br>找到一個初始值$\phi$，然後利用這個$\phi$去訓練過後的model $\hat{\theta^{n}}$在各自task表現要好。</p>
+<p><img src="https://i.imgur.com/tHyBf5N.png" alt=""></p>
+<p>Model Pre-training的主要想法:<br>現在我們要找到一個$\phi$，同時讓在每個task表現很好。</p>
+<p><img src="https://i.imgur.com/622KJiK.png" alt=""></p>
+<p>MAML : Fine $\phi$ achieving good performance after training. (model 潛力如何)</p>
+<p>Model Pre-training : Fine $\phi$ achieving good performance. (model 現在表現如何)</p>
+<h4 id="MAML-在實做時的-Assumption"><a href="#MAML-在實做時的-Assumption" class="headerlink" title="MAML 在實做時的 Assumption:"></a>MAML 在實做時的 Assumption:</h4><p>Training Algorithm 只會做一次參數update。<br>也就是說，$\phi$是機器自到的初始值，計算一次gradient，updata後得到的$\hat \theta$就是最後的模型結果。</p>
+<p>可能的理由：</p>
+<ol>
+<li>Fast … Fast ….</li>
+<li>Good to truly train a model with one step.</li>
+<li>Few-shot learning has limited data. (updata太多容易overfitting)</li>
+</ol>
+<p>＊＊ 但在testing Task 可以update很多次參數</p>
+<p><img src="https://i.imgur.com/AFMsx9Z.png" alt=""></p>
+<h3 id="Warning-of-Math"><a href="#Warning-of-Math" class="headerlink" title="Warning of Math"></a>Warning of Math</h3><p><img src="https://i.imgur.com/Dno64o3.png" alt=""></p>
+<p>$\frac{\partial \hat \theta_{j}}{\partial \phi_{i}}$ using first-order approximation.<br><img src="https://i.imgur.com/Wqjq3Px.png" alt=""></p>
+<p>所以 $\nabla_{\phi}L(\phi) = \nabla_{ \phi} \sum_{n=1}^{N} l(\hat \theta) = \sum_{n=1}^{N} \nabla_{\phi}l(\hat \theta) = \sum_{n=1}^{N} \nabla_{\hat \theta}l(\hat \theta)$</p>
+<p><img src="https://i.imgur.com/msodhGW.png" alt=""></p>
+<h3 id="Real-Implement"><a href="#Real-Implement" class="headerlink" title="Real Implement:"></a>Real Implement:</h3><p>初始化初始值 $\phi^{0}$，假如我們只做1-batch，現在要train task m時，我們就把$\theta^{0}$初始值去traim task m model並update一次得到$\hat \theta^{m}$。接著再update一次得到update的方向，把它用來當作update 初始值$\phi^{0}$的方向到$\phi^{1}$。<br><img src="https://i.imgur.com/MD74sKA.png" alt=""></p>
+<p>那pre-training是長怎樣？</p>
+<p><img src="https://i.imgur.com/1u0Y1Ag.png" alt=""></p>
+<h2 id="Reptile-2018"><a href="#Reptile-2018" class="headerlink" title="Reptile (2018)"></a>Reptile (2018)</h2><p>不限制只能update一次，可以很多次。</p>
+<p><img src="https://i.imgur.com/OLgk0Nz.png" alt=""></p>
+<h3 id="MAMO-vs-Pre-training-vs-Reptile"><a href="#MAMO-vs-Pre-training-vs-Reptile" class="headerlink" title="MAMO vs. Pre-training vs. Reptile"></a>MAMO vs. Pre-training vs. Reptile</h3><p><img src="https://i.imgur.com/UZ8wlj3.png" alt=""></p>
+<h2 id="More-issue"><a href="#More-issue" class="headerlink" title="More issue :"></a>More issue :</h2><p><img src="https://i.imgur.com/6ZtolVr.png" alt=""></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Chris</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/03/30/Overview of Meta Learning/" target="_blank" title="Overview of Meta Learning">https://github.com/dsmilab/dsmi-lab-website/2020/03/30/Overview of Meta Learning/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/TL/" rel="tag">TL</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/03/31/Basic%20Overview%20of%20Natural%20Language%20Processing/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Basic Overview of Natural Language Processing
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/03/30/Leetcode%20-%20sudoku/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode - Sodoku solver</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Meta-Learning"><span class="nav-number">1.</span> <span class="nav-text">Meta Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-do-Meta-Learning"><span class="nav-number">1.2.</span> <span class="nav-text">How to do Meta Learning ?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Meta-Learning的流程"><span class="nav-number">1.2.1.</span> <span class="nav-text">Meta Learning的流程:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Split-Train-amp-Test"><span class="nav-number">1.3.</span> <span class="nav-text">Split Train &amp; Test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAML-Model-Agnostic-Meta-Learning-for-Fast-Adpation-of-Deep-Networks-2017"><span class="nav-number">1.4.</span> <span class="nav-text">MAML (Model Agnostic Meta-Learning for Fast Adpation of Deep Networks, 2017)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MAML-vs-Model-Pre-training"><span class="nav-number">1.4.1.</span> <span class="nav-text">MAML vs. Model Pre-training</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MAML-在實做時的-Assumption"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">MAML 在實做時的 Assumption:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Warning-of-Math"><span class="nav-number">1.4.2.</span> <span class="nav-text">Warning of Math</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Real-Implement"><span class="nav-number">1.4.3.</span> <span class="nav-text">Real Implement:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reptile-2018"><span class="nav-number">1.5.</span> <span class="nav-text">Reptile (2018)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MAMO-vs-Pre-training-vs-Reptile"><span class="nav-number">1.5.1.</span> <span class="nav-text">MAMO vs. Pre-training vs. Reptile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#More-issue"><span class="nav-number">1.6.</span> <span class="nav-text">More issue :</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

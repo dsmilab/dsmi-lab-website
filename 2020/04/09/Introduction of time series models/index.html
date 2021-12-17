@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>introduction of time series models | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="Time series" />
+  
+  
+  
+  
+  <meta name="description" content="tags: references本篇文章介紹常用的時間序列model和相關概念，希望以後大家有遇到時序分析的問題的時候，稍微知道他們在幹嘛XD Notations:$r_t$: a time series, $a_t$: a white noise series, $\rho_l$: lag-$l$ autocorrelation,$\gamma_l:Cov(r_t,r_{t-l})$,$\sig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction of time series models">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/04/09/Introduction%20of%20time%20series%20models/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="tags: references本篇文章介紹常用的時間序列model和相關概念，希望以後大家有遇到時序分析的問題的時候，稍微知道他們在幹嘛XD Notations:$r_t$: a time series, $a_t$: a white noise series, $\rho_l$: lag-$l$ autocorrelation,$\gamma_l:Cov(r_t,r_{t-l})$,$\sig">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/7ZQL1bu.png">
+<meta property="og:image" content="https://i.imgur.com/6cru49Z.png">
+<meta property="og:image" content="https://i.imgur.com/l3MWPuJ.png">
+<meta property="og:image" content="https://i.imgur.com/GBscJTA.png">
+<meta property="og:image" content="https://i.imgur.com/DmuBZiS.png">
+<meta property="og:image" content="https://i.imgur.com/kRDfc8p.png">
+<meta property="og:image" content="https://i.imgur.com/VzJZaoL.png">
+<meta property="article:published_time" content="2020-04-09T09:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="Time series">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/7ZQL1bu.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Introduction of time series models" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Introduction of time series models
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/04/09/Introduction%20of%20time%20series%20models/" class="article-date">
+	  <time datetime="2020-04-09T09:30:00.000Z" itemprop="datePublished">2020-04-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h6 id="tags-references"><a href="#tags-references" class="headerlink" title="tags: references"></a>tags: <code>references</code></h6><p>本篇文章介紹常用的時間序列model和相關概念，希望以後大家有遇到時序分析的問題的時候，稍微知道他們在幹嘛XD</p>
+<h2 id="Notations"><a href="#Notations" class="headerlink" title="Notations:"></a>Notations:</h2><p>$r_t$: a time series, $a_t$: a white noise series, $\rho_l$: lag-$l$ autocorrelation,<br>$\gamma_l:Cov(r_t,r_{t-l})$,$\sigma^2$: variance of $a_t$, $B$: back-shift operator</p>
+<h2 id="名詞解釋"><a href="#名詞解釋" class="headerlink" title="名詞解釋:"></a>名詞解釋:</h2><ul>
+<li>Stationary:<ul>
+<li>Strict: distribution is time-invariant (基本上不可能達到)</li>
+<li>Weak: first 2 moments are time-invariant (平均、標準差、共變數不隨著時間變)</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>Trend Stationary:</p>
+<ul>
+<li>$p_t=\beta_0+\beta_1t+r_t$,$r_t$ is a stationary time series with mean=$\mu_r$</li>
+<li>$E(p_t)=\beta_0+\beta_1t+\mu_r\Rightarrow$ time dependent</li>
+<li>$Var(p_t)=Var(r_t)$</li>
+<li>把$\beta_0+\beta_1t$拿掉就變平穩啦~<br><img src="https://i.imgur.com/7ZQL1bu.png" alt=""></li>
+</ul>
+</li>
+<li><p>ACF (Autocorrelation function)</p>
+<ul>
+<li><p>$\rho_l=\frac{Cov(r_t, r_{t-l})}{Var(r_t)}=\frac{\gamma_l}{\gamma_0}$</p>
+</li>
+<li><p>Sample autocorrelation function: $\hat\rho_l=\frac{\sum_{t=1}^{T-l}(r_t-\bar{r})(r_{t-l}-\bar{r})}{\sum_{t=1}^{T}(r_t-\bar{r})}$</p>
+</li>
+<li><p>$\rho_0=1$</p>
+</li>
+<li><p>如何檢測autocorrelation 顯著異於0: <a href="https://en.wikipedia.org/wiki/Ljung%E2%80%93Box_test" target="_blank" rel="noopener">Ljung–Box test</a><br><img src="https://i.imgur.com/6cru49Z.png" alt=""></p>
+<p>圖中的直線如果在兩條橫線的範圍之內，表示$\rho_l$不顯著異於0，反之則是顯著異於0</p>
+</li>
+</ul>
+</li>
+<li><p>White noise:</p>
+<ul>
+<li>Definition: {$a_t$} is a sequence of iid random variables</li>
+<li>ACFs are 0</li>
+</ul>
+</li>
+<li><p>Random walk:</p>
+<ul>
+<li>$p_t=p_{t-1}+a_t$</li>
+<li>他是一個AR(1)，但$\phi_1=1$</li>
+<li>隨著時間，$a_t$會逐漸累積，如果哪天遇到一個很大的$a_t$ 就回不去了。</li>
+<li>如何檢定序列是不是random walk: Unit root test(<a href="https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test" target="_blank" rel="noopener">Augmented Dickey-Fuller test</a>)<br><img src="https://i.imgur.com/l3MWPuJ.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="Autoregressive-model"><a href="#Autoregressive-model" class="headerlink" title="Autoregressive model"></a>Autoregressive model</h2><p>Assume $r_t$ is stationary(這很重要!!): $E(r_t)=\mu$, $Var(r_t)=\gamma_0$</p>
+<ul>
+<li><p>AR(1): $r_t=\phi_0+\phi_1r_{t-1}+a_t$</p>
+<ul>
+<li>by stationary assumption, $E(r_t)=\phi_0+\phi_1\mu=\mu$, $\mu=\frac{\phi_0}{1-\phi_1}\Rightarrow$, $\phi_1\neq1$</li>
+<li>$Var(r_t)=\phi_1^2Var(r_{t-1})+\sigma^2$, since $Var(r_t)=Var(r_{t-1})=\gamma_0$, $(1-\phi_1^2)\gamma_0=\sigma^2, \gamma_0=\frac{\sigma^2}{1-\phi_1^2} \Rightarrow$$\phi_1^2\leq1$</li>
+<li>$r_t-\mu=\phi_0+\phi_1r_{t-1}+a_t-\mu=(1-\phi_1)\mu+\phi_1r_{t-1}+a_t-\mu=\phi_1(r_{t-1}-\mu)+a_t$$\Rightarrow r_i-\mu$ 和 $a_j, i\neq j$ 是不相關的 ($Cov(r_{t-1},a_t)=0$)</li>
+<li>ACF decays exponentially at rate $\phi_1$: $\rho_0=1, \rho_l=\phi_1^l$ (有興趣可以自己證明看看)<br><img src="https://i.imgur.com/GBscJTA.png" alt=""></li>
+</ul>
+</li>
+<li><p>AR(2):$r_t=\phi_0+\phi_1r_{t-1}+\phi_2r_{r-2}+a_t$</p>
+<ul>
+<li>$E(r_t)=\phi_0+\phi_1\mu+\phi_2\mu=\mu$, $\mu=\frac{\phi_0}{1-\phi_1-\phi_2}\Rightarrow$, $\phi_1+\phi_2\neq1$</li>
+<li>$r_t-\mu=\phi_0+\phi_1r_{t-1}+\phi_2r_{r-2}+a_t-\mu=(1-\phi_1-\phi_2)\mu+\phi_1r_{t-1}+\phi_2r_{t-2}+a_t-\mu$$=\phi_1(r_{t-1}-\mu)+\phi_2(r_{t-2}-\mu)+a_t$</li>
+<li>ACF: $\rho_l=\left{\begin{aligned}\frac{\phi_1}{1-\phi_2}  &amp; &amp; l=1\\phi_1\rho_{l-1}+\phi_2\rho_{l-1} &amp; &amp; l\geq 2 \\end{aligned}\right.$</li>
+<li>ACF satifies the second-order difference equation: $(1-\phi_1B-\phi_2B^2)\rho_l=0$, $B\rho_l=\rho_{l-1}$</li>
+<li>characteristic equation: $(1-\phi_1x-\phi_2x^2)=0$ 的根$\frac{1}{w_1}, \frac{1}{w_2}$會影響ACF的長相。而基於穩太假設，$w_1, w_2$的長度不能超過單位圓。<br><img src="https://i.imgur.com/DmuBZiS.png" alt=""></li>
+</ul>
+</li>
+<li><p>AR( p ):$r_t=\phi_0+\phi_1r_{t-1}+\phi_2r_{r-2}+…+\phi_pr_{t-p}+a_t$</p>
+<ul>
+<li>$E(r_t)=\phi_0+(\phi_1+\phi_2+…+\phi_p)\mu=\mu$, $\mu=\frac{\phi_0}{1-\phi_1-\phi_2-…-\phi_p}$$\Rightarrow(\phi_1+\phi_2+…+\phi_p)\neq1$</li>
+<li>characteristic equaiton: $(1-\phi_1x-\phi_2x^2-…-\phi_px^p)=0$</li>
+<li>If all the roots of the characteristic equation $\geq1$, $r_t$ is stationary</li>
+</ul>
+</li>
+</ul>
+<h2 id="Moving-average-model"><a href="#Moving-average-model" class="headerlink" title="Moving average model"></a>Moving average model</h2><ul>
+<li><p>AR 有點不太實際，因為當order 很高的時候，要估的參數就會很多$\Rightarrow$使用一個參數來簡化model: $r_t=\phi_0-\theta_1r_{t-1}-\theta_1^2r_{t-2}-…+a_t$</p>
+<ul>
+<li>$|\theta_1|&lt;1$ 不然整個series會爆掉，不符合statioary</li>
+<li>$\theta_1^i\rightarrow0$ as $i \rightarrow\infty$, 當$i$很大的時候 $r_{t-i}$的貢獻就很小</li>
+</ul>
+</li>
+<li><p>MA(1):<br>  $r_t+\theta_1r_{t-1}+\theta_1^2r_{t-2}+…=\phi_0+a_t$<br>  $-)$ $\theta_1r_{t-1}+\theta_1^2r_{t-2}+…=\theta_1\phi_0+\theta_1a_{t-1}$<br>  $\Rightarrow r_t=\phi_0(1-\theta_1)+a_t-\theta_1a_{t-1}$, let $c_0=\phi_0(1-\theta_1)$</p>
+<ul>
+<li>$E(r_t)=c_0$</li>
+<li>$Var(r_t)=(1+\theta_1^2)\sigma^2$</li>
+<li>ACF: $\rho_l=\left{\begin{aligned}1 &amp; &amp; l=0\\frac{-\theta_1}{1+\theta_1^2}&amp; &amp; l=1 \0 &amp; &amp; l&gt;1\\end{aligned}\right.$</li>
+<li>MA models are always weakly stationary because they are finite linear combination of a white noise sequence.</li>
+</ul>
+</li>
+<li><p>MA(2): $r_t=c_0+a_t-\theta_1a_{t-1}-\theta_2a_{t-2}$</p>
+<ul>
+<li>$E(r_t)=c_0$</li>
+<li>$Var(r_t)=(1+\theta_1^2+\theta_2^2)\sigma^2$</li>
+<li>ACF: $\rho_l=\left{\begin{aligned}1 &amp; &amp; l=0\\frac{-\theta_1+\theta_1\theta_2}{1-\theta_1^2-\theta_2^2}&amp; &amp; l=1 \\frac{-\theta_2}{1-\theta_1^2-\theta_2^2} &amp; &amp; l=2\0 &amp; &amp; l&gt;2\\end{aligned}\right.$</li>
+</ul>
+</li>
+<li><p>MA(q): $r_t=c_0+a_t-\theta_1a_{t-1}-\theta_2a_{t-2}-…-\theta_qa_{t-q}$</p>
+<ul>
+<li>$E(r_t)=c_0$</li>
+<li>$Var(r_t)=(1+\theta_1^2+\theta_2^2+…+\theta_qa_{t-q})\sigma^2$</li>
+<li>ACF: $\rho_l=0$ for $l&gt;q$, lag超過$q$之後ACF的圖就會斷掉(series只和有限個lag有關$\Rightarrow$finite memory)<br><img src="https://i.imgur.com/kRDfc8p.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="Autoregressive-moving-average-model"><a href="#Autoregressive-moving-average-model" class="headerlink" title="Autoregressive moving-average model"></a>Autoregressive moving-average model</h2><ul>
+<li>ARMA(1,1): $r_t-\phi_1r_{t-1}=\phi_0+a_t-\theta_1a_{t-1}$<ul>
+<li>$\theta_1\neq\phi_1$ 不然會退化回AR</li>
+<li>$E(r_t)-\phi_1E(r_{t-1})=\phi_0$, $(1-\phi_1)\mu=\phi_0\Rightarrow$$\mu=\frac{\phi_0}{1-\phi_1}\Rightarrow$, $\phi_1\neq1$ (跟AR一樣欸)</li>
+<li>$Var(r_t)=\frac{1-2\phi_1\theta_1+\theta_1^2}{1-\phi_1^2}\sigma^2\Rightarrow|\phi_1|&lt;1$</li>
+<li>ACF: $\rho_l=\left{\begin{aligned}1 &amp; &amp; l=0\\phi_1-\frac{\theta_1\sigma^2}{Var(r_t)}&amp; &amp; l=1 \\phi_1\rho_{l-1} &amp; &amp; l&gt;1\\end{aligned}\right.$</li>
+<li>Exponential decay starts with lag2</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>ARMA(P,Q): $r_t=\phi_0+\sum_{i=1}^{p}\phi_ir_{t-i}-\sum^{q}<em>{i=1}\theta_ia</em>{t-i}+a_t$<ul>
+<li>上式可寫成$(1-\phi_1B-…-\phi_pB^p)r_t=\phi_0+(1-\theta_1B-…-\theta_pB^p)a_t$</li>
+<li>$(\theta_1,…,\theta_q)$ 和 $(\phi_1,…,\phi_p)$ 完全不能一樣，不然order 會下降</li>
+<li>characteristic equation: $(1-\theta_1x-…-\theta_px^p)$ 如果這個方程式的解全大於0 $r_t$ 則符合若平穩 </li>
+<li>$E(r_t)=\mu=\frac{\phi_0}{1-\phi_1-…-\phi_p}$</li>
+</ul>
+</li>
+</ul>
+<h2 id="Autoregressive-integrated-moving-average"><a href="#Autoregressive-integrated-moving-average" class="headerlink" title="Autoregressive integrated moving average"></a>Autoregressive integrated moving average</h2><p>差分之後是ARMA就是ARIMA了!!</p>
+<ul>
+<li>ARIMA(0,1,0): random walk $r_t-r_{t-1}=a_t$</li>
+<li>ARIMA(P,1,Q): $c_t=r_t-r_{t-1}$, $c_t$是ARMA(P,Q) 則 $r_t$就是ARIMA(P,1,Q)</li>
+<li>ARIMA(P,d,Q): $r_t$差分d次之後是ARMA(P,Q)</li>
+</ul>
+<h2 id="Seasonal-differencing"><a href="#Seasonal-differencing" class="headerlink" title="Seasonal differencing"></a>Seasonal differencing</h2><p>如果時間序列看起來有週期性，可以做不是lag 1的差分<br><img src="https://i.imgur.com/VzJZaoL.png" alt=""></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Darcy</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/04/09/Introduction of time series models/" target="_blank" title="Introduction of time series models">https://github.com/dsmilab/dsmi-lab-website/2020/04/09/Introduction of time series models/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/Time-series/" rel="tag">Time series</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/04/14/Leetcode%20-%20Two%20Sum/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode - Two Sum
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/04/08/Leetcode%20-%20687.%20Longest%20Univalue%20Path/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode - 687. Longest Univalue Path</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-references"><span class="nav-number">1.</span> <span class="nav-text">tags: references</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Notations"><span class="nav-number"></span> <span class="nav-text">Notations:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#名詞解釋"><span class="nav-number"></span> <span class="nav-text">名詞解釋:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Autoregressive-model"><span class="nav-number"></span> <span class="nav-text">Autoregressive model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Moving-average-model"><span class="nav-number"></span> <span class="nav-text">Moving average model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Autoregressive-moving-average-model"><span class="nav-number"></span> <span class="nav-text">Autoregressive moving-average model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Autoregressive-integrated-moving-average"><span class="nav-number"></span> <span class="nav-text">Autoregressive integrated moving average</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Seasonal-differencing"><span class="nav-number"></span> <span class="nav-text">Seasonal differencing</span></a>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

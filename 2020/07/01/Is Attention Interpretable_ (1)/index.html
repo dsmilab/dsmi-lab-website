@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>is attention interpretable? | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP" />
+  
+  
+  
+  
+  <meta name="description" content="Is Attention Interpretable?by Chih-Chi Wu 2020.06.29論文 tags: ‘NLP’, ‘paper’, ‘NLP study group’ Q:此篇論文的目標？想探討「attention可偵測出模型中認為重要的訊息」這件事的正確性。   可解釋性可以理解為，Attention權重的高低應該與對應位置信息的重要程度正相關；高權重的輸入單元對於輸出結果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Is Attention Interpretable?">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/07/01/Is%20Attention%20Interpretable_%20(1)/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Is Attention Interpretable?by Chih-Chi Wu 2020.06.29論文 tags: ‘NLP’, ‘paper’, ‘NLP study group’ Q:此篇論文的目標？想探討「attention可偵測出模型中認為重要的訊息」這件事的正確性。   可解釋性可以理解為，Attention權重的高低應該與對應位置信息的重要程度正相關；高權重的輸入單元對於輸出結果">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/9Su03hr.png">
+<meta property="og:image" content="https://i.imgur.com/z7UUlbL.png">
+<meta property="og:image" content="https://i.imgur.com/HykqHpk.png">
+<meta property="og:image" content="https://i.imgur.com/mGE3Jn1.png">
+<meta property="og:image" content="https://i.imgur.com/RaozvF8.png">
+<meta property="og:image" content="https://i.imgur.com/W0xstEn.png">
+<meta property="og:image" content="https://i.imgur.com/cVa7NqG.png">
+<meta property="og:image" content="https://i.imgur.com/HuKQaqN.png">
+<meta property="og:image" content="https://i.imgur.com/GFN0Eeg.png">
+<meta property="article:published_time" content="2020-07-01T13:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/9Su03hr.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Is Attention Interpretable_ (1)" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Is Attention Interpretable?
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/07/01/Is%20Attention%20Interpretable_%20(1)/" class="article-date">
+	  <time datetime="2020-07-01T13:30:00.000Z" itemprop="datePublished">2020-07-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Is-Attention-Interpretable"><a href="#Is-Attention-Interpretable" class="headerlink" title="Is Attention Interpretable?"></a>Is Attention Interpretable?</h1><p>by Chih-Chi Wu 2020.06.29<br><a href="https://www.aclweb.org/anthology/P19-1282.pdf" target="_blank" rel="noopener">論文</a></p>
+<h6 id="tags-‘NLP’-‘paper’-‘NLP-study-group’"><a href="#tags-‘NLP’-‘paper’-‘NLP-study-group’" class="headerlink" title="tags: ‘NLP’, ‘paper’, ‘NLP study group’"></a>tags: ‘NLP’, ‘paper’, ‘NLP study group’</h6><ul>
+<li>Q:此篇論文的目標？<br>想探討「attention可偵測出模型中認為重要的訊息」這件事的正確性。</li>
+</ul>
+<blockquote>
+<p>可解釋性可以理解為，Attention權重的高低應該與對應位置信息的重要程度正相關；高權重的輸入單元對於輸出結果有決定性作用。本文的主要研究方法是中間表示擦除，主要邏輯在於越重要的權重對輸出結果的影響越大，將它置零就會對結果有直接的影響。<br><a href="https://www.cnblogs.com/bernieloveslife/p/12748433.html" target="_blank" rel="noopener">https://www.cnblogs.com/bernieloveslife/p/12748433.html</a></p>
+</blockquote>
+<ul>
+<li><p>Q:這篇和上一篇的差異？<br>上一篇論文(Attention is not explanation)較頃向從整體來看，譬如：整組的attention weight換掉是否對結果有差？而此論文則著重在attention到底有沒有抓到重點？<br>（此段文字頃向自己的解讀，若有理解錯歡迎糾正…）<br>論文中在講和之前的差異的內文如下：</p>
+<blockquote>
+<p>One point worth noting is the facet of interpretability that our tests are designed to capture. By examining only how well attention represents the importance of intermediate quantities, which may themselves already have changed uninterpretably from the model’s inputs, we are testing for a relatively low level of interpretability. So far, other work looking at attention has examined whether attention suffices as a holistic explanation for a model’s decision (Jain and Wallace, 2019), which is a higher bar. We instead focus on the lowest standard of interpretability that attention might be expected to meet, ignoring prior model layers.</p>
+</blockquote>
+</li>
+<li><p>Q:簡短敘述這篇論文？<br>為了探討「attention可找出模型中認為重要的特徵訊息」這件事的正確性，這篇論文設計了一個實驗驗證架構：使用擦掉某些attention weight的方式（在此篇論文中假設weight較大表示較重要），去看看對模型預測的影響。<br>結論是attention weight雖有稍微的反應出特徵（feature）的重要性，但並沒有非常直接的相關。</p>
+</li>
+</ul>
+<p>註：這裡的feature指的是input經過encoder後的向量。</p>
+<h2 id="論文中使用的任務、資料集"><a href="#論文中使用的任務、資料集" class="headerlink" title="論文中使用的任務、資料集"></a>論文中使用的任務、資料集</h2><ul>
+<li>topic classification (dataset: Yahoo answers)</li>
+<li>review rating (datasets: IMDB, Amazon, Yelp)</li>
+</ul>
+<h2 id="模型架構"><a href="#模型架構" class="headerlink" title="模型架構"></a>模型架構</h2><p>主要使用Hierarchical Attention Network(HAN)架構（一種text classification的模型），HAN的特色在先對「詞」做attention，再對「句子」做attention，請看圖一（<a href="https://meetonfriday.com/posts/8cad39eb/" target="_blank" rel="noopener">之前小勛講的那篇,忘記可以回顧一下）</a>。</p>
+<p>在此篇論文中僅對句子那層的attention去做測試，attention則是使用Bahdanau et al. (2015)提出的架構如下（<a href="https://dsmilab.github.io/dsmi-lab-website/2020/05/06/NEURAL%20MACHINE%20TRANSLATION%20BY%20JOINTLY%20LEARNING%20TO%20ALIGN%20AND%20TRANSLATE/" target="_blank" rel="noopener">就是之前討論過的第一篇attention</a> )：<br><img src="https://i.imgur.com/9Su03hr.png" alt=""></p>
+<p>除此之外，此論文也探討兩個HAN的變化模型：</p>
+<ol>
+<li>flat attention networks (簡稱FLAN)：僅考慮一層attention，也就是不像HAN分詞、句子去做attention，而是不分句子，把所有句子的詞攤平一起看。 </li>
+<li>將原本HAN模型裡的word encoder的雙向GRU結構改成convolutional encoder</li>
+</ol>
+<p>所以，此篇論文總共考慮的模型有：HANrnns (bi-GRU), HANconvs, HANnoencs, FLANrnns, FLANconvs, FLANnoencs</p>
+<blockquote>
+<p><img src="https://i.imgur.com/z7UUlbL.png" alt=""><br>HAN（圖一）<a href="https://www.cs.cmu.edu/~./hovy/papers/16HLT-hierarchical-attention-networks.pdf" target="_blank" rel="noopener">圖出處</a></p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/HykqHpk.png" alt=""><br>convolutional encoder的FLAN示意圖  <a href="https://www.aclweb.org/anthology/P19-1282.pdf" target="_blank" rel="noopener">圖出處</a>  </p>
+</blockquote>
+<h2 id="如何透過實驗驗證目標？"><a href="#如何透過實驗驗證目標？" class="headerlink" title="如何透過實驗驗證目標？"></a>如何透過實驗驗證目標？</h2><h3 id="實驗驗證架構"><a href="#實驗驗證架構" class="headerlink" title="實驗驗證架構"></a>實驗驗證架構</h3><p>此論文透過擦掉某些重要的attention weight的方式，去觀察結果的差異。因此，實驗在Part 1 of model（即做完attention、還沒跑linear classification的部分）之後分兩部分去探討：</p>
+<ol>
+<li>attention weight不變，直接放到Part 2 of model（即最後一層linear classification的部分）</li>
+<li>擦掉某些重要的attention weight，再放入最後一層linear（這裡為什麼要做renormalize？是為了避免擦去較大的attention weight之後，document representation的地方趨近於0，使擦去後的representation和原始training放入最後一層linear classification的representation差太多）<blockquote>
+<p><img src="https://i.imgur.com/mGE3Jn1.png" alt=""></p>
+</blockquote>
+<h3 id="驗證方式"><a href="#驗證方式" class="headerlink" title="驗證方式"></a>驗證方式</h3>此論文分兩部分來探討：</li>
+<li>擦掉一個attention weight(將最大的attention設為0的意思)</li>
+<li>擦掉一些attention weights</li>
+</ol>
+<p>針對上述兩點，論文進行了不同的驗證實驗。</p>
+<h4 id="1-擦掉一個attention-weight-將最大的attention設為0的意思"><a href="#1-擦掉一個attention-weight-將最大的attention設為0的意思" class="headerlink" title="1. 擦掉一個attention weight(將最大的attention設為0的意思)"></a>1. 擦掉一個attention weight(將最大的attention設為0的意思)</h4><p>驗證方式1</p>
+<ul>
+<li>比較：<ul>
+<li>最高attention weight</li>
+<li>隨機選取的attention weight</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><img src="https://i.imgur.com/RaozvF8.png" alt=""><br>x軸：上述兩項的attention weight的差距;<br>y軸：原模型分別對其的JS divergence差距<br>如預期的，大部分的attention weight差距越大，$\triangle JS$也大多有變大的現象。|是負值的部分，也大都趨近於0</p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/W0xstEn.png" alt=""><br>x軸：-$\triangle JS$; y軸：數量<br>註：若較高的attention weight影響力比較高，那麼$\triangle JS$差值應該大於0。 </p>
+</blockquote>
+<p>註：但我們其實不知道多大的差距可以詮釋attention weight重要性。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/cVa7NqG.png" alt=""></p>
+</blockquote>
+<p>上圖的意思是：分別去看在「remove 最大attention weight」及「remove 隨機attention weight」時是否造成翻轉決策？<br>從上圖可發現，大部分都是兩個都沒有影響結果。雖然remove最大attention weight仍比remove隨機的attention weight造成翻轉決策較多，但並沒有高很多。（這裡只放rnn based的結果，但其他模型架構結果差不多，有興趣可以看論文）</p>
+<h4 id="2-擦掉一些attention-weights"><a href="#2-擦掉一些attention-weights" class="headerlink" title="2. 擦掉一些attention weights"></a>2. 擦掉一些attention weights</h4><p>上述的方法（僅去掉其中一個attention weight），會看到只擦去一個attention weight大多不會翻轉決策、$\triangle JS$趨近於0等問題，因此本論文又再做更進一步的探討。</p>
+<p>如何探討呢？想法是：若attention weight真的呈現出feature重要性，那麼應該擦去越小的集合，就能夠翻轉決策。</p>
+<blockquote>
+<p>某項token越重要，那麼mask它使模型分類錯誤的可能性也就越大，所以找到的mask集合越小，這個集合中的token越重要。<br><a href="https://www.cnblogs.com/bernieloveslife/p/12748433.html" target="_blank" rel="noopener">https://www.cnblogs.com/bernieloveslife/p/12748433.html</a></p>
+</blockquote>
+<p>也就是透過不同的方法，去對feature重要性去做ranking，並按ranking結果依序擦去feature，直到會翻轉決策。而擦去的集合大小也某種程度呈現此方法到底好不好？（feature importance的概念），而此論文使用四種方式：</p>
+<ol>
+<li>隨機mask</li>
+<li>按attention weight大小做ranking，優先mask掉attention weight較大的。</li>
+<li>透過分析最後一層classification layer的decision function的gradient去做ranking</li>
+<li>透過直接「attention weight*上述的gradient值」去做ranking</li>
+</ol>
+<p><img src="https://i.imgur.com/HuKQaqN.png" alt=""><br><img src="https://i.imgur.com/GFN0Eeg.png" alt=""></p>
+<p>從上圖（boxplot）可看到，attention*gradient（第4種方式）的方法，雖然整體而言最小（較好），但其實和gradient方法（第3種方法）差不多。而attention weight(第2種方法)的方法則更差（大部分的測試資料都需要擦去非常多feature,才能達到翻轉決策的效果）。</p>
+<p>值得一提的是，rnn based的模型架構，相較convolution based的模型，通常需要擦去較多的attention weights,這也和RNN based的模型做完encoder後會有訊息遷移這件事相吻合。</p>
+<h2 id="limitations"><a href="#limitations" class="headerlink" title="limitations"></a>limitations</h2><ul>
+<li>這篇主要著重在探討text classification，若此方法應用在其他的task（如翻譯，不只幾類，而是有許多預測結果）就不一定適用。</li>
+<li>因為分類結果中有很多類別，但這裡只考慮出來結果機率最大的，其他的都沒有考慮。（可能需要針對每個類別都去找最重要的token是什麼）</li>
+<li>還有許多其他的模型架構<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2>attention weight雖有稍微的反應出特徵的重要性，但並沒有非常直接的相關。</li>
+</ul>
+<h2 id="future-work"><a href="#future-work" class="headerlink" title="future work"></a>future work</h2><ul>
+<li>除了擦去重要的attention weight的方法，還有許多方法可以探討attention weight的解釋性議題。</li>
+<li>期望轉換成「找出一個更加好的ranking方式」</li>
+</ul>
+<h2 id="思考問題"><a href="#思考問題" class="headerlink" title="思考問題"></a>思考問題</h2><ul>
+<li>為什麼要設計FLAN?（可能是因為只有一層;HAN有兩層）</li>
+</ul>
+<h2 id="Related-work"><a href="#Related-work" class="headerlink" title="Related work"></a>Related work</h2><p><a href="https://www.cnblogs.com/bernieloveslife/p/12748433.html" target="_blank" rel="noopener">https://www.cnblogs.com/bernieloveslife/p/12748433.html</a></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/07/01/Is Attention Interpretable_ (1)/" target="_blank" title="Is Attention Interpretable?">https://github.com/dsmilab/dsmi-lab-website/2020/07/01/Is Attention Interpretable_ (1)/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/07/08/Discourse-Aware%20Neural%20Extractive%20Text%20Summarization/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Discourse-Aware Neural Extractive Text Summarization
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/06/24/Attention%20is%20not%20not%20explanation/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Attention is not not explanation</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Is-Attention-Interpretable"><span class="nav-number">1.</span> <span class="nav-text">Is Attention Interpretable?</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-‘NLP’-‘paper’-‘NLP-study-group’"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: ‘NLP’, ‘paper’, ‘NLP study group’</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#論文中使用的任務、資料集"><span class="nav-number">1.1.</span> <span class="nav-text">論文中使用的任務、資料集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型架構"><span class="nav-number">1.2.</span> <span class="nav-text">模型架構</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何透過實驗驗證目標？"><span class="nav-number">1.3.</span> <span class="nav-text">如何透過實驗驗證目標？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#實驗驗證架構"><span class="nav-number">1.3.1.</span> <span class="nav-text">實驗驗證架構</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#驗證方式"><span class="nav-number">1.3.2.</span> <span class="nav-text">驗證方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-擦掉一個attention-weight-將最大的attention設為0的意思"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">1. 擦掉一個attention weight(將最大的attention設為0的意思)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-擦掉一些attention-weights"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">2. 擦掉一些attention weights</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#limitations"><span class="nav-number">1.4.</span> <span class="nav-text">limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結論"><span class="nav-number">1.5.</span> <span class="nav-text">結論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#future-work"><span class="nav-number">1.6.</span> <span class="nav-text">future work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考問題"><span class="nav-number">1.7.</span> <span class="nav-text">思考問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-work"><span class="nav-number">1.8.</span> <span class="nav-text">Related work</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

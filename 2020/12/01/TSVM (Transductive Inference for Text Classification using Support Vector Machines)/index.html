@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tsvm (transductive inference for text classification using support vector machines) | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="SVMSSLSemi supervised learning" />
+  
+  
+  
+  
+  <meta name="description" content="TSVM (Transductive Inference for Text Classification using Support Vector Machines)tags: SVM, semi-supervised learning, SSLpaper linkcited：3517參考書籍：Learning to Classify Text Using Support Vector Machi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TSVM (Transductive Inference for Text Classification using Support Vector Machines)">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/12/01/TSVM%20(Transductive%20Inference%20for%20Text%20Classification%20using%20Support%20Vector%20Machines)/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="TSVM (Transductive Inference for Text Classification using Support Vector Machines)tags: SVM, semi-supervised learning, SSLpaper linkcited：3517參考書籍：Learning to Classify Text Using Support Vector Machi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/cmPdTqa.png">
+<meta property="og:image" content="https://i.imgur.com/Z6uZxWP.png">
+<meta property="og:image" content="https://i.imgur.com/f23QQby.png">
+<meta property="og:image" content="https://i.imgur.com/SRLb2Cl.png">
+<meta property="og:image" content="https://i.imgur.com/n4aYBmf.png=300x300">
+<meta property="og:image" content="https://i.imgur.com/UyfNRen.png">
+<meta property="og:image" content="https://i.imgur.com/EVnvZxc.png">
+<meta property="og:image" content="https://i.imgur.com/3wlhm6f.png">
+<meta property="og:image" content="https://i.imgur.com/G6zwWuU.png">
+<meta property="og:image" content="https://i.imgur.com/j5CUqn0.png">
+<meta property="og:image" content="https://i.imgur.com/FSTzJA7.png">
+<meta property="og:image" content="https://i.imgur.com/9VIXjk5.png">
+<meta property="article:published_time" content="2020-12-01T09:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="SVM">
+<meta property="article:tag" content="SSL">
+<meta property="article:tag" content="Semi supervised learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/cmPdTqa.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-TSVM (Transductive Inference for Text Classification using Support Vector Machines)" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      TSVM (Transductive Inference for Text Classification using Support Vector Machines)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/12/01/TSVM%20(Transductive%20Inference%20for%20Text%20Classification%20using%20Support%20Vector%20Machines)/" class="article-date">
+	  <time datetime="2020-12-01T09:30:00.000Z" itemprop="datePublished">2020-12-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="TSVM-Transductive-Inference-for-Text-Classification-using-Support-Vector-Machines"><a href="#TSVM-Transductive-Inference-for-Text-Classification-using-Support-Vector-Machines" class="headerlink" title="TSVM (Transductive Inference for Text Classification using Support Vector Machines)"></a>TSVM (Transductive Inference for Text Classification using Support Vector Machines)</h1><h6 id="tags-SVM-semi-supervised-learning-SSL"><a href="#tags-SVM-semi-supervised-learning-SSL" class="headerlink" title="tags: SVM, semi-supervised learning, SSL"></a>tags: SVM, semi-supervised learning, SSL</h6><p><a href="https://www.cs.cornell.edu/people/tj/publications/joachims_99c.pdf" target="_blank" rel="noopener">paper link</a><br>cited：3517<br><a href="https://www.springer.com/gp/book/9780792376798" target="_blank" rel="noopener">參考書籍：Learning to Classify Text Using Support Vector Machines</a></p>
+<blockquote>
+<p>Particularly, S3VMs have been widely applied to many tasks [10], and their representative algorithm, TSVM [23], has won the Ten-Year Best Paper Award for machine learning in 2009. (from <a href="https://ieeexplore.ieee.org/document/6710159" target="_blank" rel="noopener">Towards Making Unlabeled Data Never Hurt</a>)</p>
+</blockquote>
+<h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>這篇論文的方法主要是針對“text classification”這個task，從這個task研發出semi-supervised learning演算法 – TSVM。 TSVM是一個SVM based的semi-supervised 方法。</p>
+<ul>
+<li><strong>附註：What is text classification?</strong><br>  text classification的目標是要讓model能夠自動將文檔分類。各文檔的類別有可能是multiple, exactly one, or no category. 因此，可以分別將每個類別視作二元分類的問題（屬於此類別or不屬於此類別）。<blockquote>
+<p>To facilitate effective and efficient learning, each category is treated as a separate binary classifcation problem. Each such problem answers the question of whether or not a document should be assigned to a particular category.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="TSVM-Transductive-Support-Vector-Machine"><a href="#TSVM-Transductive-Support-Vector-Machine" class="headerlink" title="TSVM (Transductive Support Vector Machine)"></a>TSVM (Transductive Support Vector Machine)</h2><p>論文提出的方法如下：</p>
+<blockquote>
+<p><img src="https://i.imgur.com/cmPdTqa.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/Z6uZxWP.png" alt=""></p>
+</blockquote>
+<h2 id="為什麼TSVM適用text-classification"><a href="#為什麼TSVM適用text-classification" class="headerlink" title="為什麼TSVM適用text classification?"></a>為什麼TSVM適用text classification?</h2><ul>
+<li><strong>附註Text classification的特點</strong><blockquote>
+<p><img src="https://i.imgur.com/f23QQby.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<ol>
+<li>High dimensional input space:文本裡的字都是features.</li>
+<li>Document vectors are sparse</li>
+<li>Few irrelevant features<blockquote>
+<p>Arguments from [Joachims, 1998] show that SVMs are especially well-suited for this setting, outperforming conventional methods substantially while also being more robust. Dumais et al. [Dumais et al., 1998] come to similar conclusio</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li><strong>為什麼TSVM適用text classification?</strong></li>
+</ul>
+<ol>
+<li>TSVM大致上保留SVM的特性</li>
+<li>text的資料會有許多co-occurrence的資訊。因為TSVM是transductive，因此也同時考慮了test data裡的co-occurrence資訊（inductive learning沒有辦法去考慮test data的資訊）。<blockquote>
+<p><img src="https://i.imgur.com/SRLb2Cl.png" alt=""></p>
+</blockquote>
+</li>
+</ol>
+<h2 id="Algorithm-for-TSVM"><a href="#Algorithm-for-TSVM" class="headerlink" title="Algorithm for TSVM"></a>Algorithm for TSVM</h2><p>上面的方法若遇到大量unlabeled data，則需要非常大的運算量。而通常semi-supervised learning的問題，unlabeled data通常滿大的（text classification通常有大量unlabeled data）。因此，作者提出以下加速的最佳化問題，來近似OP2。</p>
+<blockquote>
+<p><img src="https://i.imgur.com/n4aYBmf.png=300x300" alt=""></p>
+</blockquote>
+<h3 id="實際演算法如下："><a href="#實際演算法如下：" class="headerlink" title="實際演算法如下："></a>實際演算法如下：</h3><p><strong>主要的想法：</strong></p>
+<ol>
+<li>先用labeled data去train一個inductive SVM，對unlabeled data標註。</li>
+<li>再透過替換掉一些slack variable比較大的label，去降低objective function。<blockquote>
+<p>The key idea of the algorithm is that it begins with a labeling of the test data based on the classification of an inductive SVM. Then it improves the solution by switching the labels of test examples so that the objective function</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>附註：</strong></p>
+<ul>
+<li>Loop 1:透過不斷的提高 $C_-^<em>$ 和 $C_+^</em>$，慢慢提升unlabeled data對模型的影響力。</li>
+<li>Loop 2:過替換掉slack variable值較大的unlabeled data的label，去降低objective function的值。<blockquote>
+<p><img src="https://i.imgur.com/UyfNRen.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<p><strong>論文中也提出定理來說Algorithm TSVM會在有限步收斂</strong></p>
+<blockquote>
+<p><strong>Theorem 2</strong> Algorithm 1 converges in a fnite number of steps.</p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/EVnvZxc.png" alt=""><br><img src="https://i.imgur.com/3wlhm6f.png" alt=""></p>
+</blockquote>
+<h2 id="Experiment-result"><a href="#Experiment-result" class="headerlink" title="Experiment result"></a>Experiment result</h2><p><strong>evaluation</strong>: Precision/Recall-Breakeven Point (text classification常用的measure)</p>
+<blockquote>
+<p>The P/R-breakeven point is defined as that value<br>for which precision and recall are equal.</p>
+</blockquote>
+<p>註：</p>
+<blockquote>
+<p>Precision: probability that a document predicted to be in class<br>“+” truly belongs to this class.<br>Recall: probability that a document belonging to class “+” is classified into this class </p>
+</blockquote>
+<blockquote>
+<p><img src="https://i.imgur.com/G6zwWuU.png" alt=""><br><img src="https://i.imgur.com/j5CUqn0.png" alt=""><br><img src="https://i.imgur.com/FSTzJA7.png" alt=""><br><img src="https://i.imgur.com/9VIXjk5.png" alt=""></p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/muratayoshio/tsvm">https://github.com/muratayoshio/tsvm</a></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Puchi</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/12/01/TSVM (Transductive Inference for Text Classification using Support Vector Machines)/" target="_blank" title="TSVM (Transductive Inference for Text Classification using Support Vector Machines)">https://github.com/dsmilab/dsmi-lab-website/2020/12/01/TSVM (Transductive Inference for Text Classification using Support Vector Machines)/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/SSL/" rel="tag">SSL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/SVM/" rel="tag">SVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/Semi-supervised-learning/" rel="tag">Semi supervised learning</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2021/01/25/Attention%20Is%20All%20You%20Need/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Attention Is All You Need?
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/11/28/cheatsheet_git_github/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">快速掌握 git github</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TSVM-Transductive-Inference-for-Text-Classification-using-Support-Vector-Machines"><span class="nav-number">1.</span> <span class="nav-text">TSVM (Transductive Inference for Text Classification using Support Vector Machines)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-SVM-semi-supervised-learning-SSL"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: SVM, semi-supervised learning, SSL</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#簡介"><span class="nav-number">1.1.</span> <span class="nav-text">簡介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TSVM-Transductive-Support-Vector-Machine"><span class="nav-number">1.2.</span> <span class="nav-text">TSVM (Transductive Support Vector Machine)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#為什麼TSVM適用text-classification"><span class="nav-number">1.3.</span> <span class="nav-text">為什麼TSVM適用text classification?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm-for-TSVM"><span class="nav-number">1.4.</span> <span class="nav-text">Algorithm for TSVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#實際演算法如下："><span class="nav-number">1.4.1.</span> <span class="nav-text">實際演算法如下：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-result"><span class="nav-number">1.5.</span> <span class="nav-text">Experiment result</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.6.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

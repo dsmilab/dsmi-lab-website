@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>how to use clustering to improve a language model | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLPclusteringlanguage model" />
+  
+  
+  
+  
+  <meta name="description" content="前情提要:question:在做 speech recognizer 時President Kennedy 和 precedent Kennedy 的發音很像該如何讓speech recognizer 知道答案為President Kennedy? answer   Notation Meaning e.g.    $H$ hypothesis President Kennedyprecedent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to use clustering to improve a language model">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/04/23/How%20Use%20clustering%20to%20improve%20a%20language%20model/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="前情提要:question:在做 speech recognizer 時President Kennedy 和 precedent Kennedy 的發音很像該如何讓speech recognizer 知道答案為President Kennedy? answer   Notation Meaning e.g.    $H$ hypothesis President Kennedyprecedent">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-23T09:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="clustering">
+<meta property="article:tag" content="language model">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-How Use clustering to improve a language model" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      How to use clustering to improve a language model
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/04/23/How%20Use%20clustering%20to%20improve%20a%20language%20model/" class="article-date">
+	  <time datetime="2020-04-23T09:30:00.000Z" itemprop="datePublished">2020-04-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要:"></a>前情提要:</h1><h2 id="question"><a href="#question" class="headerlink" title="question:"></a>question:</h2><p>在做 speech recognizer 時<br>President Kennedy 和 precedent Kennedy 的發音很像<br>該如何讓speech recognizer 知道答案為President Kennedy?</p>
+<h2 id="answer"><a href="#answer" class="headerlink" title="answer"></a>answer</h2><table>
+<thead>
+<tr>
+<th>Notation</th>
+<th align="center">Meaning</th>
+<th align="right">e.g.</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$H$</td>
+<td align="center">hypothesis</td>
+<td align="right">President Kennedy<br>precedent Kennedy</td>
+</tr>
+<tr>
+<td>$D$</td>
+<td align="center">speech signal</td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>$P(H)$</td>
+<td align="center">language model</td>
+<td align="right"></td>
+</tr>
+</tbody></table>
+<p>用 noisy channal model<br>使找到的解答滿足:</p>
+<p>$\hat H =<br> \underset{H}{\arg\max} P(H|D) =<br> \underset{H}{\arg\max} \frac{P(D|H)P(H)}{P(D)} =<br> \underset{H}{\arg\max} P(D|H)P(H)$</p>
+<p>要如何優化 $P(H)$ , 使之更 generalization 便是今天要探討的問題</p>
+<h1 id="using-clustering-improving-a-language-model"><a href="#using-clustering-improving-a-language-model" class="headerlink" title="using clustering improving a language model"></a>using clustering improving a language model</h1><h2 id="模型假設"><a href="#模型假設" class="headerlink" title="模型假設"></a>模型假設</h2><ul>
+<li>bigram model</li>
+<li>Markov assumption</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Notation</th>
+<th align="center">Meaning</th>
+<th align="center">Remark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L</td>
+<td align="center">corpus</td>
+<td align="center">L = $w_1,…w_N$</td>
+</tr>
+<tr>
+<td>$\pi$</td>
+<td align="center">function</td>
+<td align="center">assign word to cluster</td>
+</tr>
+</tbody></table>
+<h2 id="目標"><a href="#目標" class="headerlink" title="目標"></a>目標</h2><p>find function $\pi$<br>s.t minimize $H(L, \pi)$<br>(白話翻譯: 找到一個分類函數 使之最小化 對下個字預測的不確定性)</p>
+<h2 id="Question-要如何最小化-H-L-pi"><a href="#Question-要如何最小化-H-L-pi" class="headerlink" title="Question: 要如何最小化$H(L, \pi)$?"></a>Question: 要如何最小化$H(L, \pi)$?</h2><p>$H(L, \pi) = -\frac{1}{N}logP(w_{1,…N})$<br>經過 課本 510-511頁一連串的推導後可得<br>$H(L, \pi) \approx H(W)-I(c_1; c_2)$</p>
+<blockquote>
+<p>Remark: $I(c_1; c_2)$: mutual information between adjacent clusters</p>
+</blockquote>
+<p>因此 最大化 $I(c_1; c_2)$ 即可使 $H(L, \pi) 最小$</p>
+<h2 id="Question-要如何分群使-I-c-1-c-2-的值最大"><a href="#Question-要如何分群使-I-c-1-c-2-的值最大" class="headerlink" title="Question: 要如何分群使$I(c_1; c_2)$的值最大?"></a>Question: 要如何分群使$I(c_1; c_2)$的值最大?</h2><p>用bottom-up algorithm來分群，<br>用mutual information loss 當作loss</p>
+<blockquote>
+<p>MI-loss($c_i$, $c_j$) = $\sum_{c_k \in C\setminus{c_i, c_j}} I(c_k;c_i) + I(c_k;c_j) - I(c_k;c_i\cup c_j)$</p>
+</blockquote>
+<p>每次迭代將loss最小的兩群做合併<br>持續迭代到剩下k群為止(k為給定的參數 課本是給1000)</p>
+<p><strong>Remark: 此演算法不能保證找到最佳解</strong></p>
+<h2 id="Is-cluster-based-language-model-work"><a href="#Is-cluster-based-language-model-work" class="headerlink" title="Is cluster-based language model work?"></a>Is cluster-based language model work?</h2><p>課本給出的結果如下:</p>
+<table>
+<thead>
+<tr>
+<th>model</th>
+<th align="center">perplxity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cluster-based language model</td>
+<td align="center">277</td>
+</tr>
+<tr>
+<td>word-based model</td>
+<td align="center">244</td>
+</tr>
+<tr>
+<td>linear interpolation between the word-based and the cluster based model</td>
+<td align="center"><strong>236</strong></td>
+</tr>
+</tbody></table>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Chuck</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/04/23/How Use clustering to improve a language model/" target="_blank" title="How to use clustering to improve a language model">https://github.com/dsmilab/dsmi-lab-website/2020/04/23/How Use clustering to improve a language model/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP/" rel="tag">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/clustering/" rel="tag">clustering</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/language-model/" rel="tag">language model</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/04/23/Leetcode%20-DFS_BFS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode -DFS BFS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/04/22/Support%20vector%20machine%20(SVM)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Support vector machine (SVM)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前情提要"><span class="nav-number">1.</span> <span class="nav-text">前情提要:</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#question"><span class="nav-number">1.1.</span> <span class="nav-text">question:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#answer"><span class="nav-number">1.2.</span> <span class="nav-text">answer</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#using-clustering-improving-a-language-model"><span class="nav-number">2.</span> <span class="nav-text">using clustering improving a language model</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型假設"><span class="nav-number">2.1.</span> <span class="nav-text">模型假設</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目標"><span class="nav-number">2.2.</span> <span class="nav-text">目標</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Question-要如何最小化-H-L-pi"><span class="nav-number">2.3.</span> <span class="nav-text">Question: 要如何最小化$H(L, \pi)$?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Question-要如何分群使-I-c-1-c-2-的值最大"><span class="nav-number">2.4.</span> <span class="nav-text">Question: 要如何分群使$I(c_1; c_2)$的值最大?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Is-cluster-based-language-model-work"><span class="nav-number">2.5.</span> <span class="nav-text">Is cluster-based language model work?</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

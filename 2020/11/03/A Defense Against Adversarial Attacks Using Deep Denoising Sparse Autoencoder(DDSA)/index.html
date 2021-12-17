@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>a defense against adversarial attacks using deep denoising sparse autoencoder(ddsa) | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="Adversarial" />
+  
+  
+  
+  
+  <meta name="description" content="DDSA: A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencodertags: adversarial精心製作的細緻擾動會大大降低其性能並導致毀滅性後果，尤其是對於自動駕駛汽車，醫療保健和面部識別等對安全要求嚴格的應用而言使用了基於DDSA的方式在前處理的步驟執行，其在白,灰,黑盒子上都有不錯的效果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder(DDSA)">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/11/03/A%20Defense%20Against%20Adversarial%20Attacks%20Using%20Deep%20Denoising%20Sparse%20Autoencoder(DDSA)/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="DDSA: A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencodertags: adversarial精心製作的細緻擾動會大大降低其性能並導致毀滅性後果，尤其是對於自動駕駛汽車，醫療保健和面部識別等對安全要求嚴格的應用而言使用了基於DDSA的方式在前處理的步驟執行，其在白,灰,黑盒子上都有不錯的效果。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/IayB4rW.png">
+<meta property="og:image" content="https://i.imgur.com/8MspWOZ.png">
+<meta property="og:image" content="https://i.imgur.com/mJrYqfV.png">
+<meta property="og:image" content="https://i.imgur.com/490NvHr.png">
+<meta property="og:image" content="https://i.imgur.com/LDb8V9L.png">
+<meta property="og:image" content="https://i.imgur.com/c9NMabH.png">
+<meta property="og:image" content="https://i.imgur.com/xLDz4qU.png">
+<meta property="og:image" content="https://i.imgur.com/pPDZev6.png">
+<meta property="og:image" content="https://i.imgur.com/U5JZ69q.png">
+<meta property="og:image" content="https://i.imgur.com/IkYmwOh.png">
+<meta property="og:image" content="https://i.imgur.com/IXeYXjw.png">
+<meta property="og:image" content="https://i.imgur.com/1nyCvqD.png">
+<meta property="article:published_time" content="2020-11-03T13:10:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.896Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="Adversarial">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/IayB4rW.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder(DDSA)" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder(DDSA)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/11/03/A%20Defense%20Against%20Adversarial%20Attacks%20Using%20Deep%20Denoising%20Sparse%20Autoencoder(DDSA)/" class="article-date">
+	  <time datetime="2020-11-03T13:10:00.000Z" itemprop="datePublished">2020-11-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="DDSA-A-Defense-Against-Adversarial-Attacks-Using-Deep-Denoising-Sparse-Autoencoder"><a href="#DDSA-A-Defense-Against-Adversarial-Attacks-Using-Deep-Denoising-Sparse-Autoencoder" class="headerlink" title="DDSA: A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder"></a>DDSA: A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder</h1><h6 id="tags-adversarial"><a href="#tags-adversarial" class="headerlink" title="tags: adversarial"></a>tags: <code>adversarial</code></h6><p>精心製作的細緻擾動會大大降低其性能並導致毀滅性後果，尤其是對於自動駕駛汽車，醫療保健和面部識別等對安全要求嚴格的應用而言<br>使用了基於DDSA的方式在前處理的步驟執行，其在白,灰,黑盒子上都有不錯的效果。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>在很多對安全敏感的應用上出現了很多DNN模型，因此robustness就會是一個對於抵抗adversarial attack的關鍵。<br>在圖像分類上所製造出來的adversarial attack被人類正確分類但機器錯誤分類。<br>這是可能的，因為所有的DNN model 都是基於(Independent and Identically Distributed)IID 的假設，這就代表其實正常的數據集都是落在相似的數據分佈或相同的流形上。因此攻擊方就是去最大化他的loss，但要讓他的擾動不被察覺並且還要導致分類錯誤。<br>最主要的想法也就是在尋找最短的方向，push input image out to the decision boundary to the target class(target attack) or any other class(untarget attack).(See Figure 1)<br><img src="https://i.imgur.com/IayB4rW.png" alt=""></p>
+<p>這裡有三種不同攻擊方式</p>
+<ol>
+<li>white box attack : 對方知道你所有的防禦方法，模型架構以及你的參數。</li>
+<li>black box attack : 對方不知道你的模型架構和參數，攻擊方只會知道你的模型輸出(標籤或是信心值), 攻擊方可能會訓練另外的模型或是替代模型，利用adversarial example的傳遞性去實作。</li>
+<li>gray box attack : 通常來說介於白盒和黑盒之間，在這篇論文下，攻擊方可以完全訪問模型的體系結構和參數，但對防禦技術一無所知。<br><img src="https://i.imgur.com/8MspWOZ.png" alt=""><br>在本文中使用DDSA的圖像預處理，再輸入階段降低噪聲，再將轉換過後的圖片做輸入丟入分類器<br>在一般的模型情況下，隨著圖像在網絡中傳播，對抗性擾動會逐漸增加，這會導致噪聲較大的特徵圖和不適當的激活，從而有分類錯誤的風險，故在這裡使用了稀疏約束的架構，他要確保神經元僅針對有意義的Neuron去觸發，從而限制那些被觸發的adversarial pattern. 利用稀疏約束的效果去抵禦有挑戰性的攻擊，得到還不錯的robustness.<br><img src="https://i.imgur.com/mJrYqfV.png" alt=""></li>
+</ol>
+<h2 id="Related-work"><a href="#Related-work" class="headerlink" title="Related work"></a>Related work</h2><p>先介紹一下什麼是adversarial attack(problem formulation)，接著介紹一些攻擊的方法，再介紹一些防禦的方法</p>
+<h3 id="Problem-Formulation"><a href="#Problem-Formulation" class="headerlink" title="Problem Formulation"></a>Problem Formulation</h3><p>給你一張圖片的Space $X = [0,1]^{H\times W\times C}$, target classification model $f(\cdot)$. 我們的正常輸入圖片為$x \in X$而 adversarial example $x’ \in X$ 但目標是 $f(x) \neq f(x’)$ and $d(x,x’) \leq \epsilon$, where $d(\cdot)$ is the distance function with three types $L_0$ distance, Euclidean distance($L_2$) and Chebyshev distance($L_\infty$) and the $\epsilon \geq 0$ is the threshold.</p>
+<h3 id="Adversarial-attack"><a href="#Adversarial-attack" class="headerlink" title="Adversarial attack"></a>Adversarial attack</h3><ol>
+<li>Fast Gradient Sign Method(FGSM) : $x’ = x+\epsilon sign(\nabla_x J_\theta(x,y))$, $\theta$ 是模型的參數,  $\nabla J(\cdot)$計算gradient w.r.t x, $sign(\cdot)$為方向函數, $\epsilon$為小的係數。利用損失函數的一階近似來得到adversarial examples.</li>
+<li>Boosting Adversarial Attacks with Momentum(Momentum Iterative method MIM) : 增進FGSM攻擊的有效性利用Momentum的習性，$g_{t+1} = \omega g_t + \frac{\nabla_x J_{\theta}(x_t^’,y)}{|\nabla_x J_{\theta}(x_t^’,y)|_1}$ ,且 $g_t$ 是第t個迴圈的梯度, $\omega$是係數, $|\cdot|<em>1$ is the $L_1$ distance.<br>最後他的遞迴方程式為 $x</em>{t+1}^’ = x_t^’ + \epsilon sign(g_{t+1})$</li>
+<li>PGD </li>
+<li>CW  </li>
+<li>RAND+FGSM</li>
+</ol>
+<h3 id="Defense"><a href="#Defense" class="headerlink" title="Defense"></a>Defense</h3><ol>
+<li>adversarial training : </li>
+<li>defense distillation : </li>
+<li>Magnet :</li>
+</ol>
+<h2 id="Proposed-Model-DDSA"><a href="#Proposed-Model-DDSA" class="headerlink" title="Proposed Model DDSA"></a>Proposed Model DDSA</h2><p>Threat Model : Assume that the attacker has full access to the classification model. (gray box attack), and the adversarial example $x’$ is satisfied $f(x) \neq f(x’)$ and $d(x,x’) \leq \epsilon$. We don’t consider the specific classification model, we defend all types of the classification model against any attack</p>
+<p>Deep Denoising sparse auto-encoder(DDSA) :<br>This is the whole model, DDSA+classifier(Figure 3)<br><img src="https://i.imgur.com/490NvHr.png" alt=""><br>This is a auto-encoder block in front of the classification model(Figure 4)<br><img src="https://i.imgur.com/LDb8V9L.png" alt=""><br>(Autoencoder 介紹)<br>自動編碼器利用數據分佈集中在低維流形周圍的事實，並旨在學習該流形的結構。<br>故目標也是將數據推回原本流形架構上。<br>在denoising autoencoder下的idea 是我想要學習在autoencoder下的壓縮表示對於adversarial perturbation 是robust的<br>cost function $J = \frac{1}{n}\sum^n_{i=1}(x_i-f_{\theta}(x_i^’))^2$, $n$ is the number of samples and $x^’$ is the perturbed version of $x$. (Use PGD to train this, 因為PGD比較能夠給予更好的wide range)</p>
+<p>The training<br>$$<br>\theta^* = \arg\min_\theta[E_{(x,f_\theta(x^’))\in\hat p_{data}}(\max_{\delta \in S}J(x,f_\theta(x^’)))+ E_{(x,f_\theta(x))\in\hat p_{data}}(J(x,f_\theta(x)))]<br>$$</p>
+<p>並且利用增加sparsity constraint to the Fully Connected layers of the proposed DDSA.<br>希望能夠去限制那些神經元不常被觸發方便去提取有意義的點，並且稀疏約束允許強制隱藏單元的激活等於某個目標激活$\mu$。 當我們使用ReLU激活函數時，$\mu$的值設置為0.1（即接近0的值)<br>$E_{x\sim D}[a_i^{(j)}]=\mu$, where $x$ is the input image sampled from a distribution $D$ and $a_i^{(j)}$ is the activation of the $i^{th}$ hidden unit at the $j^{th}$ hidden layer, which is the 2nd one in our case.<br>A running-estimate  $\hat \mu_i$初始值=0<br>$$<br>\hat \mu_i = 0.999\hat \mu_i+0.001a_i^{(j)}-(1), b_i^{j-1} = b_i^{j-1} -\alpha \beta (\hat \mu_i-\mu) - (2)<br>$$ </p>
+<p>the bias term $b_i^{j-1}$ is used as a regulator for our constraint and $\alpha$ is the auto-encoder learning rate.<br>Thus, when the condition $\hat \mu_i &gt; \mu$ is valid, then we decrease the activation by decreasing $b_i^{j-1}$ and vice versa, with $\beta$ is the learning rate trying to satisfy the <strong>sparsity constraint</strong>.<br>For gradient step<br>We first update the weight with $\theta^*$, and then update the $\hat \mu_i, b_i^{j-1}$ using (1) and (2).</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>Dataset : MNIST and CIFAR-10</p>
+<h3 id="Results-on-Black-box"><a href="#Results-on-Black-box" class="headerlink" title="Results on Black box"></a>Results on Black box</h3><p>Attacks with FGSM, Rand+FGSM, MIM, PGD, C&amp;W as black-box attackers.<br>由於這些都是白盒攻擊的例子，故我們使用替代模型去模擬黑盒攻擊, 使用隨機的150筆資料(test set)並利用分類器直接做標記當作我們替代模型的訓練。<br>MNIST<br><img src="https://i.imgur.com/c9NMabH.png" alt=""><br>DDSA vs DDA</p>
+<h3 id="Results-on-Gray-box"><a href="#Results-on-Gray-box" class="headerlink" title="Results on Gray box"></a>Results on Gray box</h3><p>MNIST with DDSA穩定性佳<br><img src="https://i.imgur.com/xLDz4qU.png" alt=""></p>
+<p>觀察DDSA在不同的擾動情況下的比較<br><img src="https://i.imgur.com/pPDZev6.png" alt=""></p>
+<p>迴圈數與正確率的圖， more robust than DDA defense.<br><img src="https://i.imgur.com/U5JZ69q.png" alt=""></p>
+<p>CIFAR-10<br><img src="https://i.imgur.com/IkYmwOh.png" alt=""></p>
+<p>還原效果<br><img src="https://i.imgur.com/IXeYXjw.png" alt=""></p>
+<h3 id="Results-on-White-box"><a href="#Results-on-White-box" class="headerlink" title="Results on White box"></a>Results on White box</h3><p><img src="https://i.imgur.com/1nyCvqD.png" alt=""></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Yi-Wei</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/11/03/A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder(DDSA)/" target="_blank" title="A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder(DDSA)">https://github.com/dsmilab/dsmi-lab-website/2020/11/03/A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder(DDSA)/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/Adversarial/" rel="tag">Adversarial</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/11/20/Feature%20Denoising%20for%20Improving%20Adversarial%20Robustness/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Feature Denoising for Improving Adversarial Robustness
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/10/24/Topic%20Modeling%20in%20Embedding%20Spaces/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Topic Modeling in Embedding Spaces</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DDSA-A-Defense-Against-Adversarial-Attacks-Using-Deep-Denoising-Sparse-Autoencoder"><span class="nav-number">1.</span> <span class="nav-text">DDSA: A Defense Against Adversarial Attacks Using Deep Denoising Sparse Autoencoder</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-adversarial"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: adversarial</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-work"><span class="nav-number">1.2.</span> <span class="nav-text">Related work</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem-Formulation"><span class="nav-number">1.2.1.</span> <span class="nav-text">Problem Formulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adversarial-attack"><span class="nav-number">1.2.2.</span> <span class="nav-text">Adversarial attack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Defense"><span class="nav-number">1.2.3.</span> <span class="nav-text">Defense</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proposed-Model-DDSA"><span class="nav-number">1.3.</span> <span class="nav-text">Proposed Model DDSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.4.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-on-Black-box"><span class="nav-number">1.4.1.</span> <span class="nav-text">Results on Black box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-on-Gray-box"><span class="nav-number">1.4.2.</span> <span class="nav-text">Results on Gray box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-on-White-box"><span class="nav-number">1.4.3.</span> <span class="nav-text">Results on White box</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

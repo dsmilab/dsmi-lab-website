@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>快速掌握 git github | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="GitGitHub" />
+  
+  
+  
+  
+  <meta name="description" content="前情提要: 為甚麼需要git?如果不用版本控制工具 就會有以下的悲劇…. GIT要建專案時若要用git來追蹤，則強烈建議先用github 建專案後在clone到本地端(你的電腦)否則之後若要把在本地端建立的專案 傳到github 時會變得比較麻煩 初始設置(從github clone 下來的不用做) 裝git裝完後 設置user.name 及 user.email:12git config --">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速掌握 git github">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/11/28/cheatsheet_git_github/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="前情提要: 為甚麼需要git?如果不用版本控制工具 就會有以下的悲劇…. GIT要建專案時若要用git來追蹤，則強烈建議先用github 建專案後在clone到本地端(你的電腦)否則之後若要把在本地端建立的專案 傳到github 時會變得比較麻煩 初始設置(從github clone 下來的不用做) 裝git裝完後 設置user.name 及 user.email:12git config --">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/bL7UJfh.png">
+<meta property="og:image" content="https://i.imgur.com/eR0SMim.png">
+<meta property="og:image" content="https://i.imgur.com/sjmfKB0.png">
+<meta property="og:image" content="https://i.imgur.com/q6TaEbW.png">
+<meta property="article:published_time" content="2020-11-28T22:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="GitHub">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/bL7UJfh.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-cheatsheet_git_github" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      快速掌握 git github
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/11/28/cheatsheet_git_github/" class="article-date">
+	  <time datetime="2020-11-28T22:30:00.000Z" itemprop="datePublished">2020-11-28</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <p><img src="https://i.imgur.com/bL7UJfh.png" alt=""></p>
+<h1 id="前情提要-為甚麼需要git"><a href="#前情提要-為甚麼需要git" class="headerlink" title="前情提要: 為甚麼需要git?"></a>前情提要: 為甚麼需要git?</h1><p>如果不用版本控制工具 就會有以下的悲劇….<br><img src="https://i.imgur.com/eR0SMim.png" alt=""></p>
+<h1 id="GIT"><a href="#GIT" class="headerlink" title="GIT"></a>GIT</h1><p><strong>要建專案時若要用git來追蹤，則強烈建議先用github 建專案後在clone到本地端(你的電腦)</strong><br><strong>否則之後若要把在本地端建立的專案 傳到github 時會變得比較麻煩</strong></p>
+<h2 id="初始設置-從github-clone-下來的不用做"><a href="#初始設置-從github-clone-下來的不用做" class="headerlink" title="初始設置(從github clone 下來的不用做)"></a>初始設置(從github clone 下來的不用做)</h2><ul>
+<li>裝git<br>裝完後 設置user.name 及 user.email:<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name "USERNAME" # 設置 user.name</span><br><span class="line">git config --global user.email "??????@???.COM" # 設置 user.email</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/91884227/fake_news_feature.git</span><br></pre></td></tr></table></figure>
+
+<h2 id="git-的檔案週期"><a href="#git-的檔案週期" class="headerlink" title="git 的檔案週期"></a>git 的檔案週期</h2><p><img src="https://i.imgur.com/sjmfKB0.png" alt=""></p>
+<h2 id="初始-Repository"><a href="#初始-Repository" class="headerlink" title="初始 Repository"></a>初始 Repository</h2><p>在專案目錄下執行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<h2 id="git-更蹤新文件-Untracked-gt-Unmodified"><a href="#git-更蹤新文件-Untracked-gt-Unmodified" class="headerlink" title="git 更蹤新文件 (Untracked -&gt; Unmodified)"></a>git 更蹤新文件 (Untracked -&gt; Unmodified)</h2><p>在專案目錄下執行:<br><code>git add 文件名稱</code></p>
+<ul>
+<li>example<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add test.py</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="git-提交更新成下一個版本-Modified-gt-Staged"><a href="#git-提交更新成下一個版本-Modified-gt-Staged" class="headerlink" title="git 提交更新成下一個版本 (Modified -&gt; Staged)"></a>git 提交更新成下一個版本 (Modified -&gt; Staged)</h2><p>在專案目錄下執行:<br><code>git commit -m &quot;更新訊息&quot;</code></p>
+<ul>
+<li>example<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m "更新test.py"</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="如何回到上一個版本"><a href="#如何回到上一個版本" class="headerlink" title="如何回到上一個版本?"></a>如何回到上一個版本?</h2><ul>
+<li>回復到最新提交版本</li>
+</ul>
+<p>在專案目錄下執行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>回復到上一個提交版本</li>
+</ul>
+<p>在專案目錄下執行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br></pre></td></tr></table></figure>
+
+<h1 id="GITHUB"><a href="#GITHUB" class="headerlink" title="GITHUB"></a>GITHUB</h1><p><a href="https://gitbook.tw/chapters/github/what-is-github.html" target="_blank" rel="noopener">GITHUB是甚麼</a></p>
+<h2 id="Q-要如何把放在-github的專案-remote端-載到-你的電腦呢-local端-呢"><a href="#Q-要如何把放在-github的專案-remote端-載到-你的電腦呢-local端-呢" class="headerlink" title="Q: 要如何把放在 github的專案(remote端) 載到 你的電腦呢 (local端) 呢?"></a>Q: 要如何把放在 github的專案(remote端) 載到 你的電腦呢 (local端) 呢?</h2><p><img src="https://i.imgur.com/q6TaEbW.png" alt=""></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone "那串在HTTPS下面的網址"</span><br></pre></td></tr></table></figure>
+
+<h2 id="Q-local-更新了-如何把更新上傳到remote"><a href="#Q-local-更新了-如何把更新上傳到remote" class="headerlink" title="Q: local 更新了 如何把更新上傳到remote?"></a>Q: local 更新了 如何把更新上傳到remote?</h2><p>在專案目錄下執行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<h3 id="可能要先設定-user-user-name"><a href="#可能要先設定-user-user-name" class="headerlink" title="可能要先設定  user / user name"></a>可能要先設定  user / user name</h3><ul>
+<li><p>user name</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git user.name "學姊萬歲"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>email</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git user.email "xuejiewansui@gmail.com"</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Q-remote-更新了-如何把更新拉到local"><a href="#Q-remote-更新了-如何把更新拉到local" class="headerlink" title="Q: remote 更新了 如何把更新拉到local?"></a>Q: remote 更新了 如何把更新拉到local?</h2><p>在專案目錄下執行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://www.bilibili.com/video/av58128539/" target="_blank" rel="noopener">教學影片</a><br><a href="https://hackmd.io/l9yaVEztQt-d8gXQI8HEaA" target="_blank" rel="noopener">柯大大的筆記</a></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Chuck</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/11/28/cheatsheet_git_github/" target="_blank" title="快速掌握 git github">https://github.com/dsmilab/dsmi-lab-website/2020/11/28/cheatsheet_git_github/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/Git/" rel="tag">Git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/GitHub/" rel="tag">GitHub</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/12/01/TSVM%20(Transductive%20Inference%20for%20Text%20Classification%20using%20Support%20Vector%20Machines)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          TSVM (Transductive Inference for Text Classification using Support Vector Machines)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/11/20/Feature%20Denoising%20for%20Improving%20Adversarial%20Robustness/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Feature Denoising for Improving Adversarial Robustness</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前情提要-為甚麼需要git"><span class="nav-number">1.</span> <span class="nav-text">前情提要: 為甚麼需要git?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GIT"><span class="nav-number">2.</span> <span class="nav-text">GIT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始設置-從github-clone-下來的不用做"><span class="nav-number">2.1.</span> <span class="nav-text">初始設置(從github clone 下來的不用做)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-的檔案週期"><span class="nav-number">2.2.</span> <span class="nav-text">git 的檔案週期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始-Repository"><span class="nav-number">2.3.</span> <span class="nav-text">初始 Repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-更蹤新文件-Untracked-gt-Unmodified"><span class="nav-number">2.4.</span> <span class="nav-text">git 更蹤新文件 (Untracked -&gt; Unmodified)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-提交更新成下一個版本-Modified-gt-Staged"><span class="nav-number">2.5.</span> <span class="nav-text">git 提交更新成下一個版本 (Modified -&gt; Staged)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何回到上一個版本"><span class="nav-number">2.6.</span> <span class="nav-text">如何回到上一個版本?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GITHUB"><span class="nav-number">3.</span> <span class="nav-text">GITHUB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-要如何把放在-github的專案-remote端-載到-你的電腦呢-local端-呢"><span class="nav-number">3.1.</span> <span class="nav-text">Q: 要如何把放在 github的專案(remote端) 載到 你的電腦呢 (local端) 呢?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-local-更新了-如何把更新上傳到remote"><span class="nav-number">3.2.</span> <span class="nav-text">Q: local 更新了 如何把更新上傳到remote?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可能要先設定-user-user-name"><span class="nav-number">3.2.1.</span> <span class="nav-text">可能要先設定  user &#x2F; user name</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-remote-更新了-如何把更新拉到local"><span class="nav-number">3.3.</span> <span class="nav-text">Q: remote 更新了 如何把更新拉到local?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#參考資料"><span class="nav-number">4.</span> <span class="nav-text">參考資料</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

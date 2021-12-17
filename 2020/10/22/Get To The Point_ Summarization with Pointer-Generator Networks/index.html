@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>get to the point- summarization with pointer-generator networks | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP Pointer Summary" />
+  
+  
+  
+  
+  <meta name="description" content="Get To The Point: Summarization with Pointer-Generator Networkstags: NLP,S2S,Pointer Network,Summary,Loss主要目的因為在s2s時遇到人名或是地名，可能遇到OOV問題而只輸出[UNK]這種輸出。而Pointer Generator Network則是從原本輸入的某一些片段直接擷取過來當成輸出，彌補">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Get To The Point- Summarization with Pointer-Generator Networks">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/10/22/Get%20To%20The%20Point_%20Summarization%20with%20Pointer-Generator%20Networks/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Get To The Point: Summarization with Pointer-Generator Networkstags: NLP,S2S,Pointer Network,Summary,Loss主要目的因為在s2s時遇到人名或是地名，可能遇到OOV問題而只輸出[UNK]這種輸出。而Pointer Generator Network則是從原本輸入的某一些片段直接擷取過來當成輸出，彌補">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/4Sa9DS1.png">
+<meta property="og:image" content="https://i.imgur.com/8uZ8bWb.png">
+<meta property="og:image" content="https://i.imgur.com/ZSgJe9y.png">
+<meta property="og:image" content="https://i.imgur.com/1bi3qpF.png">
+<meta property="og:image" content="https://i.imgur.com/u0tmT39.png">
+<meta property="og:image" content="https://i.imgur.com/dJxfaLZ.png">
+<meta property="og:image" content="https://i.imgur.com/ze4vddc.png">
+<meta property="og:image" content="https://i.imgur.com/Zg1Ud9u.png">
+<meta property="og:image" content="https://i.imgur.com/SA21AaI.png">
+<meta property="og:image" content="https://i.imgur.com/uGH2LsX.png">
+<meta property="og:image" content="https://i.imgur.com/JOhm6vV.png">
+<meta property="og:image" content="https://i.imgur.com/vL5RBBS.png">
+<meta property="og:image" content="https://i.imgur.com/1F6FjDF.png">
+<meta property="og:image" content="https://i.imgur.com/r6WrWvN.png">
+<meta property="og:image" content="https://i.imgur.com/7PbIOKQ.png">
+<meta property="og:image" content="https://i.imgur.com/xldrqJv.png">
+<meta property="article:published_time" content="2020-10-22T12:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP Pointer Summary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/4Sa9DS1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Get To The Point_ Summarization with Pointer-Generator Networks" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Get To The Point- Summarization with Pointer-Generator Networks
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/10/22/Get%20To%20The%20Point_%20Summarization%20with%20Pointer-Generator%20Networks/" class="article-date">
+	  <time datetime="2020-10-22T12:00:00.000Z" itemprop="datePublished">2020-10-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><a href="#Get-To-The-Point-Summarization-with-Pointer-Generator-Networks" class="headerlink" title="Get To The Point: Summarization with Pointer-Generator Networks"></a>Get To The Point: Summarization with Pointer-Generator Networks</h1><h6 id="tags-NLP-S2S-Pointer-Network-Summary-Loss"><a href="#tags-NLP-S2S-Pointer-Network-Summary-Loss" class="headerlink" title="tags: NLP,S2S,Pointer Network,Summary,Loss"></a>tags: <code>NLP</code>,<code>S2S</code>,<code>Pointer Network</code>,<code>Summary</code>,<code>Loss</code></h6><h2 id="主要目的"><a href="#主要目的" class="headerlink" title="主要目的"></a>主要目的</h2><p>因為在s2s時遇到人名或是地名，可能遇到OOV問題而只輸出[UNK]這種輸出。而Pointer Generator Network則是從原本輸入的某一些片段直接擷取過來當成輸出，彌補字典集限制的問題。<br>Extractive(pointing),Abstractive(generating)<br>傳統S2S問題，可能複製同樣的錯誤，重複同樣錯誤的字詞</p>
+<p>提出：</p>
+<ol>
+<li>hybrid pointer-generator network</li>
+<li>Coverage用來追蹤有哪一些已經被summary model提出過了，確保不要再被重複提出<a href="https://www.aclweb.org/anthology/P16-1008.pdf" target="_blank" rel="noopener">Modeling Coverage for Neural Machine Translation</a><img src="https://i.imgur.com/4Sa9DS1.png" alt=""></li>
+</ol>
+<p>在CNN/Daily Mail Summarization 有SOTA的2 ROUGE 分數</p>
+<p>一般來說Extractive 會有較好的效果且較簡單保證了基礎以及語法上的正確性。但是對於高質量的抓取摘要至關重要的能力：釋義，概括，知識整合(knowledge)，只在abstractive network中可能。</p>
+<p>RNN使得abstractive summary 可行，但是會有不斷重複某同樣意義的片段以及 OOV的問題</p>
+<p>現今的abstractive專注在headline generation tasks（使得句子被總結成headline），而作者認為長度較長且不重複片段的summary較有挑戰性且更有用。</p>
+<h2 id="Models"><a href="#Models" class="headerlink" title="Models"></a>Models</h2><h3 id="S2S-attentional-Baseline"><a href="#S2S-attentional-Baseline" class="headerlink" title="S2S attentional(Baseline)"></a>S2S attentional(Baseline)</h3><p>在encoder(bilstm)，decoder(undirctional LSTM)<br>每一個token$w_i$對應一個hidden state$h_i$<br><img src="https://i.imgur.com/8uZ8bWb.png" alt=""><br>在每個步驟t上，decoder（單層單向LSTM）都會接收到前一個單詞的token embedding（訓練時，這是參考摘要的前一個單詞(Teacher forcing)；在測試時，它是解碼器發出的前一個單詞，並具有解碼器狀態$s_t$。<img src="https://i.imgur.com/ZSgJe9y.png" alt=""><br>對應的attention distribution可被當成是從source words中找出的word probability（decoder產出下一個字），接下來用對應的attention weight與對應的hidden state加權總和當成上下文vectpr$h^<em>_t=\sum_ia^t_ih_i$(第t個step的sentence vector)<br>把 $h^</em><em>t$和decoder的state$s_t$在經過兩層linear layer來產出 $P</em>{vocab}$<img src="https://i.imgur.com/1bi3qpF.png" alt=""><br>P(w)是詞彙表中所有單詞的概率分佈，提供了預測單詞w的分佈<br>loss：negtive log likelihood of target word $w^*_t$<br><img src="https://i.imgur.com/u0tmT39.png" alt=""></p>
+<h3 id="Pointer-genretator"><a href="#Pointer-genretator" class="headerlink" title="Pointer-genretator"></a>Pointer-genretator</h3><p><img src="https://i.imgur.com/dJxfaLZ.png" alt=""></p>
+<p>前面的Baseline加上pointer的hybrid model，可以從source text copy 或是generate words from a fixed vocabulary。<br>attention distribution and context vector $h^<em>_t$都和baseline的計算一樣。Note：pgen$\in[0,1]$(由context vector $h^</em><em>t$和decoder state $s_t$以及decoder input $x_t$計算而來)<br>而$p</em>{gen}$用來軒則下一個toekn是要generating from vocabulary by sampling from ‘$P_{vocab}$’或是 copying from input sequence by sampling from attention distribution ‘$a^t$’<br>對於每個文檔，’extended vocabulary’表表示詞彙表的聯集，以及所有出現在source text中的單詞。<br><img src="https://i.imgur.com/ze4vddc.png" alt=""><br>當w 是OOV的單詞，那麼對應的$P_{vocab}(w)=0$，若w 沒有在對應的source document那麼$\sum_{i:w_i=w}a^t_i=0$<br>產生OOV字是pointer network 的主要優點之一，與之相對的baseline只能夠根據預設的vocabulary dictionary<br>而loss function 跟 baseline 一樣 但相對的P(w)是用這邊有的pgen 來選distributrion</p>
+<h3 id="Pointer-coverage"><a href="#Pointer-coverage" class="headerlink" title="Pointer + coverage"></a>Pointer + coverage</h3><p>“重複片段”是S2S的一個常見問題，再生成多序列句子的文本時最為常見。在這裡，多新增一個”coverage vector”$c_t$(sum of attention distributions over previous decoder timesteps)<img src="https://i.imgur.com/Zg1Ud9u.png" alt=""><br>$c_t$是對於source text上的分佈，代表了目前這些單詞從注意力機制中接收到的”覆蓋(重複)“程度。Note $c_0$是”零向量“，因為在t=0的時候沒有覆蓋到任何source text。<br>”coverage vector“是作用於注意力機制的額外輸入<br>$e^t_i=v^Ttanh(W_hh_i + W_ss_t+w_cc^t_i+b_{attn})$<br>$a^t = softmax(e^t)$</p>
+<blockquote>
+<p>This should make it easier for the attention mechanism to avoid repeatedly attending to the same locations, and thus avoid generating repetitive text.</p>
+</blockquote>
+<p>作者說這樣可以避免重複關注相同位置，來避免生成重複的文本(why?)<br>之後再多加上一個loss避免在同一個關注位置：對在同一個地方重複關注加上penality<img src="https://i.imgur.com/SA21AaI.png" alt=""><br>這個loss function &lt;=1，與Machine Translation中的 coverage loss不同，在MT中預設是1-1的翻譯;因此，弱勢coverage vector是&gt;=1或是&lt;=1就會有penality，而在這裡的summary coverage 則不用到1-1(uniform) ，所以作者這邊只對attention distribution中重疊的部分做penality來防止重複關注。最後對這個coverage loss添加權重。<br><img src="https://i.imgur.com/uGH2LsX.png" alt=""></p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>此方法近似<a href="https://www.aclweb.org/anthology/D16-1096.pdf" target="_blank" rel="noopener">Coverage Embedding Models for Neural Machine Translation</a> 但是與CopyNet有幾處不同</p>
+<ol>
+<li>計算了$p_{gen}$，與CopyNet通過共享的softmax函數引發競爭不同。</li>
+<li>重複使用了以前出先過的attention distribution，但是CopyNet把他們當成是獨立的。</li>
+<li>當在source text有一個單詞重複出現多次，把它相對應的attention distribution相加，而CopyNet沒有。</li>
+</ol>
+<p>貢獻（對比CopyNet）：</p>
+<ol>
+<li>計算$p_{gen}$能有效的降低.控制生成或是複製單詞的概率，而不是只有提高。</li>
+<li>這個方法較簡單。</li>
+<li>提出pointer network 經常複製某一個在source text中多次出現得單詞</li>
+<li>Copy mechanism 對於準確複製稀有單詞(在字典集內)至關重要</li>
+<li>Mixture approach(copy distribution 和 vocabulary distribution)</li>
+<li>mixture LM+ copynet = abstracvite copying</li>
+<li>用attention distribution update coverage 比其他用GRU update 來得有效且簡單(summing the attention distribution to obtain the coverage vector</li>
+<li>Coverage vs. Temporal attention(作用於NMT)，attention distribution都會處以先前的總和，有效抑制重複注意力，但是破壞力太大，使得信號歪曲並且降低性能，假設coverge比Temporal attention更好，最好是通知注意機制以幫助其做出更好的決策，而不是完全忽略其決策。用相同task比較 coverage比temporal 有較高的ROUGE分數</li>
+</ol>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>CNN/Daily Mail dataset</p>
+<ul>
+<li>online news (781 tokens avg)</li>
+<li>multi-sentence summaries(3.75 sentences or 56 tokens avg)</li>
+<li>Compare with <a href="https://arxiv.org/pdf/1611.04230.pdf" target="_blank" rel="noopener">A recurrent neural network based sequence model for extractive summarization of documents</a>.</li>
+<li>287,226 training pairs, 13,368 validation pairs and 11,490 testing pairs</li>
+<li>直接對原始文本（或數據的非匿名版本）進行操作，認為這是一個值得解決的有利問題，因為它不需要預處理。(不對name entity 做 anonymized version of data)</li>
+</ul>
+<h2 id="實驗"><a href="#實驗" class="headerlink" title="實驗"></a>實驗</h2><ul>
+<li><p>256 hidden state</p>
+</li>
+<li><p>128-dim word embedding</p>
+</li>
+<li><p>Batch size = 16</p>
+</li>
+<li><p>50k vocabulary for source and target，因為pointer network 可以處理OOV words，原始的vocaulary size 可以較小</p>
+</li>
+<li><p>因為pointer 和coverage 只需要一點點的額外parameter</p>
+</li>
+<li><p>沒有pre train word embedding(learn during training)</p>
+</li>
+<li><p>Training using Adagrad(optimizer)：Learning rate = 0.15 ，從0.1開始上升(SGD Adadelta Momentum Adam RMSProp)</p>
+</li>
+<li><p>Maximum gradient norm of 2 </p>
+</li>
+<li><p>不用Regularization</p>
+</li>
+<li><p>在validation 上用early stop</p>
+</li>
+<li><p>在training 和test時只使用最大長度400的token size 且限制summary的最大長度=100，實驗發現這樣的刪減可以提升model的性能</p>
+</li>
+<li><p>在訓練時從被高度刪減的句子開始，然後再提升最大長度。在testing時summary 是透過”beam search”(size=4)產生</p>
+</li>
+<li><p>Baseline model要訓練較久4d，相對的pointer(作者的)訓練時間較短3d</p>
+</li>
+<li><p>Coverge loss 的$\lambda$=1，在3000次iter後從coverage loss從0.5下降到了0.2。在$\lambda$=2時減少了coverage loss 但是使得主要的loss上升了。</p>
+</li>
+<li><p>Ablation：在沒有loss function下訓練coverage model(但沒有效果)。在第一次就開始coverage而不是將其作為單獨的訓練階段，在訓練的早期階段，coverage干擾了主要目標，從而降低了整體績效。<br><img src="https://i.imgur.com/JOhm6vV.png" alt=""><br>y軸：重複片段出現%</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><h3 id="eval-by"><a href="#eval-by" class="headerlink" title="eval by"></a>eval by</h3></li>
+<li><p>standard ROUGE metric</p>
+<ul>
+<li>F1 scores for ROUGE-1,ROUGE-2 and ROUGE-L(word-overlap,bigram-overlap and longest common sequence between the reference summary and the summary to be evaluated)</li>
+<li>使用pyrouge package.</li>
+</ul>
+</li>
+<li><p>METEOR metric</p>
+<ul>
+<li>eact match mode (rewarding only exact matches between words) </li>
+<li>full mode (which additionlly rewards matching stems, synonyms and paraphrases).</li>
+</ul>
+</li>
+</ul>
+<h3 id="Comparsion"><a href="#Comparsion" class="headerlink" title="Comparsion"></a>Comparsion</h3><p>完整數據集</p>
+<ol>
+<li>Lead-3 (使用文章的前三個詞作為摘要)</li>
+<li>Abstractive:<a href="https://arxiv.org/pdf/1602.06023.pdf" target="_blank" rel="noopener">Abstractive Text Summarization using Sequence-to-sequence RNNs and Beyond</a></li>
+<li>Extractive:<a href="https://arxiv.org/pdf/1611.04230.pdf" target="_blank" rel="noopener">A recurrent neural network based sequence model for extractive summarization of documents</a>.</li>
+</ol>
+<p><img src="https://i.imgur.com/vL5RBBS.png" alt=""><br>下面的兩個lead-3會不同是因為一個是anony dataset<br>兩個基準模型在ROUGE和METEOR方面均表現不佳，實際上較大的詞彙量（150k）似乎無濟於事。 即使是性能更好的基準（詞彙量為50k）也會產生帶有幾個常見問題的摘要。 事實細節經常被錯誤地複制，經常用一個更常見的替代詞來代替一個不常見的詞（但在詞彙中）。<br>更具有災難性的是，摘要有時會變成重複的廢話，例如圖1中的基線模型產生的第三句話。此外，基線模型無法複製詞彙外的單詞（例如，圖1中的muhammadu buhari ）。 所有這些問題的更多示例在補充材料中提供。<br>為何Baseline-3會較好也會在後續討論<br><img src="https://i.imgur.com/1F6FjDF.png" alt=""></p>
+<h3 id="Why-Lead-3-better"><a href="#Why-Lead-3-better" class="headerlink" title="Why Lead-3 better"></a>Why Lead-3 better</h3><p>extractive 會比abstractive有較高的ROUGE分數</p>
+<ol>
+<li>新聞文章往往在一開始就以最重要的信息為結構。 這部分解釋了Lead-3的強度。 實際上，僅使用文章的前400個tokens（約20個句子）會比使用前800個tokens產生更高的ROUGE分數。</li>
+<li>參考摘要的內容選擇非常主觀，有時要用句子做成一段獨立的摘要，其他時候只是抓取一些細節。給一定數目的句子有不少有用的方法選擇３到４種重點。而Abstrative引入了更多可能選擇（choice of phrasing），進一步降低了與參考摘要匹配的可能</li>
+<li>僅具有一個參考摘要會加劇降低ROUGE的這種靈活性，與多個參考摘要相比，它已降低了ROUGE的可靠性(example：”smugglers profit from desperate migrants”也是一種可代表的abstractive summary(對第一個article但是他的ROUGE=0) <img src="https://i.imgur.com/r6WrWvN.png" alt=""></li>
+<li>由於任務的主觀性以及有效摘要的多樣性，ROUGE似乎對諸如選擇先出現的內容或保留原始措詞之類的安全策略給予了獎勵。</li>
+</ol>
+<h3 id="Model-有多-Abstractive"><a href="#Model-有多-Abstractive" class="headerlink" title="Model 有多 Abstractive"></a>Model 有多 Abstractive</h3><ol>
+<li>我們最終模型的摘要包含的新n-gram（即那些未出現在文章中的n-gram）的比率比參考摘要要低得多，這表明抽象程度較低。<img src="https://i.imgur.com/7PbIOKQ.png" alt=""></li>
+<li>65%包含了一系列的abstractive techniques：文章的句子被截斷以形成語法上正確的較短版本，而新的句子則通過將片段拼接在一起而構成。 有時在復制的段落中會省略不必要的感嘆詞，子句和括號內的短語。</li>
+<li>圖中表示兩個有相似結構的abstractive example。由於數據集包含很多體育類新聞，其摘要格式通常是“X beat Y ⟨score⟩ on ⟨day⟩”，而這是這一個model最有信心的abtractive summary。 <blockquote>
+<p>但是，總的來說，我們的模型不會像圖7常規地生成摘要，並且也不像圖5那樣接近生成摘要。<br><img src="https://i.imgur.com/xldrqJv.png" alt=""></p>
+</blockquote>
+</li>
+</ol>
+<p>4.可以用$p_{gen}$衡量抽象性：在訓練過程中，$p_{gen}$從大約0.30的值開始，然後增加，到訓練結束時收斂到大約0.53。這表明該模型首先學習大部分複制，然後學習生成大約一半的時間。但是，在測試時，$p_{gen}$嚴重偏向複製，平均值為0.17。差異可能是由於這樣的事實，即在訓練過程中，該模型以參考摘要的形式接受逐字監督(Teacher forcing)，但在測試時卻沒有。但還是有用的：例如句子的開頭，縫合在一起的片段之間的連接以及產生截斷被複製句子的時間段時，$p_{gen}$最高。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Hybrid on pointer generator architecture with coverage</li>
+<li>reduce repetition</li>
+<li>long-text dataset with high solution</li>
+</ul>
+<p>（1）在模型训练到一定程度后，再使用Coverage Mechanism。否则模型容易收敛到局部最优点，影响整体效果。</p>
+<p>（2）传统Attention机制的基线模型包含21,499,600个参数，训练了33个epochs。本文模型添加了1153个额外的参数，训练了12.8个epochs。所以合适的模型不但效果好，而且快。</p>
+<p>（3）在模型的训练环节，刚开始的时候，大约有70%的输出序列是由Pointer Network产生的，随着模型逐渐收敛，这个概率下降到47%。然而，在测试环节中，有83%的输出序列是由Pointer Network产生的。作者猜测这个差异的原因在于：训练环节的decoder使用了真实的目标序列。</p>
+<p>（4）虽然Generator Network生效的概率不高，但是其依旧不可或缺，例如在下面的几个场合，模型有较大的概率会使用Generator Network：在句子的开头，在关键词之间的承接文本。</p>
+<p>（5）在摘要任务中，适当地截断句子反而能产生更好的预测效果，原因在于这篇论文用的语料是新闻语料，而新闻语料经常把最重要的内容放在开头。</p>
+<p>（6）作者曾尝试使用一个15万长度的大词表，但是并不能显著改善模型效果。</p>
+<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p>補充材料<br>本附錄提供了測試集中的示例，並與參考摘要和我們的模型產生的摘要進行了並行比較。 在每個示例中：<br>•斜體表示詞彙外的單詞<br>•紅色表示摘要中的事實錯誤<br>•綠色陰影強度表示生成概率pgen的值<br>•黃色陰影強度表示最終模型匯總過程結束時coverage向量的最終值</p>
+<hr>
+<p>參考網址<br><a href="https://medium.com/nlp-tsupei/pointer-generator-network-5a5a3a2bce3" target="_blank" rel="noopener">https://medium.com/nlp-tsupei/pointer-generator-network-5a5a3a2bce3</a><br><a href="https://github.com/atulkum/pointer_summarizer/tree/master/training_ptr_gen">https://github.com/atulkum/pointer_summarizer/tree/master/training_ptr_gen</a><br><a href="https://zhuanlan.zhihu.com/p/22993927" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/22993927</a></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>PoH_Ko</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/10/22/Get To The Point_ Summarization with Pointer-Generator Networks/" target="_blank" title="Get To The Point- Summarization with Pointer-Generator Networks">https://github.com/dsmilab/dsmi-lab-website/2020/10/22/Get To The Point_ Summarization with Pointer-Generator Networks/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP-Pointer-Summary/" rel="tag">NLP Pointer Summary</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/10/24/Topic%20Modeling%20in%20Embedding%20Spaces/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Topic Modeling in Embedding Spaces
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/10/22/Supervised%20Topic%20Modeling%20Using%20Word%20Embedding%20with%20Machine%20Learning%20Techniques/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Supervised Topic Modeling Using Word Embedding with Machine Learning Techniques</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><span class="nav-number">1.</span> <span class="nav-text">Get To The Point: Summarization with Pointer-Generator Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-NLP-S2S-Pointer-Network-Summary-Loss"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: NLP,S2S,Pointer Network,Summary,Loss</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要目的"><span class="nav-number">1.1.</span> <span class="nav-text">主要目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Models"><span class="nav-number">1.2.</span> <span class="nav-text">Models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#S2S-attentional-Baseline"><span class="nav-number">1.2.1.</span> <span class="nav-text">S2S attentional(Baseline)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pointer-genretator"><span class="nav-number">1.2.2.</span> <span class="nav-text">Pointer-genretator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pointer-coverage"><span class="nav-number">1.2.3.</span> <span class="nav-text">Pointer + coverage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.3.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset"><span class="nav-number">1.4.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實驗"><span class="nav-number">1.5.</span> <span class="nav-text">實驗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">1.6.</span> <span class="nav-text">Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eval-by"><span class="nav-number">1.6.1.</span> <span class="nav-text">eval by</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comparsion"><span class="nav-number">1.6.2.</span> <span class="nav-text">Comparsion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-Lead-3-better"><span class="nav-number">1.6.3.</span> <span class="nav-text">Why Lead-3 better</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-有多-Abstractive"><span class="nav-number">1.6.4.</span> <span class="nav-text">Model 有多 Abstractive</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.7.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Appendix"><span class="nav-number">1.8.</span> <span class="nav-text">Appendix</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

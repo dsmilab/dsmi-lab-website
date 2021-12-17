@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>evolutionary computation | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="Evolutionary Computation" />
+  
+  
+  
+  
+  <meta name="description" content="請輸入密碼查詢加密文章">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Evolutionary Computation">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/06/04/Evolutionary%20Computation/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="請輸入密碼查詢加密文章">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-04T09:30:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="Evolutionary Computation">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Evolutionary Computation" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Evolutionary Computation
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/06/04/Evolutionary%20Computation/" class="article-date">
+	  <time datetime="2020-06-04T09:30:00.000Z" itemprop="datePublished">2020-06-04</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/meeting/">meeting</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <div id="hexo-blog-encrypt" data-wpm="密碼不對,SVM is all you need" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Never SVM</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="e8a834642107e521bfe00db81b8db2ee0a6e7fe5667fa81e28bbcfcd24002281">480b84b8ffc10cb20d224909e84941ed7b237189d6cf2f4ae0c309ea53a63b2141912b5efa2b3d949d8ca2f89e69c7bce0d9a40728ea6eb626264e500c0fb1ae86280d29e61fd9a30aa6ca7a0755f780953717e3ada96f3c1321d8ecb1bbcbb8d35aad23d5ed025d2c975fc8884172446c1baa055287f304301768403e5dbaa3d21130f34105136edaac3fc1a5da05b3146f1648a7ddaef36a1d97eeedfe27bd9000287bd8cd9bb65ec3ffa337587946372687644f15446f781f42e5a275621a39acb9adc87ea09d27292ec56431005b42ad78c510ff549cac7ecd4382ea88534cca612478ac9b919e6c7eadfee839db696a8f82a465e540dbd2c4270e6f52643ed5f54a934f3ff5890f29623c209dd4b90c708247fca81bbac816883ce5bd76df8986c48cb1d3d951c1ead7d3ef67fcc2c67e040e2a8ee8e6716e9cebc016b67002a0bd0ded098e0acea26a17294b3492b3f161958368ec23482089ca2731011856f801d90916750fe9b3b54c3b2e30efee242863997e7275e05df963745916d092e08e19a9079b130d9f168d2e2e1f1bde712b4458020d2628aee4cc7efac35c22122f7045ed1e570df567aadefa359ba6c014c222f01e45db7a065f5f382c1a43b27667c29ba478f332e9735760632f85632003e1fb1704b76476392e158f796f63fd11c2ac9bd67fa10c229305a4c3df96e6ab8bf2a126bd078536cecc7911eaf0c8cae8e42c560c31310341fab41f625d318d3b35320120a594b9423b3b8ad7b95164cf2bd70720e33a05d4dac4c88c50c4f5951b27ec2483478c431e22aecb6ce82b9167bec6bebafc21ac2a0ce99e2e8f1141587f1f3c44aec3017db76affcbb48704f2420178352d2a11a57e3a1524c6259d611ae01bc70a2a5467ed5ef0f9c913a4c969188b6bbbc8eab6cb9103a6c59c62463e6a383e87894ebe4c644c721a83e67cc46dec464f190c2faca5cae04782941a046e0bc1bc294e9e4484eb2056dda6a6994949629ef68f5128506f404e52a1eb012e72e8cc7fe3a3a858ddbe933bd2be5398e30951b0588e6fd6dd68ab2104e940e4ab6e5b789191ee29165cdc4169a388d988025a694a867e36393d7e5e4c120dbab478d79c18ae3e3551984d27eb1f8253fad800668e0aec0a7b313544b9c3a52244f3795e7b14d55e3c92edf7251a9d470a3765ac0ce99bca00f9efec103e00188080137e984faeae53e36ef2fc29c5227f02cf518d904f62b5ab0bab41123dc494151627fb73c58fa19902c3762d36b49ae8406a223132823e05bf4025d7728697fd266d31d77c8ae2696ff40e887db5fdebd234355712563328d4aa00eb769c37a41e73c90f65f62093953cd47d3752a83c95e0b702ba71f2850cb7e869fe80fea6ed412c037e5f726d9be46ce2d9e213447ca8b26f30af8b3e0fb6262fcc64518609a4218a55911dd9298152689e077e15acdf76aad0004afb46598b18e99dc58171f17b841f4da711f421a6180882dc6bd37e0aa22b243d26fff94f6bd3a2e880548721e51d48769d906f29e1aa9d7d5250ddc1e64f2848d39b7cc5be807a9823b3a1fb13c4362a6658a39e1294d068ba43809705e16590e21d0e3b6b70a21fc992b7cda3cb35da261a6c6080c33e048206877d595cbf13cb5e3b2688a66daade2e37a46432142a7e1627f584b4d3449a1484e0e5196fc76cf0a9d9bb5e703b8a75251b286a6e6fc5f609e9dff22cbbcf548d267ba8dd22c7313faa26befe239d2a36f32ab48e6c1f00fb6aade1488f2ff88e8f93c2a809bee229698bdf027c5f00129afb1745bf8a8586ee99be6c2ad00eabb67380bf2cb55682b0be4746749daa8c8d7f47a81f989c29762b3dea1bbdf774f4b732bf8f206aeb05d11ef388227b5a6c213d7b671c94b51a503f0c322c1ac1cb4a85c985f1e0ba419f7bc7d60cf79981f1c9b01a62b6a5472dd80cb882f4c3b65e4f2ba34de9d0b15f7f226c58bc9e1d64162fe2f5661f2531748a8facbe3fec6db543cc97ffe0707ce9b116b851f43e70aaf796eac540f688254dd75930a82196c206438cd4e2a8e760813348a802d3163b0ef751f892a3bc3c05b0ea0d9bee0a5f1926ed076b76120000d9f344c0a54b38cb6af672fd5888eb006e803395b2ce7707f0e393cd80ae58e5d6fb3e2f3ce09eb1c2779e9b683877dee75e57c4bddf0aa82a71105df75df4acfdcd63f87d82b88afc7e7d8218aebe1e6523256eb3537c886d405ee049d49be79c0c48f5cf912707f1c57c22091ce2299b77bf2d9338f655cc55700cad1f98480166a0a58536010e7c74643c6e0d01275386fc3394a3311d66a1b458652d9daba9ffdf00d16b7aa0db0119d2e0ad651737732cf8797eb2f671ad3d6a0a7cdd11a9e8b6a46e1043a16b3d6d0996fa5653a3d909271dfdf31903fac7749ac7c081788f15b147b4d37c8c52489c9d8e7b9d938d1e4fb20762fdc484b0caa81d8a3a56fa72989f45a13d706b6a2dbd6e84c0e039e170e99d85036fac2738d36a02dc072f6d0c3fc079f517cf074bdda14464d7b01140dc73ef8ded5a1689a1e3581ada7d0c4962c55897cc33c90ba316e8a0bd007df538d0be4c64ce8f377074a603748f6b0112e97f6083db012d212344ee28e7bf09f5d20cf4d9190cdb24f6200be775e15af5c43012d01819e70679cb3316c625d18ab793956bd91ad9da3ce30a25fb622c7c60b81761034d34cbfa1f7f97892da53fecc29c98fbf75bdd7a4ff0059c7fc8fe3fac6de684989ef212ea957741068fc3cbfa14b8f5226441336be4f6016cbed24bd4544bafd7561b238e7995a8005d9ebbd9a40fb037c2ba1b8be080a1f2955f4e6e51b9d7111f715205caccc26e647684dd38df9e900063ca2fb50b5decace6ab0138903d275fa07f443523081355fa451a207b1db708f3a129d9c5bbd9c5132d544669f45cc6c48c3b082259ca045bf17d6cc6d10fb42d54aefb2d855a113edc7749c9c38a740e8db0a5d86451bf58bb5b2c3ea0c9c75660a6ab5c12e00ac46015323ddbfd8204ef82bdb53b5aa75c601d3fd514d2c93d5fc248355381e8f755e7036daf3ce8f0fe8d4b2c4e66f1e4dcb9446ae7d05c2a5efd8f52db01b8cd7633e2aea58872e23c6239463db12a9af7f4bda50bdd9583dab5f3c9138c60af7644a0c72e50b13f9904e2f67c85cbde11684db0ca3199ee70d266a4fae23b8795ffbbdbf52165db6acbbae44253866596e17ab1452cbe6f00a5cfda3bb2b3abe4e1dfc3e1c857f2224043f09fc08e449a465ec1d12f15613f786b660cc83fb29cf33575709d2b5ca65e51b790073bea6208a45bb7bfd93d85fadb755d843fcf817bb8f64e14fa76d1cf22a323f249c7168147e24e3deaeecfe3092fad0bc2384a53cf2091b6250696759d2707c36e2adcc3f4f1a96ba4234df648c6b3e5157ad8067c5db06f163c8980717cc34b0c6be92e400e2ce7fb9ca1e3753635e8a402af572076d98d758d0befefd58c560494f1dcda6b97093faa9a745587449496cf3f7137ae13dfbb388f0aea13b9e4b25384fc90bee20cc4a8f251a0d5382b5ec7a57682fdf39cfef2dc88c222b83bbd42b6d81396e80241cde58e2898309b1e3f0118ec2d22eb844e62b0d512c56ff459ee424d73cdc77f545156012e1d721d1321bdcb0529d468c2aa9e6cc7a2c6ce57e00b357ea09dc67ff7abf801beaa2083a2978a703626b5fd00ab5f3324d3c907fd2d7cb6fe4345e2b1ccba4c3dd2c2cf76c2c44241cbad7ccd759b0982f80d7b9c26acf9ef69689eacb07577e5dd56fe3a78ce4372fa20f704f44b7b34c1577554daf9f96b27b58100cd88b7e814c48620ceaf9132f8456d31623bab642f456be6d19a8bbf8cb7fb2887744ed4d548d784ada6a4446da9b5ec544082ba4dc6ae7173ce4d6903fe748c5236d83f7f0bc500bfc3cd47932eb01c74d0db7a1db73f163219f8fff2ed092960bc31c5ce2bcc191cf834ad622410a0c817d659faafa5c2f554acd65ad3348dcb44b16f9ac988d1f7c4c137e872b4b46ae6c71d54e0ad4c300a1434bd4373e109f77a0602fb89f5c07bfcb21991ce60b07d2c6dacac3673e25a04b4baf4163eddd21c9813317d61cb2e5ba896d0e5509e2a44171999b39031cc05e3c4b08ac88c89292fc5cd8022dd465ce270ab0091c26468d29736efa2e9cccd71130ce9a6eed7d4c5fec9691901f9834b92bdee34f9b80f7d7d8ab2ccf8e9853da0707d63f90a78942e83f1cf85a27333af063073038660f0145fc64b123f0a49053c778a5625bc40ca35c3472eccca80b550fea8f7a4c1fd52a84201fbbe1308ba51a9defa8c9a81320a56361ccb6d2b1d7347cdbcf3520b6ed69fa7f1576968d4cd925a77e03b327c98592595a34db9ccfd65b4956ddebf0506f26f2b9009b9e4de83e79879f7f67e8edd68fa6bfe6b7ad96a4100cc8ea850a4d129997dd706306529c9653a841ace65e7b58723cb7bfb05bcf9bf687135d1666ffd615ee045212b62c9fb35bb921716ab357886e14ad2cdf242f27003a8e93f81701b115e7e84cf9c1b9c7d5d81a4c09fb7b218b1f0610ab67136cb07e6d8838dee7fe5bd46e891f610790ddb33f7cbb70b2e9f2580c10e2cdf99fc83502fdd2797ce0d3d37d40a54936db48ae83cdeedf747371d5c3261e0a7893fdfe77c140f8b07efae41fb084675fae67f04285dcdca0fd151ad7fdce1e463d3e8c4b11fee6068fa1b7957f3837580039d114667fe76766896b0b600e8ad487e5c713f86b2cd1ee24e541975dea142d6d08c1a0d07ca0aa1d7f97258219e1edea3e01e34a41ca2c08e0396bb361f8f908423bc66ef888ef863be5129ea2fdb76d0f2945677993768ab5e8bf033d1c0ce7d9ce87c87473cec437c8617382acd86952cbdfdb6adb3d43fc59bc189b8eeca37339c4f0c04e833ab522c955baa176682cf6999e5067648979f0ce16d0435fe8a5721db77daa9c6c53e787f3aea310ba20cda58fde385e01895fedf3408ff5f25ea43ea0f8516c370dca5f993112d31c165f0ed1f4b8d7ec20465b3d84b2431d9eeacc7c839e3dfe129d84f0b17ae61a409577f4581baab8feb63b3106e299542914b3aec4368221f88d7b7621bdce7471ffbd0fe5ce96cc1818a707681b43f94eabc4701d4bf7119c307ce1766fb53037625d2a77ed9006ebf4a134469d74df4f34c733d945ffffae27000cbcd0a341400236fca33289a69f00e371a1511d16b37dac75ba4e728fbf45c2e9b2301e31d05d1760ccaa5f5b439681702ccf7c6510e0d8d8dba45a46677f273171743641f557226cb96bd6a2383c10ecc2d42af99ab1b72934196651714b1eba5e29b3211b86d07b6613d470ae013e2875d857771345cc289d0758ce8e3c567b2f3c968b78b1991bc789baf408580c2e33e340518e1a67b604b6d41e7d92139e977904ed461b2945e5a46246825c5e4dc99d72ef82dee38996abf83d43d59a2a1d222ccdb9e71f6eeb61b59b92607f3a407088967792d5db60b09722d14b58747372dc07a9f47a4ed318c99ac041fcdef3fd6eedee711fa801b73c6ed1102e7b41c84a81f4eaca52b35be659f8576104bcad2a14ab0c4391cfe533dda0c52053e0cc8a834137cc4ec0f490f5f1ff00730f59a2d252f67e2d4ed554498422eacab737e669f4880d6dd6a958dec0bfa05ed6174f8a2866b7d16e822f61e695223815692dc0f91c12ee346f2f77fe96032f3c96cfca3b44940b7d1d585188dfe6d88e6a96909b63104456165126c19fc5dbb667846e461e7c1af4615c6df5dfcb0d678685bf4ed9f21351de14666bed367a272469fe26a9c613ba81ac35ab9ba2d2ab95e44989274d3bd35c87f6c032ce3ab557b20f2ec68c5f212de7d0e51f2c54adc336f17e056a373f19bf9df873b83a38aa4706ef686e19b14f0861dd815b052ebc7c511236204f4021fd8d0f28d0908ddb71cc5bfc8f2d362f218b4bc6b633f4b7a5c13ad74fe5d27cf6dfa00ae120a4c702a8df1dd06b666a766b3ca04c3d7a3360bbb59bcb0caf74ba446f1d14f3f8fe18096fc7002b7252dfa5514fbde152a54e4b343af1e450f573f32000b403083daeaba3435a14eefdb24d1edb1f2682fe925c90b8676c98796317c9d0cc5cf5c42ecd6c3465ad2eb73a79df45bfce0355bfb75d62fe7ee9abd7aa3eebd65d18636706e59d27d383ef0761ec141f2c817ba441130564d641921d648b7e33af2371c37a5973fe59a1859d6a99af74a1d058a5a290a55d919cd5349c1d0efd291163162f5c56083900e8f90f6e23a7d413f863b1cbd74d1257b488bb3d251cd68a883168f3aaae497d6829967fbb837b76e35c67e827650afe3a9bcfd18ba975550f6818756e8147ef457d8f8c21c0df2436b9489327be8c72dc34b7b00b3c3d0231f4464a01a745747a9a29d4a14823f848dd3e5c0abbaa5c841bd538b1a78e079f02820bcc906e36bd8e69b2905e9225ccfd89e8356808e1cfc2c2fcd73ed89797aeef0aff2cf94281bfa8bebc1d7232df9c2dba779b94547336699a9b317e3d30905193bba41fe1994ffcf009dabd8391d6683c3b7bc1856731b4d2cf49f34553a06ebe605a0615b5a9708afbcf7a5606bf68796b2aba78a743f0fa46fff1093d7a2fdb8a0ebf877d4b2d3c9e986c75db1893df4afb81280372b48aa2fcfacc33723e7af86c9b217ec95f898381b44908e1a27d3735898e59c394481e9641ac723ddded44e5c8dd6602b4d55d54a6611f9e5042d23e567fde947b6f9b03a1fef1254c881855694d75e94cebcab6d5ada0f324b923f380cb815ce3f2ed6b0e8d8ae15e1dac87661d5b8955896b9c96d8319701e71558f36c424826e6289b9f2437df1bfa8dee3dcfe024c02a6d59224e1e61eae77df7c528884aad8c5a312a501b32cfa4716a869851cd956434d5dd4e1a8b1d10b97da36bf081dbdd281743b7b2470d72832c635e76d7ea0f56818a7f2d32945b85c5e5040f7beae6bddacad79f3440c9a1ce654ef069f050ec833c148e984e7e6bcd01407fdb0c1933f10f9e3cd55808352d364d7a9d06f9c849f1c526304e43d8b215b7aa148c6a553fdcf0d244b76b7af777fdf31eab9a9652f0d38cd152ee8762838a0d640374eb969b88ea1a411b31348700eedcbad88ec16d12b930d69b7c6ef9d5356dd5e18673fb66b5854b2b920046add747701547d9726b1833ab8640de0eef771fc941b8c0d2667a8417662ff9267f66601511568b5349615a7bc16411c8b44a545be688fb2c7ee2ccf99c1e7c9cb8b686da434923bc2f718b4c2102257fea23c2fdd7be1ebac5d00335b8a8efdb999d53302c4eeef4b4f15d8479357a93e43b824967af938aed8c679f4c7da0fa9e139061592eb50074af9ee24eab7ad19a94f10d32f462560bdfa3528333d583745d955860fd52fd7f6d14cc1ed36041016c45d09576c6099acacb65173aa533748a35302723fae685527b8d7a6a2f71bb65b3d08067826828542340a9c4136c4f524b3bbe1718e1bc60b1ae474511aa1aea9b7a7237d7252a7f32ef4a28ea5258f2e31721f706c7d529d3b736db7be2a0ef74fd6c6afd372e26c3422c90f9b4057c9788667661596dbbc0b2fa38ddb53c489a30ef36f2131da78b05584891ca7025cfd29ae01cf64016b798bef1b026255a7777abde370899b095bc64f4e31fb0e69eed4216e5400021422f66c3fb6b83354b0541d5b53b73035657c8105f31986a540958dbe3312af7770bab1d5ee05bfddcbc3de29ae0152cbf057017f2a827a2fe2242c80f6caa456bd143004d303a66da70399bce9d0930aad44b38e94d5d7940f0b8cdeb83c1136197155526e9b5beb40681f5edda141fad158c2942a56075bc2c519ed06a1e7cdedd91a72e0b043386910869f47e34ddb64da7580bce72193ae2f886f3477ea26b4a4abe09bb824526c4ad6cc0cb061f8e1c95cdd088170379ba9e290d96eb28c93462132286e458887e8d8e3c3e0f18924ea0750234c8c7258fc577c7f3966c13b68e0303e0f33bfe460137d0c4faff04829d0726577a5a7493ca506b1b17fde9d2207921454f287560c97b1c639ab1f5a83f761d694ccc27d26cc8ea1ff165e6911f1d5b4896be68587d8b88ddfe682ab50fe33dde1276b4edb0f8a784e2fadfbb3dc1b6ed7741667e99ba08bf94e000fe585ce06d5a48cc4221ad57e99f94b93207434444485642d0f3583645d60bd93dda41af4dcf7c66f13c690ea727775e9e22029ae928eb35e59e314301c7acb6a60373502d873318e5e78077984c16255e016834e3cd04468e20d1c7b59b90186b9f4a088c04be57fe5939138638200cf6cba026465e8a8b22210df502e22a37c11ba4dcb77b75484485aaabd4a9561b728426da93a34308bd55b5c84350e08565b13d0d64e921cfd3cf3657a7957ee552b788560c38894f42faefecdee7e996db6a0fac335f5801371f65f6ddf0a699b0906dd6f51176ba6e59761f23a42e47efb83d3c879fc619f081eb41bef964045243e5343bf402e0df36d2d637aabea607e7c4ad80a3c9c5e07e7da1376cdc9614bc039beebf1bf6f0010d48eb85eea45ba90dec3cd44c8f9f6d8a7c0b57ce6b83a56ff6cf6f9cf9aed1a340e87d09004d1373893f7ae086c3af064a4b3954c635aaf5e327c71d4a6c5c5cfbe186b8827d5acd416a3f657b0d20f10b8980b55c6b5ddc82025d8f7c9699a2a9671d6dbdacd6d6851e10649ae302994d92d2242fc67214459d85f0af45fc2646c24df9d1bdadc004aa918558fde3b0dfcad4ee3e8cb65904808d65af60733526d8c18b4fb74ed0b5f4cd3802a0e856e6cf971c18a8c7d82cf12bca99fb66e0e282cda767aab8bc1ecf17ce3365aa21a63d0336f16e95fb3aa02278df0badcabc23a681c0575cfed3b7ef644183227fc04602e3b99fc058843c6bef61c06dc0e8183d6db31b40816b5648f3e30758e27c28066bd0e23f48193758ab44190c9ffea33d30336b79ed76cef95e96b67d99bc83242391653ec48c234fe28b80b6bb3be22386926aa812f975e6a759e1c6bdfceabea791f9ac9b3e56f209536824b658a202f7d2f846929b9391d2c3e4b52fb1a7e870997989369efc06cdcf68b18038c1c1661baf21d27d493e16629bda7805fa812a43fb0a1cab95d99edf8e29acd6a7173d53bb69cb13bd4f6109e000fb06146f2e54bcbf1e2bf89c5a3120ccfe35dcee3dcd8be2b8b96193c761dcaf3a072def3ea1e4c13ec3fb5cf5d4cdb2ad1cd4f0c94df2c647a6ac041620e9480c6f42a6534779ebff9f8b6c7b784384369566a688ebc8e43bc2762a48fa09971f6906da9fcdfa0a45f35d0f23c2f6dcc94656a69bf1d17af3738e537b453eddc7819d5002ffb1ce963fa2bb99f98fe07648669548a648f84abdfaee4722dd1511710ca50db1dcaa87fb7138220bb0c935fc017adb6ad8942dee29ee62ff694365dfaeeb43d7ec30c72ef6258b51030a8126c5c23d92f5141f9c0fa870a3d86c9d6a52c37c95c5ac504994d7e9a02dd2448d4b4caaac98356746babb5bedf3840c5846ea66e702408902b2d51b34a72d3738d0b11d0f69f1e9aaef4d5b157cd96dcb2982038c487b59fc78a23a6bddd41c7f760104a374c60c4f0fe958704c5c789049be9fedb1c4b2c84595cf3eedf08dd608bb45639e19d54bf8e3c3b171bca42446fbb284f59badc689c181ad876a77af007d37ffcd4e55acbdac8b0cd877331d9ef3b113411bfc00bc8bdfaeae1acf07130a9752c3cd9e458647040c4ab627f5e32cc8554529d8acd3cc39479f36fa8566bed0640d37e9ac1823de6255b8b06d25bbd174bc6aa570f77ac4993c8e7c707ca3df1eccc777523953020bc356c9351d20975e08856993134e8e0ce51368782517c3c8746c263f4fb3cae7421b76276f7ce364e75ff3e96d2bc2910418ac603f3d293f5736419d7b8cf4861bacb3a6f5229343ae9cfacb4092580895b4d7fb2e05e6d2fe738e16b5d9481c1ff3d31ef331ffe8ec5e206b7ea4b14247cc2e987781e48fc1028f29e5c110bf804042e69e5734be0ca2d5be533a549797f1290a28232eacc43adb729225ec32ec0d8b3a3026c3e0aa5529d7df079652b39c480c9df6676c8e91a4dfde22a18db4c71341579ff2cc14fb77eb6a8e6e2ab815a8a8b036d30c34403f9b044a17709e5ebf4769fe80e5c12a2a845e6c6e62b4a7f8b37600dbcf360b77c794864672094c68f4682715b47ef9dc7f5abea37d7bacf4ff635ec8e308d296e3ba505caed3746e569a0a9eab011a9bc89633b67ee41aa495eb25084420edfdc6e317b4e60acdef859b07372fb8fae2876082b6535787d7bafb039415464d2dac46bf01889d54b4069dbbf8ec0dfb434e68645c5011e08574789c60640950f229770bb6d747a1e66cec6439fa9440e8d13eece07b470d2c708900e51489dd153e27427092afcc4a7b17adb99cdc823abd4e9f9a697fd1d04c595d120d62ed9d6927566d022670301e5c90eba4a7903870237f9fb40da8aa9ddb44d27aeb2f81455c936b151e61943fa6b99e45a9088568b99177a54ea043177b793012f2771a6bc6e901ad527e493261581ea6770ef753ae75a7c4a23adcdd65224b4fb5e981147f4740979d5010545a950530ba6e96cdefbf982641ac65053dbb26b67ad510f80c6e5e8bd0cf0f9b80439da60fbb2b29b1876019ad03aaf06310da86591678a8b4bbd6772da82318614e47ef52b02586587cce03700362f96a363a110a4c3f3c806181b7db30f0e8223539bed56a2d3d0f94d038a99b35fb3d54dc1a600795d1d90f1495edfba69f42213ac1778053cf1ff161cce62976b1c68bd684f461326ee3323b5001cfbf090be41047d00de763a45b953703d09a7abd7b751cc6801ee35c3bad1d0616bbd890dd868016425d3b33789d283f7d0bd88be088451e5f50b4af759b117c52ce3f16ac7c740829bf94a00c3f4caa8a72e9bfc616cc7f0d2803498e1cd6b1bb244537c78800e1ace882fa4e01cbd732a8bf3d425304d0fc3076447f7a4ce2857d138c9f6e45917a29822b8b4c12d86f899a5364b1a67c49dac2e45c14ea28a813f5c4a59dc4dbf221eeabed4f1be210426136f2db9062fc7fb6f494ab4fe42d8ed1937bdc07fb19bf053558784b40833a4b38e27f37736ca2c3e53d7195960cff86febffa29bb912f557473b5d16fe9d9c9a5017e077c1fa7053679709ad1bc30f25e0600f52e6b5a44ef6fad0e5db196f6cda2df1e0b5b2d7267452b5276983ee97b45431c4b8089b977e5056b5aa693ea269020498e8e90de8caffff38f6eee3fd8899f391a316961fe00bb9810ebc16743fc294c6cfbb83b3e987f9fda2122e59112ee9812378375cf3cf358810af8a7c546daa2c0f367476e51d75935a4e856aa61c31fe11d98335f7a4f98760a68791c795af6d334854db5cad88ee3a7eb5739405427d96df3a0f980784674cbe654b55b6688ff61c0b9c68155ecef5b2ed4ede670db66dfb0299ef49b8ef4f5fbfba5fe8a1724f54be3b13e41f91e4e327ea3ecc6839c25ec20163fa2d43c3453a135c07c7827c2f6ae5f57617e7af1804bd3e12f2be49ba00366bc10e343be59c8fbe70a2ac5988e28945ffc583af75077f703ee27b0e0ad3088ea179e05723b3ff0e949cf0617d7d2f4e1cc42cbb91c5b37ffa0272a724c9f5c395ecc6f03db3dd5e74cecf0a2ab24fbf72cb9b4531fe1dc7462152880a292bdaf822145377fbb194e4c647f06b52e03c7819f49b144e2aba74ab221b094c5876191c1c34ca48d1e480da3b70855580a7d4af047f19ce27648d96debe63745fa025fe9bb6a2aa654ab45bce0f241ef70f265c9ab6f19a64941d28cef56fab9a8593ed603541c42cd23f4bc707829b7f5c75626cebed2e82bac978611d69a05fb4c3c04c9ac1680e377f87218d958a1e72d7f670126cd0553e399f9faeffa78fc8fd6ed76fa663d5676a1d4224b3e800498468b69c39a14e61d5ea64a06f3db6aac8ebc4875d24176dce415930cf7c251d4756ce6f3f8893cb70d3cdb8eb78d8a6d5d57b62dbd8a69fad31e127c07efef10d75cca7cd0554a2b862e6af5f6f092ddb8e2ad00ee059f148df697018d040c6f4a1c9df2a15f1816d954e84caf974cf7b7463168dd59df44f283af54e67c9d68427b27a6cd1a50aff142ef6424819b17e3603ebb935d67ab104e4177846f92e808adecfb8327151badaa3f3bda0780e7088a5e590cfe38b06bb7d14b29fdbf8e9f2093cac65580182e132f80dbd1e294b049fa78996b5cc913001ba2b52277878a71066806b003ab8c22038f4d4a5a073615ed090c95417e129a3aa2f55fff43101e27b774c378874381b16afce01103771a9b6fb6ac54f8ded05a6dfd3930505d8adcb3433462d12474c93496886c99a00fe03bfab277d2a92c7bd4556ae1f716dc26215f9311f803fb7a6d5000300d1e10f845d441a8195fcbefae8b3b75472ae00237171691f132dba6420254e84e716596439f41e9230e9bcead188e2cc7b3cf7b2cb99110723f1b07abe4f510e86d153e8df59020018bc78769005ed0fa64c0531114a292cc4568af3a6e11b9aa6dbeb06c2156d8392dc84d7721b89f72066cd399a97bc3fe4051605cc4cfc8db481033066f7fce986e6b18743668c3bf096a8dcad1d201f76941c8f9bf0ea896d9e39d0d8501a94caf0a3850d57455ec1080694d5880710e202bd81c538a46ca010dfb4d822b06860f123e697068fa28d953f70207026b2ee83806393d23c780bbebabb90c9b2e5a24a2916793736b2fb2a0038dc2df1eaca39407753260bfaed3ed1225d35c3e7472423846abfc26c0fab</script>
+</div>
+<script src="/dsmi-lab-website/lib/blog-encrypt.js"></script><link href="/dsmi-lab-website/css/blog-encrypt.css" rel="stylesheet" type="text/css">
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Chuck</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/06/04/Evolutionary Computation/" target="_blank" title="Evolutionary Computation">https://github.com/dsmilab/dsmi-lab-website/2020/06/04/Evolutionary Computation/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/Evolutionary-Computation/" rel="tag">Evolutionary Computation</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/06/04/Leetcode%20-%20Rotation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode - Rotation
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/06/03/Attention-based%20LSTM%20for%20Aspect-level%20Sentiment%20Classification/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Attention-based LSTM for Aspect-level Sentiment Classification</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav">None</ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

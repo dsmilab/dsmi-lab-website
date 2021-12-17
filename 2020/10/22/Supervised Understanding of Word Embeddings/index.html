@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>supervised understanding of word embeddings | DSMI Lab&#39;s website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="NLP Embedding" />
+  
+  
+  
+  
+  <meta name="description" content="Supervised Understanding of Word Embeddings[TOC] tags: NLP,Embedding論文網址 Introduction預訓練的word embedding被廣泛用於自然語言處理中的轉移學習(transfer learning) 由於w2v是在unsupervised下學出來的，其維度無法很好與task做mapping，所以通常會再多加上一層lin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Supervised Understanding of Word Embeddings">
+<meta property="og:url" content="https://github.com/dsmilab/dsmi-lab-website/2020/10/22/Supervised%20Understanding%20of%20Word%20Embeddings/index.html">
+<meta property="og:site_name" content="DSMI Lab&#39;s website">
+<meta property="og:description" content="Supervised Understanding of Word Embeddings[TOC] tags: NLP,Embedding論文網址 Introduction預訓練的word embedding被廣泛用於自然語言處理中的轉移學習(transfer learning) 由於w2v是在unsupervised下學出來的，其維度無法很好與task做mapping，所以通常會再多加上一層lin">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/qUG0bqD.png">
+<meta property="og:image" content="https://i.imgur.com/aGLAhpe.png">
+<meta property="og:image" content="https://i.imgur.com/IiCcIkb.png">
+<meta property="og:image" content="https://i.imgur.com/jBghAS2.png">
+<meta property="og:image" content="https://i.imgur.com/K9xbCfM.png">
+<meta property="og:image" content="https://i.imgur.com/XaKmIbO.png">
+<meta property="og:image" content="https://i.imgur.com/Q3fcp92.png">
+<meta property="og:image" content="https://i.imgur.com/7qagLlG.png">
+<meta property="og:image" content="https://i.imgur.com/Ow7euIJ.png">
+<meta property="og:image" content="https://i.imgur.com/mpat3oa.png">
+<meta property="article:published_time" content="2020-10-22T10:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T10:05:22.900Z">
+<meta property="article:author" content="DSMI members">
+<meta property="article:tag" content="NLP Embedding">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/qUG0bqD.png">
+  
+    <link rel="alternate" href="/atom.xml" title="DSMI Lab&#39;s website" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  <link rel="apple-touch-icon" href="/dsmi-lab-website/css/images/DSMI.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/dsmi-lab-website/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/dsmi-lab-website/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/dsmi-lab-website/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/dsmi-lab-website/css/style.css">
+
+
+  
+<script src="/dsmi-lab-website/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/dsmi-lab-website/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/dsmi-lab-website/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/dsmi-lab-website/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/dsmi-lab-website/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/dsmi-lab-website/css/images/DSMI.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/dsmi-lab-website/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/dsmi-lab-website/',
+        CONTENT_URL: '/dsmi-lab-website/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/dsmi-lab-website/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Supervised Understanding of Word Embeddings" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Supervised Understanding of Word Embeddings
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/dsmi-lab-website/2020/10/22/Supervised%20Understanding%20of%20Word%20Embeddings/" class="article-date">
+	  <time datetime="2020-10-22T10:00:00.000Z" itemprop="datePublished">2020-10-22</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/dsmi-lab-website/categories/nlp-study-group/">nlp study group</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        
+          <h1 id="Supervised-Understanding-of-Word-Embeddings"><a href="#Supervised-Understanding-of-Word-Embeddings" class="headerlink" title="Supervised Understanding of Word Embeddings"></a>Supervised Understanding of Word Embeddings</h1><p>[TOC]</p>
+<h6 id="tags-NLP-Embedding"><a href="#tags-NLP-Embedding" class="headerlink" title="tags: NLP,Embedding"></a>tags: <code>NLP</code>,<code>Embedding</code></h6><p><a href="https://arxiv.org/pdf/2006.13299.pdf" target="_blank" rel="noopener">論文網址</a></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>預訓練的word embedding被廣泛用於自然語言處理中的轉移學習(transfer learning)</p>
+<p>由於w2v是在unsupervised下學出來的，其維度無法很好與task做mapping，所以通常會再多加上一層linear(dense)來map到對應的問題，雖然這最後一層是optimized by task 但是這一層不那麼有解釋性：在這一層dense下，某一些維度可以被視為近似而有一部分的dimension則在有稀有單詞出現時才被激活，在使用LSTM或是CNN時，這一個現象更難被解釋，且在做完這一步之後很難transfer learning到不同的task上，因為已經被optimized過了。<br>在此文章中，研究有意義的投影，透過使用關鍵詞(supervision)的label來找出”supervised dimensions”（有意義的projection）</p>
+<p>example：<img src="https://i.imgur.com/qUG0bqD.png" alt=""><br>投影到兩個 supervised dimension(sports,animal)：<code>SD1 trained for keywords related to sports word &quot;bat&quot; is closer to &quot;ball&quot; in this dimension compared to the projection of word &quot;fly&quot;. On the other hand, SD2 is trained for keywords related to the animal category. Hence for this dimension, projections of &quot;bat&quot; and &quot;fly&quot; are closer to each other compared to &quot;bat&quot; and &quot;ball&quot;.</code></p>
+<ul>
+<li>Keeping dimensions aligned in a semantically coherent way</li>
+<li>Obtaining groups of semantically similar words(semantic dictionary)</li>
+<li>Each supervised dimension can be treated independently and does not influence the order of words in any other projection(因為沒有normalized)</li>
+<li>根據字的機率做排序有機會可以進一步完善 semantic dictionary on target topic</li>
+<li>在這種情況下的dictionary 可以被單個向量所表示</li>
+<li>由於基於主題所建構的相似性模型可進一步用於在語義表示空間中獲得document representation</li>
+<li>通過與另一種語言的embedding做對齊，可進一步或的該語言的semantic dictionary 而不必再重新訓練 supervised dimensions(因為是連續性的結構，可以很輕鬆的轉換到不同的task)例如，使用這些線性投影的學習權重來初始化高階網絡的可訓練層</li>
+<li>在各種網絡配置中，supervised dimensions可以提高F1 score</li>
+</ul>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><h3 id="Embedding"><a href="#Embedding" class="headerlink" title="Embedding"></a>Embedding</h3><ul>
+<li>Word vector</li>
+<li>Contextual vector<h3 id="W2V-Dense"><a href="#W2V-Dense" class="headerlink" title="W2V + Dense"></a>W2V + Dense</h3>傳統的model都是word embedding + dense(轉到高維度):會使得這些embedding在特定部分被激活，這些激活的詞可被視為主題或是字典集，但是這一功能沒有明確的可控制性（解釋性）。要有控制性的話，可以針對任務主題去增加或刪除單詞（選擇字典集）但是這樣做很耗時。</li>
+</ul>
+<p>基於word embedding的半自動管理方式：<br>將新的關鍵字自動推薦到術語擴展字典集。<a href="https://www.aclweb.org/anthology/C18-2013.pdf" target="_blank" rel="noopener">SetExpander: End-to-end term set expan- sion based on multi-context term embeddings</a></p>
+<p>在此文的設置中，使用一個簡單的線性邏輯分類器來訓練 feature。 在這項研究中，研究了這些投影的不同性質以及如何使用在高階網絡中投影中</p>
+<h3 id="Topic-models"><a href="#Topic-models" class="headerlink" title="Topic models"></a>Topic models</h3><p><a href="https://medium.com/@tengyuanchang/直觀理解-lda-latent-dirichlet-allocation-與文件主題模型-ab4f26c27184" target="_blank" rel="noopener">參考網址</a><br>相關：<a href="https://arxiv.org/pdf/1907.04907.pdf" target="_blank" rel="noopener">topic embedding</a>,LDA2vec<br><img src="https://i.imgur.com/aGLAhpe.png" alt=""></p>
+<p>Topic model(train on specific corpus) not optimized for final task。For example：medical words grouped into one topic，but cardiovascular diseases(心血管疾病)不會有一個獨立的topic。<br>換句話說，要控制model針對特定的性質有一個主題是非常困難的。</p>
+<h3 id="Interpretable-dimension"><a href="#Interpretable-dimension" class="headerlink" title="Interpretable dimension"></a>Interpretable dimension</h3><ul>
+<li>對unsupervised 降低維度透過AE or PCA，在此文中側重利用supervision 來提取出 interpretable dimensions</li>
+<li><img src="https://i.imgur.com/IiCcIkb.png" alt=""><br>像圖中所示，通過訓練二元分類器來使用詞嵌入的線性投影，而這個二元分類器透過使用主動式監督學習(on normalized vector:確保分類器有相似結果在cosine similarity的分數很高時，因此在相似主題(positive word)有較高的分數)</li>
+<li>由於正規化的詞向量位於超球面上，因此每個分類器在幾何上對應於一個hypercap。<h4 id="Step"><a href="#Step" class="headerlink" title="Step"></a>Step</h4></li>
+</ul>
+<ol>
+<li>Logistic regression as classifier model(其他線性分類model也行)</li>
+<li>Initial stage:positive keywords(same topic) are provided</li>
+<li>Randomly sampled negative words are added to train a binary logistic regression.</li>
+<li>其餘的字透過使永logistic regression來找出結果</li>
+<li>排序的字中最高分數的加入初始的postive”關鍵字集”</li>
+<li>重複3到5for few iteration來得到最終版本的分類器</li>
+<li>通過添加 positive或negative關鍵字來管理(enrich)topic base projection and generalize level projection</li>
+</ol>
+<h2 id="Applications-of-Supervised-Dimensions"><a href="#Applications-of-Supervised-Dimensions" class="headerlink" title="Applications of Supervised Dimensions"></a>Applications of Supervised Dimensions</h2><ul>
+<li>使用scikit-learn線性logistic回歸模型（正類權重為2）來增強positive word的效果。 </li>
+<li>在L2 normalization之後，使用了Fasttext Common Crawl詞嵌入的前250k個詞</li>
+<li><img src="https://i.imgur.com/jBghAS2.png" alt=""><h3 id="Transfer-Learning"><a href="#Transfer-Learning" class="headerlink" title="Transfer Learning"></a>Transfer Learning</h3></li>
+<li>用易於獲得的大型數據集學習部分或是整個NN的weight，ie.Language model，其後對應於特定的task來fine-tuned這一個task-specific loss functions</li>
+<li>Model:Concatenated transformed embedding from unsupervised and supervised dense layer + multi-layer BiLSTM</li>
+<li>訓練好的logistic regression(keyword classifiers) 在network中被當成是nodes用來取代在dense layer中的權重。</li>
+<li>Activation function可以更改，因為線性的初始化(Supervised)為後續的訓練提供了重要的基礎，允許這些預先訓練好的權重(Embedding and Supervised)可以被更改可以增加效能，除了原先訓練好的supervised dimensions，再加上隨機初始化的unsupervised dense可以增加準確度，dropout用來regularize這整個structure</li>
+</ul>
+<h4 id="Task-Identification-on-smoking-status"><a href="#Task-Identification-on-smoking-status" class="headerlink" title="Task:Identification on smoking status"></a>Task:Identification on smoking status</h4><p>(label：”previous smoker”, ”non-smoker”, ”current- smoker” and ”unknown”)<br>通過某些關鍵字選擇相關的句子，從報告的文字中判斷吸菸狀態</p>
+<ul>
+<li>NLTK tokenizer</li>
+<li>F1 score to assess performance</li>
+<li>Standard BiLSTM</li>
+<li>在embedding後面接上unsupervised dense</li>
+<li>3846個 example</li>
+<li>5-fold cross-validation with 20 repetitions and reported the average for each configuration</li>
+<li>Adam optimizer，lr=$10^{-3}$<br><img src="https://i.imgur.com/K9xbCfM.png" alt=""><br>像是圖中所示在embedding後面加上dense 可以增加performance，此外，初始化過的linear keyword classifier提供了額外的(supervised)performance</li>
+</ul>
+<blockquote>
+<p>The dense layer activations in this experiment can be precomputed since every word corresponds to a unique value. Thus our method can be considered as augmentation of word embedding dimensions via informative interpretable projections.</p>
+</blockquote>
+<h3 id="Dictionary-Curation-詞典管理"><a href="#Dictionary-Curation-詞典管理" class="headerlink" title="Dictionary Curation(詞典管理)"></a>Dictionary Curation(詞典管理)</h3><p>透過之前描述的supervised dimension，可以直接找出topic-specific dictionary(藉由上一節描述的embedding database的預測結果來做到)，可以設定threshold來取得完整的word list，可以用來找尋關鍵字(KS)或是實體識別(NER)任務</p>
+<p>✩這裡有一個主要的問題：要如何準確的判斷未被標記的部分被線性分類器正確的分對<br>$\quad$<br><img src="https://i.imgur.com/XaKmIbO.png" alt=""><br>對這些分類器進行評估，保留了10%帶有註釋的關鍵字以用來進行驗證<br>對３０個不同的分類器(based on current data)計算(micro,macro)平均的 F1 score，就結果表明此方法可以用於創建具有”高度連貫性結構”??的topic-specific dictionary</p>
+<h3 id="Dictionary-Curation-on-Multiple-Languages-subtask"><a href="#Dictionary-Curation-on-Multiple-Languages-subtask" class="headerlink" title="Dictionary Curation on Multiple Languages(subtask)"></a>Dictionary Curation on Multiple Languages(subtask)</h3><p>在沒有重新訓練分類器來判斷不同語言的主題性(其他語言的字典)<br>可以使用一種語言訓練出來的分類器可以在多種語言上執行<br>作法：</p>
+<ul>
+<li>在基礎的word embedding上對齊</li>
+</ul>
+<p>證明方法：</p>
+<ul>
+<li>預先訓練好一個分類器(用”smoking”,”smoker”,”tobacco”當成positive)</li>
+<li>並用 German(德語) 和Dutch(荷蘭語)對齊 word embedding</li>
+<li>排序(base on probability)</li>
+<li>用supervised dimension 可以減少將模型縮放到多種語言<img src="https://i.imgur.com/Q3fcp92.png" alt=""></li>
+</ul>
+<h3 id="Polysemy-Representations-多意義表示"><a href="#Polysemy-Representations-多意義表示" class="headerlink" title="Polysemy Representations(多意義表示)"></a>Polysemy Representations(多意義表示)</h3><blockquote>
+<p>Different projections of the same keyword contain different meanings in the word vector space. In other words, cosine similarities among words are different in sub-spaces. This can be verified by training specific supervised dimensions with a few keywords.<br>同一個關鍵詞在空間向量中的不同投影中有不同的含義<br>換句話說：一個單字在子空間中的cosine similarity是不一樣的。<br>可以使用一些關鍵字訓練特定的supervised dimension來驗證</p>
+</blockquote>
+<p>實驗：用３個positive keywords 並且在supervised dimension上隨機取3個negative sample。圖中顯示了對詞彙表中其餘單詞投影的前8個<img src="https://i.imgur.com/7qagLlG.png" alt="">在左半邊，選定keyword，第一個play 代表了 baseball-related的concept(用play+run+bat)，而第二個代表了art。兩個都可以與play相關，且有”play”這個字在內。當在數入文本中出現了play這一個字，這兩個相關的supervised dimension會被activate，代表了它具有多義性的功能。同樣的bat在”animal”vs.”play”有不同的最高得分的單詞。</p>
+<h2 id="Interpretation-of-Supervised-Dimensions"><a href="#Interpretation-of-Supervised-Dimensions" class="headerlink" title="Interpretation of Supervised Dimensions"></a>Interpretation of Supervised Dimensions</h2><p>說明supervised dimensions 的可解釋性</p>
+<h3 id="Activated-words-in-Dense-layer-outputs"><a href="#Activated-words-in-Dense-layer-outputs" class="headerlink" title="Activated words in Dense layer outputs"></a>Activated words in Dense layer outputs</h3><p>為了檢測supervised dimension的相關性，研究了dense layer的outputs且蒐集了可以觸發各種supervised dimension的字典集。<br>使用在吸菸狀態的識別實驗中訓練好的分類器以及相同網路架構。<br>從dense layer(supervised)選擇了三個相關的dimensions(initializaed weight learned from classifier)且對這些dimensions找出分數最高的幾個字。同樣的，從random initialized(unsupervised)的dense layer 從三個output nodes選出分數最高的幾個words<img src="https://i.imgur.com/Ow7euIJ.png" alt=""></p>
+<ul>
+<li>有趣的是，即使在經過fine-tuning之後，這些維度也大多保留了原本對主題訓練的特性，與之相對的unpuservised dimension在這些單詞之間則無連貫性的結構。<br><img src="https://i.imgur.com/mpat3oa.png" alt=""><br>Toy example from mtsamples for word “chest”，使用了另一個dataset中的unique words<br>且激活值小於5的沒有被分配到任何分類器，且大多是由停用詞(stopword)組成。</li>
+</ul>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>PoH_Ko</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/dsmi-lab-website/2020/10/22/Supervised Understanding of Word Embeddings/" target="_blank" title="Supervised Understanding of Word Embeddings">https://github.com/dsmilab/dsmi-lab-website/2020/10/22/Supervised Understanding of Word Embeddings/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'dsmi-lab';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/dsmi-lab-website/tags/NLP-Embedding/" rel="tag">NLP Embedding</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/dsmi-lab-website/2020/10/22/Supervised%20Topic%20Modeling%20Using%20Word%20Embedding%20with%20Machine%20Learning%20Techniques/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Supervised Topic Modeling Using Word Embedding with Machine Learning Techniques
+        
+      </div>
+    </a>
+  
+  
+    <a href="/dsmi-lab-website/2020/10/02/Towards%20Making%20Unlabeled%20Data%20Never%20Hurt/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Towards Making Unlabeled Data Never Hurt</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Supervised-Understanding-of-Word-Embeddings"><span class="nav-number">1.</span> <span class="nav-text">Supervised Understanding of Word Embeddings</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tags-NLP-Embedding"><span class="nav-number">1.0.0.0.0.1.</span> <span class="nav-text">tags: NLP,Embedding</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.2.</span> <span class="nav-text">Related Work</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Embedding"><span class="nav-number">1.2.1.</span> <span class="nav-text">Embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#W2V-Dense"><span class="nav-number">1.2.2.</span> <span class="nav-text">W2V + Dense</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic-models"><span class="nav-number">1.2.3.</span> <span class="nav-text">Topic models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interpretable-dimension"><span class="nav-number">1.2.4.</span> <span class="nav-text">Interpretable dimension</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Step</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Applications-of-Supervised-Dimensions"><span class="nav-number">1.3.</span> <span class="nav-text">Applications of Supervised Dimensions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Transfer-Learning"><span class="nav-number">1.3.1.</span> <span class="nav-text">Transfer Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Task-Identification-on-smoking-status"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Task:Identification on smoking status</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dictionary-Curation-詞典管理"><span class="nav-number">1.3.2.</span> <span class="nav-text">Dictionary Curation(詞典管理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dictionary-Curation-on-Multiple-Languages-subtask"><span class="nav-number">1.3.3.</span> <span class="nav-text">Dictionary Curation on Multiple Languages(subtask)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polysemy-Representations-多意義表示"><span class="nav-number">1.3.4.</span> <span class="nav-text">Polysemy Representations(多意義表示)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interpretation-of-Supervised-Dimensions"><span class="nav-number">1.4.</span> <span class="nav-text">Interpretation of Supervised Dimensions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Activated-words-in-Dense-layer-outputs"><span class="nav-number">1.4.1.</span> <span class="nav-text">Activated words in Dense layer outputs</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2020 - 2021 DSMI Lab&#39;s website All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/dsmi-lab-website/" class="mobile-nav-link">Home</a>
+  
+    <a href="/dsmi-lab-website/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/dsmi-lab-website/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/dsmi-lab-website/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/dsmi-lab-website/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/dsmi-lab-website/fancybox/jquery.fancybox.css">
+
+  
+<script src="/dsmi-lab-website/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/dsmi-lab-website/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/dsmi-lab-website/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字號大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已調整頁面字體大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜間護眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜間模式已經開啟，再次單擊按鈕即可關閉
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            DSMI Lab&#39;s website
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 DSMI members All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
